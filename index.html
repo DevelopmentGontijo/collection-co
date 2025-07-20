@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Etheris™ - Loja Online</title>
+  <meta name="description" content="Descubra a Etheris™. Camisetas, hoodies, suéteres e peças fundamentais para adultos e crianças. Corte refinado, algodão premium e estética precisa.">
+  <link rel="canonical" href="https://collection.etheris.com.br/" />
+  <link rel="icon" href="Etheris-F.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background-color: #f9f9f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0 auto 0.5rem;
+      font-weight: 300;
+      line-height: 2.2rem;
+      animation: blur-in 1.8s ease-out forwards;
+      color: #111;
+      transition: color 1.8s ease-out;
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    .frase-entrada {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 9px;
+      color: #444;
+      margin-bottom: 2rem;
+      animation: blur-in 1.8s ease-out forwards;
+      transition: color 1.8s ease-out;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 1rem;
+      animation: blur-in 2.5s ease-out forwards;
+    }
+
+    @keyframes blur-in {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    .blur-effect {
+      animation: blur-in 1.8s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .background-video {
+        object-position: center center;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    @media screen and (device-aspect-ratio: 9/19),
+           screen and (device-aspect-ratio: 9/18),
+           screen and (device-aspect-ratio: 2/3) {
+      .background-video {
+        object-position: center center;
+      }
+    }
+
+    /* Desktop Menu */
+    nav#top-menu {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: absolute;
+      top: 1rem;
+      width: 100%;
+      z-index: 10;
+      background-color: transparent;
+    }
+
+    nav#top-menu a {
+      color: #111;
+      font-size: 0.95rem;
+      font-weight: 300;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      margin: 0 1rem;
+      position: relative;
+    }
+
+    /* Efeito da linha que abre no hover */
+    nav#top-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 1px;
+      background-color: #111;
+      transition: width 0.6s ease;
+    }
+
+    nav#top-menu a:hover::after {
+      width: 80%;
+    }
+
+    nav#top-menu a:hover {
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Mobile Menu (Hamburger) */
+    .menu-button {
+      position: fixed;
+      bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10001;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .menu-button div {
+      background-color: #fff;
+      margin: 3px 0;
+      transition: all 0.3s ease;
+      border-radius: 1px;
+    }
+
+    .menu-button div:nth-child(1) { width: 18px; height: 2px; }
+    .menu-button div:nth-child(2) { width: 12px; height: 1.5px; }
+
+    /* Efeito de piscar para as linhas do hambúrguer */
+    .menu-button.active div {
+      background-color: #111;
+    }
+
+    .menu-button.blink div {
+      animation: hamburger-blink 1.8s ease-out;
+    }
+
+    @keyframes hamburger-blink {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top: 3rem;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: #111;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-family: 'Tenor Sans', sans-serif;
+      margin: 0.5rem 0;
+      font-weight: 300;
+      position: relative;
+      transition: color 0.3s ease;
+      letter-spacing: 1px; /* Aumentado o espaçamento entre as letras */
+    }
+
+    /* Restaurar efeito de linha no mobile */
+    .mobile-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 1px;
+      background-color: #111;
+      transition: width 0.6s ease;
+    }
+
+    .mobile-menu a:hover::after,
+    .mobile-menu a.line-active::after {
+      width: 80%;
+    }
+
+    /* Media Queries para as modificações solicitadas */
+    
+    /* Desktop: Esconder o menu hambúrguer e ajustar espessura da fonte */
+    @media (min-width: 769px) {
+      .menu-button {
+        display: none;
+      }
+      
+      /* Ajustar espessura da fonte do título no desktop */
+      h1 {
+        font-weight: 250;
+      }
+    }
+
+    /* Mobile: Esconder o menu superior fixo e ajustar fontes */
+    @media (max-width: 768px) {
+      nav#top-menu {
+        display: none;
+      }
+      
+      /* Reduzir fonte das frases em 10% no mobile */
+      h1 {
+        font-size: 1.62rem;
+        line-height: 1.98rem;
+      }
+      
+      .frase-entrada {
+        font-size: 8.1px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Desktop Menu -->
+  <nav id="top-menu">
+    <a href="https://www.etheris.com.br/etheris/collections/masculino-camisetas">Masculino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/feminino-camisetas">Feminino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/infantil-masculino">Infantil Masculino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/infantil-feminino">Infantil Feminino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/soft-baby">Bebê</a>
+  </nav>
+
+  <!-- Mobile Hamburger Button -->
+  <button class="menu-button" onclick="toggleMenu(event)" id="hamburgerButton">
+    <div></div>
+    <div></div>
+    <div></div>
+  </button>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="https://www.etheris.com.br/etheris/collections/masculino-camisetas">Masculino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/feminino-camisetas">Feminino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/infantil-masculino">Infantil Masculino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/infantil-feminino">Infantil Feminino</a>
+    <a href="https://www.etheris.com.br/etheris/collections/soft-baby">Bebê</a>
+  </div>
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="background-video" id="bgVideo">
+    <source src="hug.mp4" type="video/mp4" />
+    Seu navegador não suporta vídeo em HTML5.
+  </video>
+
+  <!-- Main Container -->
+  <div class="container">
+    <img src="https://www.etheris.com.br/logo.svg" alt="Etheris Logo" class="logo" onerror="this.style.display='none'" />
+    <h1 id="titulo">Bem-vindo à Etheris</h1>
+    <p id="frase" class="frase-entrada">O CONFORTO LEVE TE ENCONTRA.</p>
+  </div>
+
+  <script>
+    const video = document.getElementById("bgVideo");
+    const titulo = document.getElementById("titulo");
+    const frase = document.getElementById("frase");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const hamburgerButton = document.getElementById("hamburgerButton");
+
+    // Variável para controlar o efeito do hambúrguer
+    let hamburgerBlinkInterval = null;
+
+    // EFEITO ORIGINAL DAS PALAVRAS - EXATAMENTE COMO NO PRIMEIRO CÓDIGO
+    function setColor(tColor, fColor) {
+      titulo.style.color = tColor;
+      frase.style.color = fColor;
+    }
+
+    function applyBlur() {
+      titulo.classList.remove("blur-effect");
+      frase.classList.remove("blur-effect");
+      void titulo.offsetWidth;
+      void frase.offsetWidth;
+      titulo.classList.add("blur-effect");
+      frase.classList.add("blur-effect");
+    }
+
+    // Função para aplicar efeito de piscar no hambúrguer
+    function applyHamburgerBlink() {
+      hamburgerButton.classList.remove("blink");
+      void hamburgerButton.offsetWidth;
+      hamburgerButton.classList.add("blink");
+    }
+
+    // Função para iniciar o efeito de piscar do hambúrguer
+    function startHamburgerBlink() {
+      hamburgerButton.classList.add("active");
+      applyHamburgerBlink();
+
+      let isBlack = true;
+      let count = 0;
+      const maxCycles = 6;
+
+      hamburgerBlinkInterval = setInterval(() => {
+        if (count >= maxCycles) {
+          clearInterval(hamburgerBlinkInterval);
+          hamburgerBlinkInterval = null;
+          return;
+        }
+
+        // Alternar entre preto e branco
+        if (isBlack) {
+          hamburgerButton.classList.add("active");
+        } else {
+          hamburgerButton.classList.remove("active");
+        }
+        
+        applyHamburgerBlink();
+        isBlack = !isBlack;
+        count++;
+      }, 2000);
+    }
+
+    // Função para parar o efeito de piscar do hambúrguer
+    function stopHamburgerBlink() {
+      if (hamburgerBlinkInterval) {
+        clearInterval(hamburgerBlinkInterval);
+        hamburgerBlinkInterval = null;
+      }
+      hamburgerButton.classList.remove("active", "blink");
+    }
+
+    function resetAfterLoop() {
+      setColor("#111", "#444");
+      applyBlur();
+      startCycle();
+    }
+
+    function startCycle() {
+      setColor("#111", "#444");
+      applyBlur();
+
+      setTimeout(() => {
+        let isWhite = false;
+        let count = 0;
+        const maxCycles = 6;
+
+        const interval = setInterval(() => {
+          if (count >= maxCycles) {
+            clearInterval(interval);
+            setColor("#fff", "#fff");
+            applyBlur();
+            return;
+          }
+
+          setColor(isWhite ? "#111" : "#fff", isWhite ? "#444" : "#fff");
+          applyBlur();
+          isWhite = !isWhite;
+          count++;
+        }, 2000);
+      }, 3000);
+    }
+
+    startCycle();
+
+    let lastPhase = "";
+
+    video.addEventListener("timeupdate", () => {
+      const remaining = video.duration - video.currentTime;
+
+      if (remaining <= 2 && remaining > 1 && lastPhase !== "preto") {
+        lastPhase = "preto";
+        setColor("#111", "#444");
+        applyBlur();
+      }
+
+      if (remaining <= 1 && lastPhase !== "branco") {
+        lastPhase = "branco";
+        setColor("#fff", "#fff");
+        applyBlur();
+      }
+
+      if (video.currentTime < 0.1 && lastPhase) {
+        lastPhase = "";
+        resetAfterLoop();
+      }
+    });
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      const isOpening = !mobileMenu.classList.contains("open");
+      
+      mobileMenu.classList.toggle("open");
+      
+      if (isOpening) {
+        // Menu abrindo - iniciar efeito de piscar
+        startHamburgerBlink();
+      } else {
+        // Menu fechando - parar efeito e voltar ao branco
+        stopHamburgerBlink();
+      }
+    }
+
+    // Melhorar o comportamento do menu no mobile
+    document.body.addEventListener("click", (e) => {
+      if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+        if (mobileMenu.classList.contains("open")) {
+          mobileMenu.classList.remove("open");
+          stopHamburgerBlink(); // Parar efeito e voltar ao branco
+        }
+        window.location.href = "https://www.etheris.com.br";
+      }
+    });
+
+    // Efeito de linha completa antes do redirecionamento no mobile
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Adicionar classe para ativar a linha
+        this.classList.add('line-active');
+        
+        // Aguardar a linha completar (0.6s) antes de redirecionar
+        setTimeout(() => {
+          window.location.href = this.href;
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>
