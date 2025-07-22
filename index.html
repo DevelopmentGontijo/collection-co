@@ -26,28 +26,13 @@
     }
 
     .background-video {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
       z-index: 0;
-      opacity: 0;
-      transition: opacity 1s linear; /* Duração do crossfade */
-    }
-
-    .background-video.active {
-      opacity: 1;
-    }
-
-    .video-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
     }
 
     .container {
@@ -314,16 +299,10 @@
   </div>
 
   <!-- Background Video -->
-  <div class="video-container">
-    <video autoplay muted playsinline class="background-video active" id="bgVideo1">
-      <source src="video3.mp4" type="video/mp4" />
-      Seu navegador não suporta vídeo em HTML5.
-    </video>
-    <video muted playsinline class="background-video" id="bgVideo2">
-      <source src="video3.mp4" type="video/mp4" />
-      Seu navegador não suporta vídeo em HTML5.
-    </video>
-  </div>
+  <video autoplay muted loop playsinline class="background-video" id="bgVideo">
+    <source src="video3.mp4" type="video/mp4" />
+    Seu navegador não suporta vídeo em HTML5.
+  </video>
 
   <!-- Main Container -->
   <div class="container">
@@ -333,6 +312,7 @@
   </div>
 
   <script>
+    const video = document.getElementById("bgVideo");
     const titulo = document.getElementById("titulo");
     const frase = document.getElementById("frase");
     const mobileMenu = document.getElementById("mobileMenu");
@@ -433,6 +413,31 @@
     }
 
     startCycle();
+
+    let lastPhase = "";
+
+    video.addEventListener("timeupdate", () => {
+      const remaining = video.duration - video.currentTime;
+
+      // Lógica para transição para tela branca e texto preto
+      if (remaining <= 1 && lastPhase !== "branco_texto_preto") {
+        lastPhase = "branco_texto_preto";
+        document.body.style.backgroundColor = "#fff"; // Fundo branco
+        setColor("#111", "#111"); // Texto preto
+        applyBlur();
+      }
+
+      // Reiniciar o vídeo 1 segundo à frente
+      if (video.currentTime >= video.duration - 0.1 && video.currentTime < video.duration) { // Quase no final
+        video.currentTime = 1; // Reinicia 1 segundo à frente
+        video.play(); // Garante que o vídeo continue tocando
+        // Resetar cores e fundo para o estado inicial após o reinício
+        document.body.style.backgroundColor = "#f9f9f9"; // Fundo original
+        setColor("#111", "#444"); // Cores originais
+        applyBlur();
+        lastPhase = ""; // Resetar a fase para permitir a transição novamente
+      }
+    });
 
     function toggleMenu(e) {
       e.stopPropagation();
