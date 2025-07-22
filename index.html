@@ -33,7 +33,6 @@
       min-height: 100%;
       object-fit: cover;
       z-index: 0;
-      transition: opacity 1s ease-in-out; /* Adiciona transição de opacidade ao vídeo */
     }
 
     .container {
@@ -215,7 +214,7 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-family: 'Tenor Sans', sans-serif;
-      margin: 0.8rem 0; /* Aumentado o espaçamento vertical */
+      margin: 0.5rem 0;
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
@@ -305,8 +304,6 @@
     Seu navegador não suporta vídeo em HTML5.
   </video>
 
-
-
   <!-- Main Container -->
   <div class="container">
     <img src="https://www.etheris.com.br/logo.svg" alt="Etheris Logo" class="logo" onerror="this.style.display='none'" />
@@ -384,50 +381,61 @@
       hamburgerButton.classList.remove("active", "blink");
     }
 
-    // Lógica de transição de blur para o texto (10 segundos, fora de compasso)
-    function startTextTransition() {
-      titulo.style.transition = 'color 10s ease-out';
-      frase.style.transition = 'color 10s ease-out';
-      setColor("#fff", "#fff"); // Define a cor final como branco
-      // Remove a animação blur-in inicial para que a transição de 10s seja a única
-      titulo.style.animation = 'none';
-      frase.style.animation = 'none';
-      // Garante que o blur inicial seja aplicado e depois removido pela transição
-      titulo.classList.add("blur-effect");
-      frase.classList.add("blur-effect");
-
-      setTimeout(() => {
-        titulo.classList.remove("blur-effect");
-        frase.classList.remove("blur-effect");
-        // Garante que a cor permaneça branca após a transição
-        titulo.style.color = "#fff";
-        frase.style.color = "#fff";
-      }, 10000); // 10 segundos
+    function resetAfterLoop() {
+      setColor("#111", "#444");
+      applyBlur();
+      startCycle();
     }
 
-    // Lógica de transição de cor para o hambúrguer (igual às letras, depois branco estático)
-    function startHamburgerColorTransition() {
-      const hamburgerDivs = document.querySelectorAll('.menu-button div');
-      hamburgerDivs.forEach(div => {
-        div.style.transition = 'background-color 10s ease-out';
-        div.style.backgroundColor = "#fff"; // Define a cor final como branco
-      });
+    function startCycle() {
+      setColor("#111", "#444");
+      applyBlur();
 
       setTimeout(() => {
-        hamburgerDivs.forEach(div => {
-          div.style.backgroundColor = "#fff"; // Garante que a cor permaneça branca
-        });
-      }, 10000); // 10 segundos
+        let isWhite = false;
+        let count = 0;
+        const maxCycles = 6;
+
+        const interval = setInterval(() => {
+          if (count >= maxCycles) {
+            clearInterval(interval);
+            setColor("#fff", "#fff");
+            applyBlur();
+            return;
+          }
+
+          setColor(isWhite ? "#111" : "#fff", isWhite ? "#444" : "#fff");
+          applyBlur();
+          isWhite = !isWhite;
+          count++;
+        }, 2000);
+      }, 3000);
     }
 
-    // Inicia as transições após um pequeno atraso para o vídeo começar
-    video.addEventListener('loadeddata', () => {
-      startTextTransition();
-      startHamburgerColorTransition();
+    startCycle();
+
+    let lastPhase = "";
+
+    video.addEventListener("timeupdate", () => {
+      const remaining = video.duration - video.currentTime;
+
+      if (remaining <= 2 && remaining > 1 && lastPhase !== "preto") {
+        lastPhase = "preto";
+        setColor("#111", "#444");
+        applyBlur();
+      }
+
+      if (remaining <= 1 && lastPhase !== "branco") {
+        lastPhase = "branco";
+        setColor("#fff", "#fff");
+        applyBlur();
+      }
+
+      if (video.currentTime < 0.1 && lastPhase) {
+        lastPhase = "";
+        resetAfterLoop();
+      }
     });
-
-    // Garante que o vídeo faça loop
-    video.loop = true;
 
     function toggleMenu(e) {
       e.stopPropagation();
@@ -456,12 +464,12 @@
     });
 
     // Efeito de linha completa antes do redirecionamento no mobile
-    document.querySelectorAll(".mobile-menu a").forEach(link => {
-      link.addEventListener("click", function(e) {
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', function(e) {
         e.preventDefault();
         
         // Adicionar classe para ativar a linha
-        this.classList.add("line-active");
+        this.classList.add('line-active');
         
         // Aguardar a linha completar (0.6s) antes de redirecionar
         setTimeout(() => {
