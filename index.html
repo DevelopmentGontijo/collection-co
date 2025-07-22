@@ -16,7 +16,7 @@
       overflow: hidden;
       background-color: #f9f9f9;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #111;
+      color: #fff; /* Mudança: todas as letras brancas por padrão */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -47,7 +47,7 @@
       font-weight: 300;
       line-height: 2.2rem;
       animation: blur-in 1.8s ease-out forwards;
-      color: #111;
+      color: #fff; /* Mudança: letras brancas */
       transition: color 1.8s ease-out;
       text-align: center;
       max-width: 90vw;
@@ -56,7 +56,7 @@
     .frase-entrada {
       font-family: 'Tenor Sans', sans-serif;
       font-size: 9px;
-      color: #444;
+      color: #fff; /* Mudança: letras brancas */
       margin-bottom: 2rem;
       animation: blur-in 1.8s ease-out forwards;
       transition: color 1.8s ease-out;
@@ -112,7 +112,7 @@
     }
 
     nav#top-menu a {
-      color: #111;
+      color: #fff; /* Mudança: letras brancas */
       font-size: 0.95rem;
       font-weight: 300;
       text-decoration: none;
@@ -130,7 +130,7 @@
       transform: translateX(-50%);
       width: 0%;
       height: 1px;
-      background-color: #111;
+      background-color: #fff; /* Mudança: linha branca */
       transition: width 0.6s ease;
     }
 
@@ -139,7 +139,7 @@
     }
 
     nav#top-menu a:hover {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(255, 255, 255, 0.6); /* Mudança: hover branco com transparência */
     }
 
     /* Mobile Menu (Hamburger) */
@@ -158,7 +158,7 @@
     }
 
     .menu-button div {
-      background-color: #fff;
+      background-color: #fff; /* Mudança: hambúrguer branco por padrão */
       margin: 3px 0;
       transition: all 0.3s ease;
       border-radius: 1px;
@@ -169,7 +169,7 @@
 
     /* Efeito de piscar para as linhas do hambúrguer */
     .menu-button.active div {
-      background-color: #111;
+      background-color: #111; /* Mudança: preto quando ativo */
     }
 
     .menu-button.blink div {
@@ -214,11 +214,11 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-family: 'Tenor Sans', sans-serif;
-      margin: 0.5rem 0;
+      margin: 1.2rem 0; /* Mudança: aumentado espaçamento de 0.5rem para 1.2rem */
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
-      letter-spacing: 1px; /* Aumentado o espaçamento entre as letras */
+      letter-spacing: 1px;
     }
 
     /* Restaurar efeito de linha no mobile */
@@ -299,17 +299,10 @@
   </div>
 
   <!-- Background Video -->
-  <video autoplay muted loop playsinline class="background-video" id="bgVideo">
+  <video autoplay muted loop playsinline preload="auto" class="background-video" id="bgVideo">
     <source src="video6.mp4" type="video/mp4" />
     Seu navegador não suporta vídeo em HTML5.
   </video>
-
-  <!-- Main Container -->
-  <div class="container">
-    <img src="https://www.etheris.com.br/logo.svg" alt="Etheris Logo" class="logo" onerror="this.style.display='none'" />
-    <h1 id="titulo">Bem-vindo à Etheris</h1>
-    <p id="frase" class="frase-entrada">O CONFORTO LEVE TE ENCONTRA.</p>
-  </div>
 
   <script>
     const video = document.getElementById("bgVideo");
@@ -321,7 +314,19 @@
     // Variável para controlar o efeito do hambúrguer
     let hamburgerBlinkInterval = null;
 
-    // EFEITO ORIGINAL DAS PALAVRAS - EXATAMENTE COMO NO PRIMEIRO CÓDIGO
+    // Forçar reprodução automática do vídeo
+    video.addEventListener('loadeddata', function() {
+      video.play().catch(function(error) {
+        console.log('Erro ao reproduzir vídeo automaticamente:', error);
+      });
+    });
+
+    // Tentar reproduzir o vídeo imediatamente
+    video.play().catch(function(error) {
+      console.log('Erro ao reproduzir vídeo automaticamente:', error);
+    });
+
+    // EFEITO ORIGINAL DAS PALAVRAS - MANTENDO TODAS AS LETRAS BRANCAS
     function setColor(tColor, fColor) {
       titulo.style.color = tColor;
       frase.style.color = fColor;
@@ -343,19 +348,21 @@
       hamburgerButton.classList.add("blink");
     }
 
-    // Função para iniciar o efeito de piscar do hambúrguer
+    // Função para iniciar o efeito de piscar do hambúrguer (apenas 2 vezes, mais lento)
     function startHamburgerBlink() {
       hamburgerButton.classList.add("active");
       applyHamburgerBlink();
 
       let isBlack = true;
       let count = 0;
-      const maxCycles = 6;
+      const maxCycles = 2; // Mudança: apenas 2 ciclos
 
       hamburgerBlinkInterval = setInterval(() => {
         if (count >= maxCycles) {
           clearInterval(hamburgerBlinkInterval);
           hamburgerBlinkInterval = null;
+          // Mudança: manter na cor preta após os efeitos
+          hamburgerButton.classList.add("active");
           return;
         }
 
@@ -369,42 +376,44 @@
         applyHamburgerBlink();
         isBlack = !isBlack;
         count++;
-      }, 2000);
+      }, 3000); // Mudança: mais lento (3000ms ao invés de 2000ms)
     }
 
-    // Função para parar o efeito de piscar do hambúrguer
+    // Função para parar o efeito de piscar do hambúrguer e voltar ao branco
     function stopHamburgerBlink() {
       if (hamburgerBlinkInterval) {
         clearInterval(hamburgerBlinkInterval);
         hamburgerBlinkInterval = null;
       }
-      hamburgerButton.classList.remove("active", "blink");
+      // Mudança: piscar apenas uma vez ao fechar e manter branco
+      hamburgerButton.classList.remove("active");
+      applyHamburgerBlink();
     }
 
     function resetAfterLoop() {
-      setColor("#111", "#444");
+      setColor("#fff", "#fff"); // Mudança: manter branco
       applyBlur();
       startCycle();
     }
 
     function startCycle() {
-      setColor("#111", "#444");
+      setColor("#fff", "#fff"); // Mudança: manter branco
       applyBlur();
 
       setTimeout(() => {
-        let isWhite = false;
+        let isWhite = true; // Mudança: começar com branco
         let count = 0;
         const maxCycles = 6;
 
         const interval = setInterval(() => {
           if (count >= maxCycles) {
             clearInterval(interval);
-            setColor("#fff", "#fff");
+            setColor("#fff", "#fff"); // Mudança: terminar com branco
             applyBlur();
             return;
           }
 
-          setColor(isWhite ? "#111" : "#fff", isWhite ? "#444" : "#fff");
+          setColor(isWhite ? "#fff" : "#fff", isWhite ? "#fff" : "#fff"); // Mudança: sempre branco
           applyBlur();
           isWhite = !isWhite;
           count++;
@@ -421,13 +430,13 @@
 
       if (remaining <= 2 && remaining > 1 && lastPhase !== "preto") {
         lastPhase = "preto";
-        setColor("#111", "#444");
+        setColor("#fff", "#fff"); // Mudança: manter branco
         applyBlur();
       }
 
       if (remaining <= 1 && lastPhase !== "branco") {
         lastPhase = "branco";
-        setColor("#fff", "#fff");
+        setColor("#fff", "#fff"); // Mudança: manter branco
         applyBlur();
       }
 
@@ -478,5 +487,12 @@
       });
     });
   </script>
+
+  <!-- Main Container -->
+  <div class="container">
+    <img src="https://www.etheris.com.br/logo.svg" alt="Etheris Logo" class="logo" onerror="this.style.display='none'" />
+    <h1 id="titulo">Bem-vindo à Etheris</h1>
+    <p id="frase" class="frase-entrada">O CONFORTO LEVE TE ENCONTRA.</p>
+  </div>
 </body>
 </html>
