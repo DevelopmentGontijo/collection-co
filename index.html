@@ -33,6 +33,7 @@
       min-height: 100%;
       object-fit: cover;
       z-index: 0;
+      transition: opacity 1s linear;
     }
 
     .container {
@@ -416,6 +417,10 @@
 
     let lastPhase = "";
 
+    // Variáveis para controlar o crossfade do vídeo
+    const FADE_DURATION = 1; // Duração do fade em segundos
+    let fading = false;
+
     video.addEventListener("timeupdate", () => {
       const remaining = video.duration - video.currentTime;
 
@@ -434,6 +439,19 @@
       if (video.currentTime < 0.1 && lastPhase) {
         lastPhase = "";
         resetAfterLoop();
+      }
+
+      // Lógica para crossfade do vídeo (se necessário)
+      if (remaining <= FADE_DURATION && !fading) {
+        fading = true;
+        // Inicia o fade-out do vídeo atual
+        video.style.transition = `opacity ${FADE_DURATION}s linear`;
+        video.style.opacity = 0;
+      } else if (video.currentTime > FADE_DURATION && fading) {
+        // Após o loop, fade-in do vídeo
+        fading = false;
+        video.style.transition = `opacity ${FADE_DURATION}s linear`;
+        video.style.opacity = 1;
       }
     });
 
