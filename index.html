@@ -102,14 +102,14 @@
     /* Desktop Menu */
     nav#top-menu {
       display: flex;
-      justify-content: center; /* Mudança: centralizar os itens restantes */
+      justify-content: center;
       align-items: center;
       position: absolute;
       top: 1rem;
       width: 100%;
       z-index: 10;
       background-color: transparent;
-      gap: 3rem; /* Mudança: espaçamento maior entre os itens restantes */
+      gap: 3rem;
     }
 
     nav#top-menu a {
@@ -138,7 +138,6 @@
       width: 80%;
     }
 
-    /* Mudança: hover mais claro ao invés de mais escuro */
     nav#top-menu a:hover {
       color: rgba(255, 255, 255, 1);
       filter: brightness(1.3);
@@ -162,7 +161,7 @@
     .menu-button div {
       background-color: #fff;
       margin: 3px 0;
-      transition: all 0.8s ease; /* Mudança: transição mais suave */
+      transition: all 0.8s ease;
       border-radius: 1px;
     }
 
@@ -216,11 +215,12 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-family: 'Tenor Sans', sans-serif;
-      margin: 1rem 0; /* Mudança: reduzido de 1.2rem para 1rem */
+      margin: 0.7rem 0; /* Mudança: diminuído de 1rem para 0.7rem */
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
       letter-spacing: 1px;
+      text-align: center; /* Mudança: garantir centralização */
     }
 
     /* Restaurar efeito de linha no mobile */
@@ -391,48 +391,54 @@
       hamburgerButton.classList.add("blink");
     }
 
-    // Função para iniciar o efeito de piscar do hambúrguer com transição suave
+    // Função para iniciar o efeito de piscar do hambúrguer: branco->preto->branco->preto->fica preto
     function startHamburgerBlink() {
-      // Mudança: transição suave para preto
       hamburgerButton.style.transition = 'all 0.8s ease';
-      hamburgerButton.classList.add("active");
+      
+      // Começar com branco (estado inicial)
+      hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
 
-      let isBlack = true;
-      let count = 0;
-      const maxCycles = 2;
+      let step = 0;
+      const steps = [
+        { active: true, delay: 1500 },   // 1. branco -> preto
+        { active: false, delay: 1500 },  // 2. preto -> branco  
+        { active: true, delay: 1500 },   // 3. branco -> preto
+        { active: true, delay: 0 }       // 4. fica preto (final)
+      ];
 
-      hamburgerBlinkInterval = setInterval(() => {
-        if (count >= maxCycles) {
-          clearInterval(hamburgerBlinkInterval);
-          hamburgerBlinkInterval = null;
-          // Mudança: transição suave para o estado final preto
-          setTimeout(() => {
-            hamburgerButton.classList.add("active");
-          }, 500);
+      function executeStep() {
+        if (step >= steps.length) {
           return;
         }
 
-        // Alternar entre preto e branco com transição suave
-        if (isBlack) {
+        const currentStep = steps[step];
+        
+        if (currentStep.active) {
           hamburgerButton.classList.add("active");
         } else {
           hamburgerButton.classList.remove("active");
         }
         
         applyHamburgerBlink();
-        isBlack = !isBlack;
-        count++;
-      }, 3000);
+        step++;
+
+        if (step < steps.length && steps[step].delay > 0) {
+          hamburgerBlinkInterval = setTimeout(executeStep, currentStep.delay);
+        }
+      }
+
+      // Iniciar a sequência após um pequeno delay
+      hamburgerBlinkInterval = setTimeout(executeStep, 500);
     }
 
     // Função para parar o efeito de piscar do hambúrguer e voltar ao branco
     function stopHamburgerBlink() {
       if (hamburgerBlinkInterval) {
-        clearInterval(hamburgerBlinkInterval);
+        clearTimeout(hamburgerBlinkInterval);
         hamburgerBlinkInterval = null;
       }
-      // Mudança: transição suave para branco
+      // Transição suave para branco
       hamburgerButton.style.transition = 'all 0.8s ease';
       hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
@@ -509,7 +515,7 @@
       }
     }
 
-    // Mudança: melhorar o redirecionamento ao clicar fora do menu
+    // Melhorar o redirecionamento ao clicar fora do menu
     document.addEventListener("click", (e) => {
       // Verificar se o clique não foi no botão do menu ou no menu mobile
       if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
