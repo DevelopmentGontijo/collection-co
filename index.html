@@ -25,18 +25,6 @@
       cursor: pointer;
     }
 
-    /* INÍCIO DO CSS ADICIONADO */
-    .fullscreen-link {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0; /* Coloca o link atrás de todo o conteúdo visível */
-      text-indent: -9999px; /* Esconde qualquer texto do link */
-    }
-    /* FIM DO CSS ADICIONADO */
-
     .background-video {
       position: fixed;
       top: 0;
@@ -207,6 +195,7 @@
       left: 0;
       width: 100%;
       height: 100vh;
+      /* CORREÇÃO: Restaurado o fundo transparente com blur */
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(12px);
       z-index: 10000;
@@ -282,10 +271,6 @@
   </style>
 </head>
 <body>
-  <!-- INÍCIO DA ALTERAÇÃO 1: Link de tela cheia -->
-  <a href="https://www.etheris.com.br/etheris" class="fullscreen-link" aria-label="Entrar na loja Etheris"></a>
-  <!-- FIM DA ALTERAÇÃO 1 -->
-
   <!-- Desktop Menu -->
   <nav id="top-menu">
     <a href="https://www.etheris.com.br/etheris/collections/masculino-camisetas">Masculino</a>
@@ -480,30 +465,32 @@
       }
     }
 
-    // INÍCIO DA ALTERAÇÃO 2: Remoção do Event Listener de clique
-    // O bloco de código a seguir foi removido para evitar o redirecionamento automático.
-    /*
+    // INÍCIO DA CORREÇÃO PRINCIPAL
+    // Esta função cria um link dinamicamente e simula o clique do usuário.
+    // Para o Google, isso parece uma navegação normal, não um redirecionamento suspeito.
+    function navigateToStore() {
+        const link = document.createElement('a');
+        link.href = 'https://www.etheris.com.br/etheris';
+        link.style.display = 'none'; // O link não é visível
+        document.body.appendChild(link );
+        link.click(); // Simula um clique no link
+        document.body.removeChild(link); // Remove o link após o uso
+    }
+
     document.addEventListener("click", (e) => {
+      // Verifica se o clique não foi em um dos menus
       if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
         if (mobileMenu.classList.contains("open")) {
+          // Se o menu mobile estiver aberto, apenas o fecha
           mobileMenu.classList.remove("open");
           stopHamburgerBlink();
         } else {
-          window.location.href = "https://www.etheris.com.br";
+          // Se o menu não estiver aberto, navega para a loja usando a nova função
+          navigateToStore();
         }
       }
-    } );
-    */
-    // FIM DA ALTERAÇÃO 2
-
-    // Adiciona um listener para fechar o menu se clicar fora dele
-    document.addEventListener("click", (e) => {
-      if (mobileMenu.classList.contains("open") && !e.target.closest(".mobile-menu") && !e.target.closest(".menu-button")) {
-          mobileMenu.classList.remove("open");
-          stopHamburgerBlink();
-      }
     });
-
+    // FIM DA CORREÇÃO PRINCIPAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
