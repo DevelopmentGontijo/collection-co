@@ -25,6 +25,18 @@
       cursor: pointer;
     }
 
+    /* INÍCIO DO CSS ADICIONADO */
+    .fullscreen-link {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0; /* Coloca o link atrás de todo o conteúdo visível */
+      text-indent: -9999px; /* Esconde qualquer texto do link */
+    }
+    /* FIM DO CSS ADICIONADO */
+
     .background-video {
       position: fixed;
       top: 0;
@@ -71,7 +83,7 @@
     @keyframes blur-in {
       0% {
         opacity: 0;
-        filter: blur(8px);
+        filter: blur(8px );
       }
       100% {
         opacity: 1;
@@ -215,12 +227,12 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-family: 'Tenor Sans', sans-serif;
-      margin: 0.7rem 0; /* Mudança: diminuído de 1rem para 0.7rem */
+      margin: 0.7rem 0;
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
       letter-spacing: 1px;
-      text-align: center; /* Mudança: garantir centralização */
+      text-align: center;
     }
 
     /* Restaurar efeito de linha no mobile */
@@ -240,8 +252,6 @@
     .mobile-menu a.line-active::after {
       width: 80%;
     }
-
-    /* Media Queries para as modificações solicitadas */
     
     /* Desktop: Esconder o menu hambúrguer e ajustar espessura da fonte */
     @media (min-width: 769px) {
@@ -249,7 +259,6 @@
         display: none;
       }
       
-      /* Ajustar espessura da fonte do título no desktop */
       h1 {
         font-weight: 250;
       }
@@ -261,7 +270,6 @@
         display: none;
       }
       
-      /* Reduzir fonte das frases em 10% no mobile */
       h1 {
         font-size: 1.62rem;
         line-height: 1.98rem;
@@ -271,22 +279,21 @@
         font-size: 8.1px;
       }
     }
-
   </style>
 </head>
 <body>
+  <!-- INÍCIO DA ALTERAÇÃO 1: Link de tela cheia -->
+  <a href="https://www.etheris.com.br/etheris" class="fullscreen-link" aria-label="Entrar na loja Etheris"></a>
+  <!-- FIM DA ALTERAÇÃO 1 -->
+
   <!-- Desktop Menu -->
   <nav id="top-menu">
     <a href="https://www.etheris.com.br/etheris/collections/masculino-camisetas">Masculino</a>
-    <!-- COMENTADO TEMPORARIAMENTE - PARA REATIVAR: descomente as linhas abaixo -->
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/feminino-camisetas">Feminino</a> -->
     <a href="https://www.etheris.com.br/etheris/collections/infantil-masculino">Infantil Masculino</a>
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/infantil-feminino">Infantil Feminino</a> -->
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/soft-baby">Bebê</a> -->
   </nav>
 
   <!-- Mobile Hamburger Button -->
-  <button class="menu-button" onclick="toggleMenu(event)" id="hamburgerButton">
+  <button class="menu-button" onclick="toggleMenu(event )" id="hamburgerButton">
     <div></div>
     <div></div>
     <div></div>
@@ -295,11 +302,7 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="https://www.etheris.com.br/etheris/collections/masculino-camisetas">Masculino</a>
-    <!-- COMENTADO TEMPORARIAMENTE - PARA REATIVAR: descomente as linhas abaixo -->
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/feminino-camisetas">Feminino</a> -->
     <a href="https://www.etheris.com.br/etheris/collections/infantil-masculino">Infantil Masculino</a>
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/infantil-feminino">Infantil Feminino</a> -->
-    <!-- <a href="https://www.etheris.com.br/etheris/collections/soft-baby">Bebê</a> -->
   </div>
 
   <!-- Background Video -->
@@ -328,25 +331,19 @@
   </div>
 
   <script>
-    const video = document.getElementById("bgVideo");
+    const video = document.getElementById("bgVideo" );
     const titulo = document.getElementById("titulo");
     const frase = document.getElementById("frase");
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburgerButton = document.getElementById("hamburgerButton");
 
-    // Variável para controlar o efeito do hambúrguer
     let hamburgerBlinkInterval = null;
 
-    // Melhores práticas para autoplay em mobile
     function forceVideoPlay() {
       const playPromise = video.play();
-      
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          console.log('Vídeo reproduzindo automaticamente');
-        }).catch(error => {
+        playPromise.catch(error => {
           console.log('Erro no autoplay, tentando novamente:', error);
-          // Tentar novamente após um pequeno delay
           setTimeout(() => {
             video.play().catch(e => console.log('Segundo erro:', e));
           }, 100);
@@ -354,22 +351,17 @@
       }
     }
 
-    // Múltiplas tentativas de autoplay
     video.addEventListener('loadeddata', forceVideoPlay);
     video.addEventListener('canplay', forceVideoPlay);
     video.addEventListener('loadedmetadata', forceVideoPlay);
-    
-    // Tentar reproduzir imediatamente
     forceVideoPlay();
 
-    // Fallback para dispositivos móveis
     document.addEventListener('touchstart', function() {
       if (video.paused) {
         forceVideoPlay();
       }
     }, { once: true });
 
-    // EFEITO ORIGINAL DAS PALAVRAS - MANTENDO TODAS AS LETRAS BRANCAS
     function setColor(tColor, fColor) {
       titulo.style.color = tColor;
       frase.style.color = fColor;
@@ -384,61 +376,45 @@
       frase.classList.add("blur-effect");
     }
 
-    // Função para aplicar efeito de piscar no hambúrguer
     function applyHamburgerBlink() {
       hamburgerButton.classList.remove("blink");
       void hamburgerButton.offsetWidth;
       hamburgerButton.classList.add("blink");
     }
 
-    // Função para iniciar o efeito de piscar do hambúrguer: branco->preto->branco->preto->fica preto
     function startHamburgerBlink() {
       hamburgerButton.style.transition = 'all 0.8s ease';
-      
-      // Começar com branco (estado inicial)
       hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
-
       let step = 0;
       const steps = [
-        { active: true, delay: 1500 },   // 1. branco -> preto
-        { active: false, delay: 1500 },  // 2. preto -> branco  
-        { active: true, delay: 1500 },   // 3. branco -> preto
-        { active: true, delay: 0 }       // 4. fica preto (final)
+        { active: true, delay: 1500 },
+        { active: false, delay: 1500 },
+        { active: true, delay: 1500 },
+        { active: true, delay: 0 }
       ];
-
       function executeStep() {
-        if (step >= steps.length) {
-          return;
-        }
-
+        if (step >= steps.length) return;
         const currentStep = steps[step];
-        
         if (currentStep.active) {
           hamburgerButton.classList.add("active");
         } else {
           hamburgerButton.classList.remove("active");
         }
-        
         applyHamburgerBlink();
         step++;
-
         if (step < steps.length && steps[step].delay > 0) {
           hamburgerBlinkInterval = setTimeout(executeStep, currentStep.delay);
         }
       }
-
-      // Iniciar a sequência após um pequeno delay
       hamburgerBlinkInterval = setTimeout(executeStep, 500);
     }
 
-    // Função para parar o efeito de piscar do hambúrguer e voltar ao branco
     function stopHamburgerBlink() {
       if (hamburgerBlinkInterval) {
         clearTimeout(hamburgerBlinkInterval);
         hamburgerBlinkInterval = null;
       }
-      // Transição suave para branco
       hamburgerButton.style.transition = 'all 0.8s ease';
       hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
@@ -453,12 +429,10 @@
     function startCycle() {
       setColor("#fff", "#fff");
       applyBlur();
-
       setTimeout(() => {
         let isWhite = true;
         let count = 0;
         const maxCycles = 6;
-
         const interval = setInterval(() => {
           if (count >= maxCycles) {
             clearInterval(interval);
@@ -466,7 +440,6 @@
             applyBlur();
             return;
           }
-
           setColor(isWhite ? "#fff" : "#fff", isWhite ? "#fff" : "#fff");
           applyBlur();
           isWhite = !isWhite;
@@ -478,22 +451,18 @@
     startCycle();
 
     let lastPhase = "";
-
     video.addEventListener("timeupdate", () => {
       const remaining = video.duration - video.currentTime;
-
       if (remaining <= 2 && remaining > 1 && lastPhase !== "preto") {
         lastPhase = "preto";
         setColor("#fff", "#fff");
         applyBlur();
       }
-
       if (remaining <= 1 && lastPhase !== "branco") {
         lastPhase = "branco";
         setColor("#fff", "#fff");
         applyBlur();
       }
-
       if (video.currentTime < 0.1 && lastPhase) {
         lastPhase = "";
         resetAfterLoop();
@@ -503,42 +472,43 @@
     function toggleMenu(e) {
       e.stopPropagation();
       const isOpening = !mobileMenu.classList.contains("open");
-      
       mobileMenu.classList.toggle("open");
-      
       if (isOpening) {
-        // Menu abrindo - iniciar efeito de piscar
         startHamburgerBlink();
       } else {
-        // Menu fechando - parar efeito e voltar ao branco
         stopHamburgerBlink();
       }
     }
 
-    // Melhorar o redirecionamento ao clicar fora do menu
+    // INÍCIO DA ALTERAÇÃO 2: Remoção do Event Listener de clique
+    // O bloco de código a seguir foi removido para evitar o redirecionamento automático.
+    /*
     document.addEventListener("click", (e) => {
-      // Verificar se o clique não foi no botão do menu ou no menu mobile
       if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
         if (mobileMenu.classList.contains("open")) {
-          // Se o menu está aberto, apenas feche-o
           mobileMenu.classList.remove("open");
           stopHamburgerBlink();
         } else {
-          // Se o menu não está aberto, redirecione
           window.location.href = "https://www.etheris.com.br";
         }
       }
+    } );
+    */
+    // FIM DA ALTERAÇÃO 2
+
+    // Adiciona um listener para fechar o menu se clicar fora dele
+    document.addEventListener("click", (e) => {
+      if (mobileMenu.classList.contains("open") && !e.target.closest(".mobile-menu") && !e.target.closest(".menu-button")) {
+          mobileMenu.classList.remove("open");
+          stopHamburgerBlink();
+      }
     });
 
-    // Efeito de linha completa antes do redirecionamento no mobile
+
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Adicionar classe para ativar a linha
         this.classList.add('line-active');
-        
-        // Aguardar a linha completar (0.6s) antes de redirecionar
         setTimeout(() => {
           window.location.href = this.href;
         }, 600);
