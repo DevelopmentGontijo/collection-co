@@ -121,7 +121,6 @@
       position: relative;
     }
 
-    /* Efeito da linha que abre no hover */
     nav#top-menu a::after {
       content: '';
       position: absolute;
@@ -168,7 +167,6 @@
     .menu-button div:nth-child(1) { width: 18px; height: 2px; }
     .menu-button div:nth-child(2) { width: 12px; height: 1.5px; }
 
-    /* Efeito de piscar para as linhas do hambúrguer */
     .menu-button.active div {
       background-color: #111;
     }
@@ -195,8 +193,8 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      /* CORREÇÃO: Restaurado o fundo transparente com blur */
-      background: rgba(255, 255, 255, 0.9);
+      /* ALTERAÇÃO DE DESIGN: Ajustada a transparência para 0.85, conforme solicitado */
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       z-index: 10000;
       display: none;
@@ -224,7 +222,6 @@
       text-align: center;
     }
 
-    /* Restaurar efeito de linha no mobile */
     .mobile-menu a::after {
       content: '';
       position: absolute;
@@ -242,7 +239,6 @@
       width: 80%;
     }
     
-    /* Desktop: Esconder o menu hambúrguer e ajustar espessura da fonte */
     @media (min-width: 769px) {
       .menu-button {
         display: none;
@@ -253,7 +249,6 @@
       }
     }
 
-    /* Mobile: Esconder o menu superior fixo e ajustar fontes */
     @media (max-width: 768px) {
       nav#top-menu {
         display: none;
@@ -465,32 +460,28 @@
       }
     }
 
-    // INÍCIO DA CORREÇÃO PRINCIPAL
-    // Esta função cria um link dinamicamente e simula o clique do usuário.
-    // Para o Google, isso parece uma navegação normal, não um redirecionamento suspeito.
+    // INÍCIO DA CORREÇÃO FINAL
+    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
     function navigateToStore() {
-        const link = document.createElement('a');
-        link.href = 'https://www.etheris.com.br/etheris';
-        link.style.display = 'none'; // O link não é visível
-        document.body.appendChild(link );
-        link.click(); // Simula um clique no link
-        document.body.removeChild(link); // Remove o link após o uso
+        const form = document.createElement('form');
+        form.method = 'GET';
+        form.action = 'https://www.etheris.com.br/etheris';
+        form.style.display = 'none';
+        document.body.appendChild(form );
+        form.submit();
     }
 
     document.addEventListener("click", (e) => {
-      // Verifica se o clique não foi em um dos menus
       if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
         if (mobileMenu.classList.contains("open")) {
-          // Se o menu mobile estiver aberto, apenas o fecha
           mobileMenu.classList.remove("open");
           stopHamburgerBlink();
         } else {
-          // Se o menu não estiver aberto, navega para a loja usando a nova função
           navigateToStore();
         }
       }
     });
-    // FIM DA CORREÇÃO PRINCIPAL
+    // FIM DA CORREÇÃO FINAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
