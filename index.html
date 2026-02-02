@@ -460,25 +460,15 @@
       }
     }
 
-    document.addEventListener("click", (e) => {
-  if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+   const clickLayer = document.getElementById("click-layer");
 
-    // fecha menu se estiver aberto
-    if (mobileMenu.classList.contains("open")) {
-      mobileMenu.classList.remove("open");
-      stopHamburgerBlink();
-      return;
-    }
+clickLayer.addEventListener("click", () => {
+  document.body.style.transition = "opacity 0.3s ease";
+  document.body.style.opacity = "0";
 
-    // efeito sutil de saída
-    document.body.style.transition = "opacity 0.3s ease";
-    document.body.style.opacity = "0";
-
-    // redireciona para o chat
-    setTimeout(() => {
-      window.location.assign("https://chat.etheris.com.br/");
-    }, 280);
-  }
+  setTimeout(() => {
+    window.location.assign("https://chat.etheris.com.br/");
+  }, 280);
 });
 
     // INÍCIO DA CORREÇÃO FINAL
