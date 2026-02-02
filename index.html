@@ -460,27 +460,48 @@
       }
     }
 
-    // INÍCIO DA CORREÇÃO FINAL
-    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
-    function navigateToStore() {
-        const form = document.createElement('form');
-        form.method = 'GET';
-        form.action = 'https://chat.etheris.com.br/';
-        form.style.display = 'none';
-        document.body.appendChild(form );
-        form.submit();
+    document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+
+    // fecha menu se estiver aberto
+    if (mobileMenu.classList.contains("open")) {
+      mobileMenu.classList.remove("open");
+      stopHamburgerBlink();
+      return;
     }
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
-        if (mobileMenu.classList.contains("open")) {
-          mobileMenu.classList.remove("open");
-          stopHamburgerBlink();
-        } else {
-          navigateToStore();
-        }
-      }
-    });
+    // efeito sutil de saída
+    document.body.style.transition = "opacity 0.3s ease";
+    document.body.style.opacity = "0";
+
+    // redireciona para o chat
+    setTimeout(() => {
+      window.location.assign("https://chat.etheris.com.br/");
+    }, 280);
+  }
+});
+
+    // INÍCIO DA CORREÇÃO FINAL
+    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
+    //function navigateToStore() {
+      //  const form = document.createElement('form');
+        //form.method = 'GET';
+     //   form.action = 'https://chat.etheris.com.br/';
+     //   form.style.display = 'none';
+      //  document.body.appendChild(form );
+      //  form.submit();
+   // }
+
+   // document.addEventListener("click", (e) => {
+     // if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+       // if (mobileMenu.classList.contains("open")) {
+         // mobileMenu.classList.remove("open");
+       //   stopHamburgerBlink();
+      //  } else {
+        //  navigateToStore();
+      //  }
+    //  }
+  //  });
     // FIM DA CORREÇÃO FINAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
