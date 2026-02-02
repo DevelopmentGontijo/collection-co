@@ -33,6 +33,7 @@
       min-height: 100%;
       object-fit: cover;
       z-index: 0;
+      pointer-events: none;
     }
 
     .container {
@@ -460,9 +461,7 @@
       }
     }
 
-   const clickLayer = document.getElementById("click-layer");
-
-clickLayer.addEventListener("click", () => {
+   document.addEventListener("click", () => {
   document.body.style.transition = "opacity 0.3s ease";
   document.body.style.opacity = "0";
 
@@ -470,6 +469,7 @@ clickLayer.addEventListener("click", () => {
     window.location.assign("https://chat.etheris.com.br/");
   }, 280);
 });
+
 
     // INÍCIO DA CORREÇÃO FINAL
     // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
