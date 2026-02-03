@@ -7,7 +7,7 @@
   <meta name="description" content="Etheris™ — Clareza estratégica para operações e tecnologia.">
   <link rel="canonical" href="https://etheris.com.br" />
   <link rel="icon" href="Etheris-F.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     html, body {
       margin: 0;
@@ -245,6 +245,16 @@
         display: none;
       }
       
+      nav#top-menu a {
+        font-family: 'Cormorant Garamond', 'Tenor Sans', serif;
+        font-size: 1.04rem;
+        letter-spacing: 0.08em;
+        text-shadow:
+          0 0 6px rgba(255, 255, 255, 0.6),
+          0 0 14px rgba(255, 255, 255, 0.4),
+          0 0 22px rgba(255, 255, 255, 0.25);
+      }
+
       h1 {
         font-weight: 250;
       }
@@ -319,6 +329,8 @@
     const hamburgerButton = document.getElementById("hamburgerButton");
 
     let hamburgerBlinkInterval = null;
+    const HAMBURGER_BLINK_START_DELAY = 500;
+    const HAMBURGER_BLINK_STEP_DELAY = 1500;
 
     function forceVideoPlay() {
       const playPromise = video.play();
@@ -363,15 +375,32 @@
       hamburgerButton.classList.add("blink");
     }
 
+    function clearHamburgerBlinkTimer() {
+      if (hamburgerBlinkInterval) {
+        clearTimeout(hamburgerBlinkInterval);
+        hamburgerBlinkInterval = null;
+      }
+    }
+
+    function startInitialHamburgerBlink() {
+      clearHamburgerBlinkTimer();
+      hamburgerButton.style.transition = 'all 0.8s ease';
+      hamburgerButton.classList.remove("active");
+      applyHamburgerBlink();
+      hamburgerBlinkInterval = setTimeout(() => {
+        applyHamburgerBlink();
+        hamburgerBlinkInterval = null;
+      }, HAMBURGER_BLINK_STEP_DELAY);
+    }
+
     function startHamburgerBlink() {
+      clearHamburgerBlinkTimer();
       hamburgerButton.style.transition = 'all 0.8s ease';
       hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
       let step = 0;
       const steps = [
-        { active: true, delay: 1500 },
-        { active: false, delay: 1500 },
-        { active: true, delay: 1500 },
+        { active: true, delay: HAMBURGER_BLINK_STEP_DELAY },
         { active: true, delay: 0 }
       ];
       function executeStep() {
@@ -384,18 +413,15 @@
         }
         applyHamburgerBlink();
         step++;
-        if (step < steps.length && steps[step].delay > 0) {
+        if (step < steps.length && currentStep.delay > 0) {
           hamburgerBlinkInterval = setTimeout(executeStep, currentStep.delay);
         }
       }
-      hamburgerBlinkInterval = setTimeout(executeStep, 500);
+      hamburgerBlinkInterval = setTimeout(executeStep, HAMBURGER_BLINK_START_DELAY);
     }
 
     function stopHamburgerBlink() {
-      if (hamburgerBlinkInterval) {
-        clearTimeout(hamburgerBlinkInterval);
-        hamburgerBlinkInterval = null;
-      }
+      clearHamburgerBlinkTimer();
       hamburgerButton.style.transition = 'all 0.8s ease';
       hamburgerButton.classList.remove("active");
       applyHamburgerBlink();
@@ -430,6 +456,9 @@
     }
 
     startCycle();
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      startInitialHamburgerBlink();
+    }
 
     let lastPhase = "";
     video.addEventListener("timeupdate", () => {
