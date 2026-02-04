@@ -12,7 +12,17 @@
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
       height: 100%;
+      height: 100vh;
+      height: 100svh;
+      height: 100dvh;
+      min-height: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      height: calc(var(--vh, 1vh) * 100);
+      min-height: calc(var(--vh, 1vh) * 100);
       overflow: hidden;
       background-color: #f9f9f9;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -25,12 +35,29 @@
       cursor: pointer;
     }
 
+    html {
+      height: -webkit-fill-available;
+    }
+
+    body {
+      min-height: -webkit-fill-available;
+    }
+
     .background-video {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      height: 100vh;
+      height: 100svh;
+      height: 100dvh;
+      height: calc(var(--vh, 1vh) * 100);
       min-width: 100%;
       min-height: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      min-height: calc(var(--vh, 1vh) * 100);
       object-fit: cover;
       z-index: 0;
       pointer-events: none;
@@ -88,7 +115,7 @@
       .background-video {
         object-position: center center;
         width: 100vw;
-        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
       }
     }
 
@@ -124,6 +151,7 @@
     }
 
     :root {
+      --vh: 1vh;
       --menu-size: 0.72rem;
       --submenu-size: 0.65rem;
     }
@@ -151,12 +179,21 @@
       transition: width 0.6s ease;
     }
 
+    nav#top-menu .menu-item.line-open > .menu-link::after {
+      width: 80%;
+    }
+
+    nav#top-menu .menu-item.line-close > .menu-link::after {
+      width: 0%;
+    }
+
     nav#top-menu .menu-item.line-flash > .menu-link::after {
       animation: line-flash 1.2s ease;
+      transition: none;
     }
 
     nav#top-menu .dropdown a::after {
-      display: none;
+      display: block;
     }
 
     nav#top-menu .dropdown {
@@ -224,13 +261,18 @@
       background-color: #111;
     }
 
+    nav#top-menu .dropdown-inner a.line-flash-item::after {
+      animation: line-flash 0.8s ease;
+      transition: none;
+    }
+
     #desktop-blur {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 220px;
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(18px);
       opacity: 0;
       pointer-events: none;
@@ -240,6 +282,25 @@
 
     .desktop-blur-on #desktop-blur {
       opacity: 1;
+    }
+
+    #desktop-separator {
+      position: fixed;
+      top: 3.2rem;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(17, 17, 17, 0.2), rgba(17, 17, 17, 0.6), rgba(17, 17, 17, 0.2));
+      background-size: 200% 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 11;
+    }
+
+    .desktop-blur-on #desktop-separator {
+      opacity: 1;
+      animation: separator-scan 2s linear infinite;
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a::after {
@@ -326,14 +387,34 @@
       100% { width: 0%; }
     }
 
+    @keyframes separator-scan {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes text-blink {
+      0% {
+        opacity: 1;
+        filter: blur(0);
+      }
+      50% {
+        opacity: 0.2;
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
     /* Mobile Menu */
     .mobile-menu {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 100vh;
-      background: rgba(255, 255, 255, 0.28);
+      height: calc(var(--vh, 1vh) * 100);
+      background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(14px);
       z-index: 10000;
       display: none;
@@ -367,6 +448,10 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .mobile-main.text-blink {
+      animation: text-blink 0.6s ease;
     }
 
     .mobile-sublist {
@@ -410,6 +495,7 @@
 
     .mobile-menu a.line-flash-item::after {
       animation: line-flash 0.8s ease;
+      transition: none;
     }
 
     .mobile-sublist.cascade-open .mobile-sub {
@@ -436,6 +522,7 @@
 
     .mobile-group.line-flash > .mobile-main::after {
       animation: line-flash 1.2s ease;
+      transition: none;
     }
 
     .mobile-menu a:not(.mobile-main):hover::after,
@@ -477,6 +564,7 @@
 </head>
 <body>
   <div id="desktop-blur" aria-hidden="true"></div>
+  <div id="desktop-separator" aria-hidden="true"></div>
   <!-- Desktop Menu -->
   <nav id="top-menu">
     <div class="menu-item">
@@ -548,6 +636,8 @@
     let desktopCloseTimer = null;
     let mobileAutoCloseTimer = null;
     let mobileLineLock = false;
+    let mobileClosing = false;
+    let mobileTitleBlinkTimer = null;
 
     const HAMBURGER_BLINK_START_DELAY = 500;
     const HAMBURGER_BLINK_STEP_DELAY = 1500;
@@ -558,6 +648,15 @@
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
     const SUBMENU_LINE_SEQ_TOTAL = 2600;
+
+    function setVh() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    setVh();
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
 
     function forceVideoPlay() {
       video.muted = true;
@@ -580,6 +679,9 @@
     video.addEventListener('canplay', forceVideoPlay);
     video.addEventListener('loadedmetadata', forceVideoPlay);
     window.addEventListener('load', forceVideoPlay);
+    window.addEventListener('pageshow', () => {
+      forceVideoPlay();
+    });
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
         forceVideoPlay();
@@ -706,7 +808,9 @@
       const isOpening = !mobileMenu.classList.contains("open");
       mobileMenu.classList.toggle("open");
       if (isOpening) {
+        mobileClosing = false;
         startHamburgerBlink();
+        scheduleMobileTitleBlink();
       } else {
         stopHamburgerBlink();
         if (mobileAutoCloseTimer) {
@@ -725,6 +829,30 @@
     const mobileGroup = document.querySelector(".mobile-group");
     const mobileMain = document.querySelector(".mobile-main");
     const mobileSublist = document.querySelector(".mobile-sublist");
+
+    if (desktopMenuItem) {
+      desktopMenuItem.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (desktopDropdown) {
+      desktopDropdown.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (mobileMenu) {
+      mobileMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (hamburgerButton) {
+      hamburgerButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
 
     function clearDesktopTimers() {
       if (desktopOpenTimer) {
@@ -815,22 +943,10 @@
         }
       });
 
-      desktopMenuItem.addEventListener("mouseleave", (e) => {
+      desktopMenuItem.addEventListener("mouseleave", () => {
         if (window.matchMedia("(min-width: 769px)").matches) {
-          if (desktopDropdown.contains(e.relatedTarget)) {
-            return;
-          }
-          cancelDesktopHoverSequence();
-          if (desktopMenuItem.classList.contains("open")) {
-            closeDesktopDropdown(true);
-          }
-        }
-      });
-
-      desktopDropdown.addEventListener("mouseleave", () => {
-        if (window.matchMedia("(min-width: 769px)").matches) {
-          if (desktopMenuItem.classList.contains("open")) {
-            closeDesktopDropdown(true);
+          if (!desktopMenuItem.classList.contains("open")) {
+            cancelDesktopHoverSequence();
           }
         }
       });
@@ -838,6 +954,7 @@
       desktopMenuLink.addEventListener("click", (e) => {
         if (window.matchMedia("(min-width: 769px)").matches) {
           e.preventDefault();
+          e.stopPropagation();
           if (desktopMenuItem.classList.contains("open")) {
             closeDesktopDropdown(true);
           } else {
@@ -860,8 +977,25 @@
       }, LINE_FLASH_DURATION);
     }
 
+    function scheduleMobileTitleBlink() {
+      if (!mobileMain) return;
+      if (mobileTitleBlinkTimer) {
+        clearTimeout(mobileTitleBlinkTimer);
+        mobileTitleBlinkTimer = null;
+      }
+      mobileTitleBlinkTimer = setTimeout(() => {
+        mobileMain.classList.remove("text-blink");
+        void mobileMain.offsetWidth;
+        mobileMain.classList.add("text-blink");
+        setTimeout(() => {
+          mobileMain.classList.remove("text-blink");
+        }, 700);
+      }, Math.floor(HAMBURGER_BLINK_STEP_DELAY / 2));
+    }
+
     function openMobileSublist() {
       if (!mobileGroup || !mobileSublist) return;
+      mobileClosing = false;
       mobileGroup.classList.add("open");
       triggerMobileLineFlash();
       mobileSublist.classList.remove("cascade-close");
@@ -876,6 +1010,8 @@
 
     function closeMobileSublist() {
       if (!mobileGroup || !mobileSublist) return;
+      if (mobileClosing) return;
+      mobileClosing = true;
       if (mobileAutoCloseTimer) {
         clearTimeout(mobileAutoCloseTimer);
         mobileAutoCloseTimer = null;
@@ -886,6 +1022,7 @@
         mobileGroup.classList.remove("open");
         mobileSublist.classList.remove("cascade-close");
         triggerMobileLineFlash();
+        mobileClosing = false;
       }, CASCADE_OUT_TOTAL);
     }
 
@@ -893,6 +1030,7 @@
       mobileMain.addEventListener("click", (e) => {
         if (window.matchMedia("(max-width: 768px)").matches) {
           e.preventDefault();
+          e.stopPropagation();
           if (mobileGroup.classList.contains("open")) {
             closeMobileSublist();
           } else {
@@ -903,18 +1041,23 @@
     }
 
     document.querySelectorAll('#top-menu .dropdown a').forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (desktopAutoCloseTimer) {
           clearTimeout(desktopAutoCloseTimer);
           desktopAutoCloseTimer = null;
         }
+        link.classList.remove('line-flash-item');
+        void link.offsetWidth;
+        link.classList.add('line-flash-item');
+        setTimeout(() => {
+          window.location.href = link.href;
+        }, 600);
       });
     });
 
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("#top-menu") || e.target.closest(".mobile-menu") || e.target.closest(".menu-button")) {
-      return;
-    }
+  document.addEventListener("click", () => {
     window.location.assign("https://chat.etheris.com.br/");
   });
 
@@ -952,6 +1095,7 @@
           mobileAutoCloseTimer = null;
         }
         e.preventDefault();
+        e.stopPropagation();
         this.classList.remove('line-flash-item');
         void this.offsetWidth;
         this.classList.add('line-flash-item');
