@@ -129,6 +129,8 @@
       font-weight: 400;
       text-decoration: none;
       transition: color 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
       position: relative;
     }
 
@@ -202,6 +204,8 @@
       transform: none;
       position: relative;
       display: inline-block;
+      text-transform: uppercase;
+      font-family: 'Tenor Sans', sans-serif;
     }
 
     nav#top-menu .dropdown-inner a::after {
@@ -213,6 +217,24 @@
       width: 0%;
       height: 1px;
       background-color: #111;
+    }
+
+    #desktop-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 260px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 10;
+    }
+
+    .desktop-blur-on #desktop-blur {
+      opacity: 1;
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a::after {
@@ -331,6 +353,7 @@
       position: relative;
       transition: color 0.3s ease;
       letter-spacing: 0.01em;
+      text-transform: uppercase;
       text-align: center;
     }
 
@@ -365,6 +388,7 @@
       opacity: 0;
       filter: blur(8px);
       transform: translateY(-6px);
+      text-transform: uppercase;
     }
 
     .mobile-menu a::after {
@@ -443,6 +467,7 @@
   </style>
 </head>
 <body>
+  <div id="desktop-blur" aria-hidden="true"></div>
   <!-- Desktop Menu -->
   <nav id="top-menu">
     <div class="menu-item">
@@ -513,6 +538,7 @@
     let desktopAutoCloseTimer = null;
     let desktopCloseTimer = null;
     let mobileAutoCloseTimer = null;
+    let mobileLineLock = false;
 
     const HAMBURGER_BLINK_START_DELAY = 500;
     const HAMBURGER_BLINK_STEP_DELAY = 1500;
@@ -708,6 +734,7 @@
     function openDesktopDropdown() {
       if (!desktopMenuItem || !desktopDropdown) return;
       desktopMenuItem.classList.add("open");
+      document.body.classList.add("desktop-blur-on");
       desktopDropdown.classList.remove("line-seq");
       void desktopDropdown.offsetWidth;
       desktopDropdown.classList.add("line-seq");
@@ -725,6 +752,9 @@
     function closeDesktopDropdown(shouldFlashLine) {
       if (!desktopMenuItem || !desktopDropdown) return;
       if (!desktopMenuItem.classList.contains("open")) return;
+      if (shouldFlashLine) {
+        triggerLineFlash();
+      }
       if (desktopAutoCloseTimer) {
         clearTimeout(desktopAutoCloseTimer);
         desktopAutoCloseTimer = null;
@@ -732,9 +762,7 @@
       desktopDropdown.classList.remove("line-seq");
       desktopCloseTimer = setTimeout(() => {
         desktopMenuItem.classList.remove("open");
-        if (shouldFlashLine) {
-          triggerLineFlash();
-        }
+        document.body.classList.remove("desktop-blur-on");
       }, CASCADE_OUT_TOTAL);
     }
 
@@ -761,7 +789,11 @@
     if (desktopMenuItem && desktopMenuLink) {
       desktopMenuItem.addEventListener("mouseenter", () => {
         if (window.matchMedia("(min-width: 769px)").matches) {
-          startDesktopHoverSequence();
+          if (desktopMenuItem.classList.contains("open")) {
+            closeDesktopDropdown(true);
+          } else {
+            startDesktopHoverSequence();
+          }
         }
       });
 
@@ -785,11 +817,14 @@
 
     function triggerMobileLineFlash() {
       if (!mobileGroup) return;
+      if (mobileLineLock) return;
+      mobileLineLock = true;
       mobileGroup.classList.remove("line-flash");
       void mobileGroup.offsetWidth;
       mobileGroup.classList.add("line-flash");
       setTimeout(() => {
         mobileGroup.classList.remove("line-flash");
+        mobileLineLock = false;
       }, LINE_FLASH_DURATION);
     }
 
