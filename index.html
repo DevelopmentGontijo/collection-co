@@ -111,6 +111,7 @@
       width: 100%;
       z-index: 12;
       background: transparent;
+      font-family: 'Tenor Sans', sans-serif;
       gap: 3rem;
     }
 
@@ -143,14 +144,6 @@
       transition: width 0.6s ease;
     }
 
-    nav#top-menu .menu-item.line-open > .menu-link::after {
-      width: 80%;
-    }
-
-    nav#top-menu .menu-item.line-close > .menu-link::after {
-      width: 0%;
-    }
-
     nav#top-menu .menu-item.line-flash > .menu-link::after {
       animation: line-flash 1.2s ease;
     }
@@ -165,10 +158,10 @@
       left: 50%;
       transform: translate(-50%, -10px);
       width: min(520px, 90vw);
-      background: rgba(255, 255, 255, 0.26);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 14px;
-      padding: 1.2rem 1.6rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
       opacity: 0;
       visibility: hidden;
       max-height: 0;
@@ -204,32 +197,31 @@
       font-size: 1rem;
       letter-spacing: 0.01em;
       text-decoration: none;
-      opacity: 0;
-      filter: blur(8px);
-      transform: translateY(-6px);
-    }
-
-    nav#top-menu .dropdown.cascade-open .dropdown-inner a {
       opacity: 1;
-      filter: blur(0);
-      transform: translateY(0);
-      animation: cascade-in 0.7s ease forwards;
+      filter: none;
+      transform: none;
+      position: relative;
+      display: inline-block;
     }
 
-    nav#top-menu .dropdown.cascade-close .dropdown-inner a {
-      opacity: 0;
-      filter: blur(8px);
-      transform: translateY(-6px);
-      animation: cascade-out 0.55s ease forwards;
+    nav#top-menu .dropdown-inner a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 1px;
+      background-color: #111;
     }
 
-    nav#top-menu .dropdown.cascade-open .dropdown-inner a:nth-child(1) { animation-delay: 0.05s; }
-    nav#top-menu .dropdown.cascade-open .dropdown-inner a:nth-child(2) { animation-delay: 0.18s; }
-    nav#top-menu .dropdown.cascade-open .dropdown-inner a:nth-child(3) { animation-delay: 0.31s; }
+    nav#top-menu .dropdown.line-seq .dropdown-inner a::after {
+      animation: line-flash 0.8s ease forwards;
+    }
 
-    nav#top-menu .dropdown.cascade-close .dropdown-inner a:nth-child(3) { animation-delay: 0.05s; }
-    nav#top-menu .dropdown.cascade-close .dropdown-inner a:nth-child(2) { animation-delay: 0.18s; }
-    nav#top-menu .dropdown.cascade-close .dropdown-inner a:nth-child(1) { animation-delay: 0.31s; }
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(1)::after { animation-delay: 0s; }
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(2)::after { animation-delay: 0.8s; }
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(3)::after { animation-delay: 1.6s; }
 
     /* Mobile Menu (Hamburger) */
     .menu-button {
@@ -338,7 +330,7 @@
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       text-align: center;
     }
 
@@ -409,14 +401,6 @@
     .mobile-sublist.cascade-close .mobile-sub:nth-child(2) { animation-delay: 0.18s; }
     .mobile-sublist.cascade-close .mobile-sub:nth-child(1) { animation-delay: 0.31s; }
 
-    .mobile-group.line-open > .mobile-main::after {
-      width: 80%;
-    }
-
-    .mobile-group.line-close > .mobile-main::after {
-      width: 0%;
-    }
-
     .mobile-group.line-flash > .mobile-main::after {
       animation: line-flash 1.2s ease;
     }
@@ -434,7 +418,7 @@
       nav#top-menu .menu-link {
         font-family: 'Tenor Sans', sans-serif;
         font-size: 0.92rem;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.01em;
       }
 
       h1 {
@@ -533,11 +517,12 @@
     const HAMBURGER_BLINK_START_DELAY = 500;
     const HAMBURGER_BLINK_STEP_DELAY = 1500;
     const LINE_OPEN_DURATION = 600;
-    const LINE_HOLD_DURATION = 500;
+    const LINE_HOLD_DURATION = 0;
     const DESKTOP_AUTO_CLOSE_DELAY = 10000;
     const MOBILE_AUTO_CLOSE_DELAY = 10000;
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
+    const SUBMENU_LINE_SEQ_TOTAL = 2600;
 
     function forceVideoPlay() {
       const playPromise = video.play();
@@ -712,7 +697,8 @@
 
     function triggerLineFlash() {
       if (!desktopMenuItem) return;
-      desktopMenuItem.classList.remove("line-open", "line-close");
+      desktopMenuItem.classList.remove("line-flash");
+      void desktopMenuItem.offsetWidth;
       desktopMenuItem.classList.add("line-flash");
       setTimeout(() => {
         desktopMenuItem.classList.remove("line-flash");
@@ -722,8 +708,12 @@
     function openDesktopDropdown() {
       if (!desktopMenuItem || !desktopDropdown) return;
       desktopMenuItem.classList.add("open");
-      desktopDropdown.classList.remove("cascade-close");
-      desktopDropdown.classList.add("cascade-open");
+      desktopDropdown.classList.remove("line-seq");
+      void desktopDropdown.offsetWidth;
+      desktopDropdown.classList.add("line-seq");
+      setTimeout(() => {
+        desktopDropdown.classList.remove("line-seq");
+      }, SUBMENU_LINE_SEQ_TOTAL);
       if (desktopAutoCloseTimer) {
         clearTimeout(desktopAutoCloseTimer);
       }
@@ -739,11 +729,9 @@
         clearTimeout(desktopAutoCloseTimer);
         desktopAutoCloseTimer = null;
       }
-      desktopDropdown.classList.remove("cascade-open");
-      desktopDropdown.classList.add("cascade-close");
+      desktopDropdown.classList.remove("line-seq");
       desktopCloseTimer = setTimeout(() => {
         desktopMenuItem.classList.remove("open");
-        desktopDropdown.classList.remove("cascade-close");
         if (shouldFlashLine) {
           triggerLineFlash();
         }
@@ -754,11 +742,8 @@
       if (!desktopMenuItem) return;
       if (desktopMenuItem.classList.contains("open")) return;
       clearDesktopTimers();
-      desktopMenuItem.classList.remove("line-close", "line-flash");
-      desktopMenuItem.classList.add("line-open");
+      triggerLineFlash();
       desktopOpenTimer = setTimeout(() => {
-        desktopMenuItem.classList.remove("line-open");
-        desktopMenuItem.classList.add("line-close");
         openDesktopDropdown();
       }, LINE_OPEN_DURATION + LINE_HOLD_DURATION);
     }
@@ -770,8 +755,7 @@
         clearTimeout(desktopOpenTimer);
         desktopOpenTimer = null;
       }
-      desktopMenuItem.classList.remove("line-open", "line-flash");
-      desktopMenuItem.classList.add("line-close");
+      desktopMenuItem.classList.remove("line-flash");
     }
 
     if (desktopMenuItem && desktopMenuLink) {
@@ -799,11 +783,20 @@
       });
     }
 
+    function triggerMobileLineFlash() {
+      if (!mobileGroup) return;
+      mobileGroup.classList.remove("line-flash");
+      void mobileGroup.offsetWidth;
+      mobileGroup.classList.add("line-flash");
+      setTimeout(() => {
+        mobileGroup.classList.remove("line-flash");
+      }, LINE_FLASH_DURATION);
+    }
+
     function openMobileSublist() {
       if (!mobileGroup || !mobileSublist) return;
       mobileGroup.classList.add("open");
-      mobileGroup.classList.add("line-open");
-      mobileGroup.classList.remove("line-close", "line-flash");
+      triggerMobileLineFlash();
       mobileSublist.classList.remove("cascade-close");
       mobileSublist.classList.add("cascade-open");
       if (mobileAutoCloseTimer) {
@@ -822,8 +815,7 @@
       }
       mobileSublist.classList.remove("cascade-open");
       mobileSublist.classList.add("cascade-close");
-      mobileGroup.classList.remove("line-open");
-      mobileGroup.classList.add("line-close");
+      triggerMobileLineFlash();
       setTimeout(() => {
         mobileGroup.classList.remove("open");
         mobileSublist.classList.remove("cascade-close");
