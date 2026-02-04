@@ -123,9 +123,14 @@
       justify-content: center;
     }
 
+    :root {
+      --menu-size: 0.72rem;
+      --submenu-size: 0.65rem;
+    }
+
     nav#top-menu .menu-link {
       color: #111;
-      font-size: 0.95rem;
+      font-size: var(--menu-size);
       font-weight: 400;
       text-decoration: none;
       transition: color 0.3s ease;
@@ -156,7 +161,7 @@
 
     nav#top-menu .dropdown {
       position: absolute;
-      top: calc(100% + 14px);
+      top: calc(100% + 8px);
       left: 50%;
       transform: translate(-50%, -10px);
       width: min(520px, 90vw);
@@ -176,7 +181,7 @@
     nav#top-menu .menu-item.open .dropdown {
       opacity: 1;
       visibility: visible;
-      max-height: 260px;
+      max-height: 200px;
       pointer-events: auto;
       transform: translate(-50%, 0);
     }
@@ -184,7 +189,7 @@
     nav#top-menu .dropdown-inner {
       display: flex;
       flex-direction: column;
-      gap: 0.9rem;
+      gap: 0.7rem;
       text-align: center;
       transform: translateY(-10px);
       transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -196,7 +201,7 @@
 
     nav#top-menu .dropdown-inner a {
       color: #111;
-      font-size: 1rem;
+      font-size: var(--submenu-size);
       letter-spacing: 0.01em;
       text-decoration: none;
       opacity: 1;
@@ -224,8 +229,8 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 260px;
-      background: rgba(255, 255, 255, 0.18);
+      height: 220px;
+      background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(18px);
       opacity: 0;
       pointer-events: none;
@@ -346,7 +351,7 @@
     .mobile-menu a {
       color: #111;
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: var(--menu-size);
       font-family: 'Tenor Sans', sans-serif;
       margin: 0.7rem 0;
       font-weight: 300;
@@ -383,7 +388,7 @@
     }
 
     .mobile-menu .mobile-sub {
-      font-size: 0.86rem;
+      font-size: var(--submenu-size);
       letter-spacing: 0.01em;
       opacity: 0;
       filter: blur(8px);
@@ -401,6 +406,10 @@
       height: 1px;
       background-color: #111;
       transition: width 0.6s ease;
+    }
+
+    .mobile-menu a.line-flash-item::after {
+      animation: line-flash 0.8s ease;
     }
 
     .mobile-sublist.cascade-open .mobile-sub {
@@ -429,7 +438,7 @@
       animation: line-flash 1.2s ease;
     }
 
-    .mobile-menu a:hover::after,
+    .mobile-menu a:not(.mobile-main):hover::after,
     .mobile-menu a.line-active::after {
       width: 80%;
     }
@@ -441,7 +450,7 @@
       
       nav#top-menu .menu-link {
         font-family: 'Tenor Sans', sans-serif;
-        font-size: 0.92rem;
+        font-size: var(--menu-size);
         letter-spacing: 0.01em;
       }
 
@@ -551,6 +560,11 @@
     const SUBMENU_LINE_SEQ_TOTAL = 2600;
 
     function forceVideoPlay() {
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('autoplay', '');
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => {
@@ -565,6 +579,12 @@
     video.addEventListener('loadeddata', forceVideoPlay);
     video.addEventListener('canplay', forceVideoPlay);
     video.addEventListener('loadedmetadata', forceVideoPlay);
+    window.addEventListener('load', forceVideoPlay);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        forceVideoPlay();
+      }
+    });
     forceVideoPlay();
 
     document.addEventListener('touchstart', function() {
@@ -786,20 +806,32 @@
       desktopMenuItem.classList.remove("line-flash");
     }
 
-    if (desktopMenuItem && desktopMenuLink) {
+    if (desktopMenuItem && desktopMenuLink && desktopDropdown) {
       desktopMenuItem.addEventListener("mouseenter", () => {
         if (window.matchMedia("(min-width: 769px)").matches) {
-          if (desktopMenuItem.classList.contains("open")) {
-            closeDesktopDropdown(true);
-          } else {
+          if (!desktopMenuItem.classList.contains("open")) {
             startDesktopHoverSequence();
           }
         }
       });
 
-      desktopMenuItem.addEventListener("mouseleave", () => {
+      desktopMenuItem.addEventListener("mouseleave", (e) => {
         if (window.matchMedia("(min-width: 769px)").matches) {
+          if (desktopDropdown.contains(e.relatedTarget)) {
+            return;
+          }
           cancelDesktopHoverSequence();
+          if (desktopMenuItem.classList.contains("open")) {
+            closeDesktopDropdown(true);
+          }
+        }
+      });
+
+      desktopDropdown.addEventListener("mouseleave", () => {
+        if (window.matchMedia("(min-width: 769px)").matches) {
+          if (desktopMenuItem.classList.contains("open")) {
+            closeDesktopDropdown(true);
+          }
         }
       });
 
@@ -850,10 +882,10 @@
       }
       mobileSublist.classList.remove("cascade-open");
       mobileSublist.classList.add("cascade-close");
-      triggerMobileLineFlash();
       setTimeout(() => {
         mobileGroup.classList.remove("open");
         mobileSublist.classList.remove("cascade-close");
+        triggerMobileLineFlash();
       }, CASCADE_OUT_TOTAL);
     }
 
@@ -879,12 +911,36 @@
       });
     });
 
-    document.addEventListener("click", (e) => {
-      if (e.target.closest("#top-menu") || e.target.closest(".mobile-menu") || e.target.closest(".menu-button")) {
-        return;
-      }
-      window.location.assign("https://chat.etheris.com.br/");
-    });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("#top-menu") || e.target.closest(".mobile-menu") || e.target.closest(".menu-button")) {
+      return;
+    }
+    window.location.assign("https://chat.etheris.com.br/");
+  });
+
+
+    // INÍCIO DA CORREÇÃO FINAL
+    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
+    //function navigateToStore() {
+      //  const form = document.createElement('form');
+        //form.method = 'GET';
+     //   form.action = 'https://chat.etheris.com.br/';
+     //   form.style.display = 'none';
+      //  document.body.appendChild(form );
+      //  form.submit();
+   // }
+
+   // document.addEventListener("click", (e) => {
+     // if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+       // if (mobileMenu.classList.contains("open")) {
+         // mobileMenu.classList.remove("open");
+       //   stopHamburgerBlink();
+      //  } else {
+        //  navigateToStore();
+      //  }
+    //  }
+  //  });
+    // FIM DA CORREÇÃO FINAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
@@ -896,8 +952,11 @@
           mobileAutoCloseTimer = null;
         }
         e.preventDefault();
-        this.classList.add('line-active');
+        this.classList.remove('line-flash-item');
+        void this.offsetWidth;
+        this.classList.add('line-flash-item');
         setTimeout(() => {
+          this.classList.remove('line-flash-item');
           window.location.href = this.href;
         }, 600);
       });
