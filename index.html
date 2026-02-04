@@ -123,7 +123,7 @@
     }
 
     nav#top-menu .menu-link {
-      color: #fff;
+      color: #111;
       font-size: 0.95rem;
       font-weight: 400;
       text-decoration: none;
@@ -139,7 +139,7 @@
       transform: translateX(-50%);
       width: 0%;
       height: 1px;
-      background-color: #fff;
+      background-color: #111;
       transition: width 0.6s ease;
     }
 
@@ -165,9 +165,8 @@
       left: 50%;
       transform: translate(-50%, -10px);
       width: min(520px, 90vw);
-      background: rgba(0, 0, 0, 0.32);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.26);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 14px;
       padding: 1.2rem 1.6rem;
       opacity: 0;
@@ -201,9 +200,9 @@
     }
 
     nav#top-menu .dropdown-inner a {
-      color: #fff;
+      color: #111;
       font-size: 1rem;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       text-decoration: none;
       opacity: 0;
       filter: blur(8px);
@@ -315,7 +314,7 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.28);
       backdrop-filter: blur(14px);
       z-index: 10000;
       display: none;
@@ -339,7 +338,7 @@
       font-weight: 300;
       position: relative;
       transition: color 0.3s ease;
-      letter-spacing: 1px;
+      letter-spacing: 0.02em;
       text-align: center;
     }
 
@@ -370,7 +369,7 @@
 
     .mobile-menu .mobile-sub {
       font-size: 0.86rem;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       opacity: 0;
       filter: blur(8px);
       transform: translateY(-6px);
@@ -410,6 +409,18 @@
     .mobile-sublist.cascade-close .mobile-sub:nth-child(2) { animation-delay: 0.18s; }
     .mobile-sublist.cascade-close .mobile-sub:nth-child(1) { animation-delay: 0.31s; }
 
+    .mobile-group.line-open > .mobile-main::after {
+      width: 80%;
+    }
+
+    .mobile-group.line-close > .mobile-main::after {
+      width: 0%;
+    }
+
+    .mobile-group.line-flash > .mobile-main::after {
+      animation: line-flash 1.2s ease;
+    }
+
     .mobile-menu a:hover::after,
     .mobile-menu a.line-active::after {
       width: 80%;
@@ -423,7 +434,7 @@
       nav#top-menu .menu-link {
         font-family: 'Tenor Sans', sans-serif;
         font-size: 0.92rem;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.02em;
       }
 
       h1 {
@@ -522,9 +533,9 @@
     const HAMBURGER_BLINK_START_DELAY = 500;
     const HAMBURGER_BLINK_STEP_DELAY = 1500;
     const LINE_OPEN_DURATION = 600;
-    const LINE_HOLD_DURATION = 2000;
-    const DESKTOP_AUTO_CLOSE_DELAY = 15000;
-    const MOBILE_AUTO_CLOSE_DELAY = 15000;
+    const LINE_HOLD_DURATION = 500;
+    const DESKTOP_AUTO_CLOSE_DELAY = 10000;
+    const MOBILE_AUTO_CLOSE_DELAY = 10000;
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
 
@@ -791,6 +802,8 @@
     function openMobileSublist() {
       if (!mobileGroup || !mobileSublist) return;
       mobileGroup.classList.add("open");
+      mobileGroup.classList.add("line-open");
+      mobileGroup.classList.remove("line-close", "line-flash");
       mobileSublist.classList.remove("cascade-close");
       mobileSublist.classList.add("cascade-open");
       if (mobileAutoCloseTimer) {
@@ -803,8 +816,14 @@
 
     function closeMobileSublist() {
       if (!mobileGroup || !mobileSublist) return;
+      if (mobileAutoCloseTimer) {
+        clearTimeout(mobileAutoCloseTimer);
+        mobileAutoCloseTimer = null;
+      }
       mobileSublist.classList.remove("cascade-open");
       mobileSublist.classList.add("cascade-close");
+      mobileGroup.classList.remove("line-open");
+      mobileGroup.classList.add("line-close");
       setTimeout(() => {
         mobileGroup.classList.remove("open");
         mobileSublist.classList.remove("cascade-close");
