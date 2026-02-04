@@ -105,15 +105,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      position: fixed;
-      top: 0;
+      position: absolute;
+      top: 1rem;
       left: 0;
-      height: 64px;
       width: 100%;
       z-index: 12;
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: transparent;
       gap: 3rem;
     }
 
@@ -146,12 +143,8 @@
       transition: width 0.6s ease;
     }
 
-    nav#top-menu a:hover::after {
+    nav#top-menu .menu-item.open > a::after {
       width: 80%;
-    }
-
-    nav#top-menu a:hover {
-      color: rgba(255, 255, 255, 1);
     }
 
     nav#top-menu .dropdown a::after {
@@ -159,39 +152,45 @@
     }
 
     nav#top-menu .dropdown {
-      position: fixed;
-      top: 64px;
-      left: 0;
-      width: 100%;
-      height: 58vh;
-      background: rgba(5, 5, 5, 0.55);
-      backdrop-filter: blur(18px);
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(520px, 90vw);
       opacity: 0;
       visibility: hidden;
+      max-height: 0;
+      overflow: hidden;
       pointer-events: none;
-      transition: opacity 0.35s ease, visibility 0.35s ease;
+      transition: max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, visibility 0.35s ease;
       z-index: 11;
     }
 
-    nav#top-menu .menu-item:hover .dropdown {
+    nav#top-menu .menu-item.open .dropdown {
       opacity: 1;
       visibility: visible;
+      max-height: 260px;
       pointer-events: auto;
+      transition-delay: 0.6s;
     }
 
     nav#top-menu .dropdown-inner {
-      max-width: 980px;
-      margin: 3.5rem auto 0;
-      padding: 0 2rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      text-align: left;
+      gap: 0.9rem;
+      text-align: center;
+      transform: translateY(-10px);
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    nav#top-menu .menu-item.open .dropdown-inner {
+      transform: translateY(0);
+      transition-delay: 0.6s;
     }
 
     nav#top-menu .dropdown-inner a {
       color: #fff;
-      font-size: 1.05rem;
+      font-size: 1rem;
       letter-spacing: 0.02em;
       text-decoration: none;
     }
@@ -247,8 +246,8 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(6, 6, 6, 0.35);
-      backdrop-filter: blur(18px);
+      background: rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(16px);
       z-index: 10000;
       display: none;
       flex-direction: column;
@@ -273,6 +272,31 @@
       transition: color 0.3s ease;
       letter-spacing: 1px;
       text-align: center;
+    }
+
+    .mobile-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .mobile-sublist {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-8px);
+      transition: max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .mobile-group.open .mobile-sublist {
+      max-height: 240px;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .mobile-menu .mobile-sub {
@@ -304,9 +328,9 @@
       }
       
       nav#top-menu a {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: 0.98rem;
-        letter-spacing: 0.04em;
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: 0.92rem;
+        letter-spacing: 0.06em;
       }
 
       h1 {
@@ -356,9 +380,11 @@
   <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-group">
       <a class="mobile-main" href="https://www.etheris.com.br/etheris/">Boardroom</a>
-      <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Diagnostics</a>
-      <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Transformation &amp; Execution</a>
-      <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Governance &amp; Risk</a>
+      <div class="mobile-sublist">
+        <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Diagnostics</a>
+        <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Transformation &amp; Execution</a>
+        <a class="mobile-sub" href="https://www.etheris.com.br/etheris/">Operational Governance &amp; Risk</a>
+      </div>
     </div>
   </div>
 
@@ -462,28 +488,12 @@
     function startHamburgerBlink() {
       clearHamburgerBlinkTimer();
       hamburgerButton.style.transition = 'all 0.8s ease';
-      hamburgerButton.classList.remove("active");
+      hamburgerButton.classList.add("active");
       applyHamburgerBlink();
-      let step = 0;
-      const steps = [
-        { active: true, delay: HAMBURGER_BLINK_STEP_DELAY },
-        { active: true, delay: 0 }
-      ];
-      function executeStep() {
-        if (step >= steps.length) return;
-        const currentStep = steps[step];
-        if (currentStep.active) {
-          hamburgerButton.classList.add("active");
-        } else {
-          hamburgerButton.classList.remove("active");
-        }
+      hamburgerBlinkInterval = setTimeout(() => {
         applyHamburgerBlink();
-        step++;
-        if (step < steps.length && currentStep.delay > 0) {
-          hamburgerBlinkInterval = setTimeout(executeStep, currentStep.delay);
-        }
-      }
-      hamburgerBlinkInterval = setTimeout(executeStep, HAMBURGER_BLINK_START_DELAY);
+        hamburgerBlinkInterval = null;
+      }, HAMBURGER_BLINK_STEP_DELAY);
     }
 
     function stopHamburgerBlink() {
@@ -556,6 +566,29 @@
       }
     }
 
+    const desktopMenuItem = document.querySelector("#top-menu .menu-item");
+    const desktopMenuLink = document.querySelector("#top-menu .menu-item > a");
+    const mobileGroup = document.querySelector(".mobile-group");
+    const mobileMain = document.querySelector(".mobile-main");
+
+    if (desktopMenuLink && desktopMenuItem) {
+      desktopMenuLink.addEventListener("click", (e) => {
+        if (window.matchMedia("(min-width: 769px)").matches) {
+          e.preventDefault();
+          desktopMenuItem.classList.toggle("open");
+        }
+      });
+    }
+
+    if (mobileMain && mobileGroup) {
+      mobileMain.addEventListener("click", (e) => {
+        if (window.matchMedia("(max-width: 768px)").matches) {
+          e.preventDefault();
+          mobileGroup.classList.toggle("open");
+        }
+      });
+    }
+
     document.addEventListener("click", (e) => {
       if (e.target.closest("#top-menu") || e.target.closest(".mobile-menu") || e.target.closest(".menu-button")) {
         return;
@@ -588,6 +621,9 @@
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
+        if (this.classList.contains('mobile-main')) {
+          return;
+        }
         e.preventDefault();
         this.classList.add('line-active');
         setTimeout(() => {
