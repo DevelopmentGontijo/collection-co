@@ -159,6 +159,10 @@
       width: 0%;
     }
 
+    nav#top-menu .menu-item.open > .menu-link::after {
+      width: 80%;
+    }
+
     nav#top-menu .menu-item.line-flash > .menu-link::after {
       animation: line-flash 1.2s ease;
       transition: none;
@@ -171,8 +175,9 @@
     nav#top-menu .dropdown {
       position: absolute;
       top: calc(100% + 10px);
-      left: 50%;
-      transform: translate(-50%, -10px);
+      left: auto;
+      right: 2rem;
+      transform: translate(0, -10px);
       width: min(520px, 90vw);
       background: transparent;
       border: none;
@@ -192,15 +197,16 @@
       visibility: visible;
       max-height: 180px;
       pointer-events: auto;
-      transform: translate(-50%, 0);
+      transform: translate(0, 0);
     }
 
     nav#top-menu .dropdown-inner {
       display: flex;
       flex-direction: column;
+      align-items: flex-end;
       gap: 0.45rem;
-      margin-top: 1.0rem;
-      text-align: center;
+      margin-top: 0.4rem;
+      text-align: right;
       transform: translateY(-10px);
       transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -274,6 +280,8 @@
       background-size: 200% 100%;
       opacity: 0;
       pointer-events: none;
+      transform: scaleX(1);
+      transform-origin: center;
       transition: opacity 0.3s ease;
       z-index: 11;
     }
@@ -281,6 +289,10 @@
     .desktop-blur-on #desktop-separator {
       opacity: 1;
       animation: separator-scan 2s linear infinite;
+    }
+
+    .desktop-blur-on #desktop-separator.closing {
+      animation: separator-close 0.45s ease forwards;
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(1)::after {
@@ -394,25 +406,30 @@
 
     @keyframes line-flash-sub-1 {
       0% { width: 0%; }
-      50% { width: 28%; }
+      50% { width: 75%; }
       100% { width: 0%; }
     }
 
     @keyframes line-flash-sub-2 {
       0% { width: 0%; }
-      50% { width: 47%; }
+      50% { width: 85%; }
       100% { width: 0%; }
     }
 
     @keyframes line-flash-sub-3 {
       0% { width: 0%; }
-      50% { width: 35%; }
+      50% { width: 70%; }
       100% { width: 0%; }
     }
 
     @keyframes separator-scan {
       0% { background-position: 0% 0; }
       100% { background-position: 200% 0; }
+    }
+
+    @keyframes separator-close {
+      0% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0); opacity: 0; }
     }
 
     @keyframes text-blink {
@@ -670,7 +687,9 @@
     const MOBILE_AUTO_CLOSE_DELAY = 10000;
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
-    const SUBMENU_LINE_SEQ_TOTAL = 2600;
+    const SUBMENU_LINE_SEQ_TOTAL = 3200;
+    const SEPARATOR_CLOSE_DURATION = 450;
+    const DESKTOP_CLOSE_TOTAL = 1100;
 
     function forceVideoPlay() {
       video.muted = true;
@@ -840,6 +859,7 @@
     const desktopMenuItem = document.querySelector("#top-menu .menu-item");
     const desktopMenuLink = document.querySelector("#top-menu .menu-item > a");
     const desktopDropdown = document.querySelector("#top-menu .dropdown");
+    const desktopSeparator = document.querySelector("#desktop-separator");
     const mobileGroup = document.querySelector(".mobile-group");
     const mobileMain = document.querySelector(".mobile-main");
     const mobileSublist = document.querySelector(".mobile-sublist");
@@ -896,7 +916,11 @@
     function openDesktopDropdown() {
       if (!desktopMenuItem || !desktopDropdown) return;
       desktopMenuItem.classList.add("open");
+      desktopMenuItem.classList.remove("line-close");
       document.body.classList.add("desktop-blur-on");
+      if (desktopSeparator) {
+        desktopSeparator.classList.remove("closing");
+      }
       desktopDropdown.classList.remove("line-seq");
       void desktopDropdown.offsetWidth;
       desktopDropdown.classList.add("line-seq");
@@ -914,18 +938,24 @@
     function closeDesktopDropdown(shouldFlashLine) {
       if (!desktopMenuItem || !desktopDropdown) return;
       if (!desktopMenuItem.classList.contains("open")) return;
-      if (shouldFlashLine) {
-        triggerLineFlash();
-      }
       if (desktopAutoCloseTimer) {
         clearTimeout(desktopAutoCloseTimer);
         desktopAutoCloseTimer = null;
       }
       desktopDropdown.classList.remove("line-seq");
+      if (desktopSeparator) {
+        desktopSeparator.classList.add("closing");
+      }
+      setTimeout(() => {
+        desktopMenuItem.classList.add("line-close");
+      }, SEPARATOR_CLOSE_DURATION);
       desktopCloseTimer = setTimeout(() => {
         desktopMenuItem.classList.remove("open");
         document.body.classList.remove("desktop-blur-on");
-      }, CASCADE_OUT_TOTAL);
+        if (desktopSeparator) {
+          desktopSeparator.classList.remove("closing");
+        }
+      }, DESKTOP_CLOSE_TOTAL);
     }
 
     function startDesktopHoverSequence() {
@@ -1074,6 +1104,30 @@
   document.addEventListener("click", () => {
     window.location.assign("https://chat.etheris.com.br/");
   });
+
+
+    // INÍCIO DA CORREÇÃO FINAL
+    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
+    //function navigateToStore() {
+      //  const form = document.createElement('form');
+        //form.method = 'GET';
+     //   form.action = 'https://chat.etheris.com.br/';
+     //   form.style.display = 'none';
+      //  document.body.appendChild(form );
+      //  form.submit();
+   // }
+
+   // document.addEventListener("click", (e) => {
+     // if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
+       // if (mobileMenu.classList.contains("open")) {
+         // mobileMenu.classList.remove("open");
+       //   stopHamburgerBlink();
+      //  } else {
+        //  navigateToStore();
+      //  }
+    //  }
+  //  });
+    // FIM DA CORREÇÃO FINAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
