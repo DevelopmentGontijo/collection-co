@@ -892,6 +892,19 @@
       });
     }
 
+    document.addEventListener("click", (e) => {
+      if (!desktopMenuItem || !desktopMenuItem.classList.contains("open")) {
+        return;
+      }
+      if (!window.matchMedia("(min-width: 769px)").matches) {
+        return;
+      }
+      const clickedInside = desktopMenuItem.contains(e.target) || (desktopDropdown && desktopDropdown.contains(e.target));
+      if (!clickedInside) {
+        closeDesktopDropdown(true);
+      }
+    });
+
     function clearDesktopTimers() {
       if (desktopOpenTimer) {
         clearTimeout(desktopOpenTimer);
