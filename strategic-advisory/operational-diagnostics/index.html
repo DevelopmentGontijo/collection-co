@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operational Diagnostics — Etheris</title>
-  <meta name="description" content="Operational Diagnostics — Diagnóstico Operacional da Etheris." />
+  <title>Diagnóstico Operacional — Etheris</title>
+  <meta name="description" content="Diagnóstico Operacional — Clareza estrutural, fluxo crítico e estabilização de performance." />
   <link rel="icon" href="/Etheris-F.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&family=Tenor+Sans&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #f6f6f4;
@@ -14,6 +14,7 @@
       --muted: #6b6b6b;
       --line: #d9d9d9;
       --card: #fbfbfa;
+      --slice-count: 6;
     }
 
     * { box-sizing: border-box; }
@@ -25,7 +26,7 @@
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       cursor: default;
     }
 
@@ -96,30 +97,20 @@
       letter-spacing: 0.02em;
     }
 
-    .hero-pt {
-      margin: 0 0 1.1rem;
-      font-size: 1.05rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
     .hero-lead {
       max-width: 720px;
       font-size: 1.02rem;
       line-height: 1.7;
       color: #2b2b2b;
-      margin: 0 0 1rem;
+      margin: 0 0 1.2rem;
     }
-
-    .hero-lead.pt { color: var(--muted); }
 
     .hero-visual {
       margin-top: 2rem;
       border-radius: 28px;
       overflow: hidden;
       background: url('/strategic-advisory/operational-diagnostics/assets/hero/minimalis.jpg') center/cover no-repeat;
-      min-height: 320px;
+      min-height: 340px;
       position: relative;
       isolation: isolate;
     }
@@ -128,52 +119,71 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(10, 10, 10, 0.08), rgba(10, 10, 10, 0.18));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
       z-index: 1;
     }
 
-    .hero-video {
-      width: 100%;
-      height: 100%;
-      min-height: 320px;
-      object-fit: cover;
+    .hero-sliced {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       display: block;
-      transform: scale(1.04);
-      animation: hero-drift 14s ease-in-out infinite;
-      filter: saturate(1.05);
     }
 
-    .hero-text {
+    .slice {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 0.6rem;
-      z-index: 2;
-      color: #0b0b0b;
-      mix-blend-mode: multiply;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
+      clip-path: inset(
+        calc(var(--i) * (100% / var(--slice-count)))
+        0
+        calc((var(--slice-count) - var(--i) - 1) * (100% / var(--slice-count)))
+        0
+      );
+      transform: translate3d(
+        calc(var(--mx, 0) * var(--depth) * 14px),
+        calc(var(--my, 0) * var(--depth) * 10px),
+        0
+      );
+      transition: transform 0.2s ease-out;
+      pointer-events: none;
     }
 
-    .hero-text .hero-brand {
+    .slice-text {
+      font-family: 'Tenor Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #101010;
+      mix-blend-mode: multiply;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0 6vw;
+      white-space: nowrap;
+    }
+
+    .slice-brand {
       font-size: 0.8rem;
       opacity: 0.7;
+      letter-spacing: 0.22em;
     }
 
-    .hero-text .hero-title {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      letter-spacing: 0.12em;
+    .slice-title {
+      font-size: clamp(1.6rem, 4.2vw, 2.8rem);
     }
 
-    @keyframes hero-drift {
-      0% { transform: scale(1.04) translateY(0); }
-      50% { transform: scale(1.06) translateY(-8px); }
-      100% { transform: scale(1.04) translateY(0); }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
 
     .section {
@@ -192,6 +202,7 @@
       border: 1px solid #ececec;
       border-radius: 18px;
       padding: 1.6rem 1.8rem;
+      transition: background-color 0.9s ease, color 0.9s ease, border-color 0.9s ease;
     }
 
     .card h3 {
@@ -207,6 +218,7 @@
       font-size: 0.78rem;
       color: var(--muted);
       margin-bottom: 0.8rem;
+      transition: color 0.9s ease;
     }
 
     .card p {
@@ -214,7 +226,27 @@
       line-height: 1.6;
     }
 
-    .card .pt { color: var(--muted); font-size: 0.95rem; }
+    .card .pt {
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: color 0.9s ease;
+    }
+
+    .card:hover {
+      background: #111;
+      color: #f6f6f4;
+      border-color: #111;
+      transition-duration: 0.9s;
+    }
+
+    .card:hover .pt-title,
+    .card:hover .pt {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .card:not(:hover) {
+      transition-duration: 0.2s;
+    }
 
     .outcomes {
       display: grid;
@@ -264,10 +296,15 @@
       line-height: 1.6;
     }
 
-    .contact .small { font-size: 0.85rem; color: var(--muted); }
+    form {
+      display: grid;
+      gap: 0.9rem;
+    }
 
-    form { display: grid; gap: 0.9rem; }
-    .field-group { display: grid; gap: 0.5rem; }
+    .field-group {
+      display: grid;
+      gap: 0.5rem;
+    }
 
     label {
       font-size: 0.8rem;
@@ -285,9 +322,16 @@
       color: #111;
     }
 
-    textarea { min-height: 120px; resize: vertical; }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
 
-    .form-actions { display: flex; gap: 1rem; align-items: center; }
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
 
     .btn-primary {
       border: none;
@@ -323,7 +367,9 @@
     @media (max-width: 900px) {
       .section-grid,
       .outcomes,
-      .contact { grid-template-columns: 1fr; }
+      .contact {
+        grid-template-columns: 1fr;
+      }
 
       .site-header {
         flex-direction: column;
@@ -338,15 +384,16 @@
         border-radius: 22px;
       }
 
-      .hero-video {
-        min-height: 240px;
+      .slice-text {
+        white-space: normal;
+        letter-spacing: 0.08em;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-video {
-        animation: none;
+      .slice {
         transform: none;
+        transition: none;
       }
     }
   </style>
@@ -359,22 +406,49 @@
     </header>
 
     <section class="hero">
-      <div class="eyebrow">Operational Diagnostics / Diagnóstico Operacional</div>
-      <h1>Operational Diagnostics</h1>
-      <p class="hero-pt">Diagnóstico Operacional</p>
+      <div class="eyebrow">Diagnóstico Operacional</div>
+      <h1 class="sr-only">Diagnóstico Operacional</h1>
       <p class="hero-lead">
-        Comprehensive operational clarity to expose structural constraints, critical dependencies, and performance drag.
-      </p>
-      <p class="hero-lead pt">
         Clareza operacional profunda para expor restrições estruturais, dependências críticas e fricções de performance.
       </p>
       <div class="hero-visual">
-        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/strategic-advisory/operational-diagnostics/assets/hero/minimalis.jpg">
-          <source src="/video6.mp4" type="video/mp4" />
-        </video>
-        <div class="hero-text">
-          <div class="hero-brand">Etheris</div>
-          <div class="hero-title">Operational Diagnostics</div>
+        <div class="hero-sliced" id="heroSliced" aria-hidden="true">
+          <div class="slice" style="--i: 0; --depth: -3;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
+          <div class="slice" style="--i: 1; --depth: -2;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
+          <div class="slice" style="--i: 2; --depth: -1;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
+          <div class="slice" style="--i: 3; --depth: 1;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
+          <div class="slice" style="--i: 4; --depth: 2;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
+          <div class="slice" style="--i: 5; --depth: 3;">
+            <div class="slice-text">
+              <span class="slice-brand">Etheris</span>
+              <span class="slice-title">Diagnóstico Operacional</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -382,31 +456,31 @@
     <section class="section">
       <div class="section-grid">
         <article class="card">
-          <h3>Structural Operational Assessment</h3>
-          <div class="pt-title">Diagnóstico Estrutural da Operação</div>
-          <p>Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
-          <p class="pt">Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
+          <h3>Diagnóstico Estrutural da Operação</h3>
+          <div class="pt-title">Arquitetura, fluxos e dependências</div>
+          <p>Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
+          <p class="pt">Leitura precisa da estrutura e de como ela sustenta ou limita a execução estratégica.</p>
         </article>
 
         <article class="card">
-          <h3>Process and Critical Flow Analysis</h3>
-          <div class="pt-title">Análise de Processos e Fluxos Críticos</div>
-          <p>Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
-          <p class="pt">Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
+          <h3>Análise de Processos e Fluxos Críticos</h3>
+          <div class="pt-title">Ponta a ponta, sem ruído</div>
+          <p>Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
+          <p class="pt">Priorização do que precisa ser estabilizado primeiro para liberar performance.</p>
         </article>
 
         <article class="card">
-          <h3>Systems, Data &amp; Dependency Evaluation</h3>
-          <div class="pt-title">Avaliação de Sistemas, Dados e Dependências</div>
-          <p>Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
-          <p class="pt">Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
+          <h3>Avaliação de Sistemas, Dados e Dependências</h3>
+          <div class="pt-title">Tecnologia como alavanca</div>
+          <p>Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
+          <p class="pt">Identificação de riscos ocultos e dependências humanas que reduzem escalabilidade.</p>
         </article>
 
         <article class="card">
-          <h3>Operational Risk &amp; Bottleneck Identification</h3>
-          <div class="pt-title">Identificação de Riscos e Gargalos Operacionais</div>
-          <p>Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
-          <p class="pt">Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
+          <h3>Identificação de Riscos e Gargalos Operacionais</h3>
+          <div class="pt-title">Exposição, impactos e estabilização</div>
+          <p>Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
+          <p class="pt">Mapa de risco e fricção com recomendações práticas de curto prazo.</p>
         </article>
       </div>
     </section>
@@ -414,11 +488,11 @@
     <section class="section">
       <div class="outcomes">
         <div>
-          <h4>Strategic Outcomes</h4>
+          <h4>Resultados Estratégicos</h4>
           <ul>
-            <li>Structural clarity on where performance collapses and why.</li>
-            <li>Prioritized bottleneck map with systemic impact ranking.</li>
-            <li>Actionable stabilization plan aligned to leadership priorities.</li>
+            <li>Clareza estrutural sobre onde a performance colapsa e por quê.</li>
+            <li>Mapa priorizado de gargalos com impacto sistêmico.</li>
+            <li>Plano de estabilização alinhado às prioridades da liderança.</li>
           </ul>
         </div>
         <div>
@@ -437,7 +511,6 @@
         <div>
           <h2>Inicie uma conversa estratégica.</h2>
           <p>Escolha iniciar o diagnóstico via chat ou envie um briefing direto para nossa equipe.</p>
-          <p class="small">Respondemos em até 1 dia útil.</p>
           <div class="form-actions">
             <a class="btn-secondary" href="https://chat.etheris.com.br/">Falar com consultor</a>
           </div>
@@ -474,8 +547,26 @@
     </section>
 
     <footer>
-      Etheris — Operational Diagnostics
+      Etheris — Diagnóstico Operacional
     </footer>
   </main>
+
+  <script>
+    const heroSliced = document.getElementById('heroSliced');
+    if (heroSliced && window.matchMedia('(pointer: fine)').matches) {
+      const update = (e) => {
+        const rect = heroSliced.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        heroSliced.style.setProperty('--mx', x.toFixed(3));
+        heroSliced.style.setProperty('--my', y.toFixed(3));
+      };
+      heroSliced.addEventListener('pointermove', update);
+      heroSliced.addEventListener('pointerleave', () => {
+        heroSliced.style.setProperty('--mx', 0);
+        heroSliced.style.setProperty('--my', 0);
+      });
+    }
+  </script>
 </body>
 </html>
