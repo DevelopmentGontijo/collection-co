@@ -221,6 +221,11 @@
       display: inline-block;
       text-transform: uppercase;
       font-family: 'Tenor Sans', sans-serif;
+      transition: color 0.25s ease;
+    }
+
+    nav#top-menu .dropdown-inner a:hover {
+      color: #000;
     }
 
     nav#top-menu .dropdown-inner a::after {
@@ -277,30 +282,30 @@
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(1)::after {
-      animation: line-flash-sub-1 0.8s ease forwards;
+      animation: line-flash-sub-1 1.4s ease forwards;
       animation-delay: 0s;
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(2)::after {
-      animation: line-flash-sub-2 0.8s ease forwards;
+      animation: line-flash-sub-2 1.4s ease forwards;
       animation-delay: 0.8s;
     }
 
     nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(3)::after {
-      animation: line-flash-sub-3 0.8s ease forwards;
+      animation: line-flash-sub-3 1.4s ease forwards;
       animation-delay: 1.6s;
     }
 
     nav#top-menu .dropdown-inner a:nth-child(1).line-flash-item::after {
-      animation: line-flash-sub-1 0.8s ease;
+      animation: line-flash-sub-1 1.4s ease;
     }
 
     nav#top-menu .dropdown-inner a:nth-child(2).line-flash-item::after {
-      animation: line-flash-sub-2 0.8s ease;
+      animation: line-flash-sub-2 1.4s ease;
     }
 
     nav#top-menu .dropdown-inner a:nth-child(3).line-flash-item::after {
-      animation: line-flash-sub-3 0.8s ease;
+      animation: line-flash-sub-3 1.4s ease;
     }
 
     /* Mobile Menu (Hamburger) */
@@ -467,7 +472,7 @@
     }
 
     .mobile-main.text-blink {
-      animation: text-blink 0.6s ease;
+      animation: text-blink 1.2s ease;
     }
 
     .mobile-sublist {
