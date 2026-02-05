@@ -126,6 +126,8 @@
     :root {
       --menu-size: 0.72rem;
       --submenu-size: 0.65rem;
+      --submenu-right-offset: 3%;
+      --submenu-top-offset: 2.35rem;
     }
 
     nav#top-menu .menu-link {
@@ -169,12 +171,13 @@
     }
 
     nav#top-menu .dropdown {
-      position: absolute;
-      top: calc(100% + 10px);
+      position: fixed;
+      top: var(--submenu-top-offset);
       left: auto;
-      right: 3%;
-      transform: translate(0, -10px);
-      width: min(520px, 90vw);
+      right: var(--submenu-right-offset);
+      transform: translateY(-10px);
+      width: max-content;
+      max-width: 90vw;
       background: transparent;
       border: none;
       border-radius: 0;
@@ -193,7 +196,7 @@
       visibility: visible;
       max-height: 180px;
       pointer-events: auto;
-      transform: translate(0, 0);
+      transform: translateY(0);
     }
 
     nav#top-menu .dropdown-inner {
