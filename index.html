@@ -159,10 +159,6 @@
       width: 0%;
     }
 
-    nav#top-menu .menu-item.open > .menu-link::after {
-      width: 80%;
-    }
-
     nav#top-menu .menu-item.line-flash > .menu-link::after {
       animation: line-flash 1.2s ease;
       transition: none;
@@ -176,7 +172,7 @@
       position: absolute;
       top: calc(100% + 10px);
       left: auto;
-      right: 2rem;
+      right: 3%;
       transform: translate(0, -10px);
       width: min(520px, 90vw);
       background: transparent;
@@ -689,7 +685,9 @@
     const LINE_FLASH_DURATION = 1200;
     const SUBMENU_LINE_SEQ_TOTAL = 3200;
     const SEPARATOR_CLOSE_DURATION = 450;
-    const DESKTOP_CLOSE_TOTAL = 1100;
+    const DESKTOP_CLOSE_TOTAL = 1900;
+    const MENU_LINE_OPEN_DELAY = 0;
+    const MENU_LINE_HOLD_DURATION = 700;
 
     function forceVideoPlay() {
       video.muted = true;
@@ -905,6 +903,7 @@
 
     function triggerLineFlash() {
       if (!desktopMenuItem) return;
+      desktopMenuItem.classList.remove("line-close");
       desktopMenuItem.classList.remove("line-flash");
       void desktopMenuItem.offsetWidth;
       desktopMenuItem.classList.add("line-flash");
@@ -917,6 +916,7 @@
       if (!desktopMenuItem || !desktopDropdown) return;
       desktopMenuItem.classList.add("open");
       desktopMenuItem.classList.remove("line-close");
+      desktopMenuItem.classList.remove("line-open");
       document.body.classList.add("desktop-blur-on");
       if (desktopSeparator) {
         desktopSeparator.classList.remove("closing");
@@ -947,8 +947,13 @@
         desktopSeparator.classList.add("closing");
       }
       setTimeout(() => {
-        desktopMenuItem.classList.add("line-close");
-      }, SEPARATOR_CLOSE_DURATION);
+        desktopMenuItem.classList.remove("line-close");
+        desktopMenuItem.classList.add("line-open");
+        setTimeout(() => {
+          desktopMenuItem.classList.remove("line-open");
+          desktopMenuItem.classList.add("line-close");
+        }, MENU_LINE_HOLD_DURATION);
+      }, SEPARATOR_CLOSE_DURATION + MENU_LINE_OPEN_DELAY);
       desktopCloseTimer = setTimeout(() => {
         desktopMenuItem.classList.remove("open");
         document.body.classList.remove("desktop-blur-on");
