@@ -4,10 +4,412 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Operational Diagnostics — Etheris</title>
-  <meta name="description" content="Operational Diagnostics — Etheris." />
+  <meta name="description" content="Operational Diagnostics — Diagnóstico Operacional da Etheris." />
+  <link rel="icon" href="/Etheris-F.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --text: #0b0b0b;
+      --muted: #6b6b6b;
+      --line: #d9d9d9;
+      --card: #fbfbfa;
+    }
+
+    * { box-sizing: border-box; }
+    *::selection { background: transparent; color: inherit; }
+    *::-moz-selection { background: transparent; color: inherit; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      cursor: default;
+    }
+
+    body, main, header, footer {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    a, button, input, textarea, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; cursor: pointer; }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.8rem 5vw 5rem;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0 2.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .cta {
+      border: 1px solid #111;
+      padding: 0.65rem 1.3rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .cta:hover {
+      background: #111;
+      color: #fff;
+    }
+
+    .hero {
+      padding: 3.5rem 0 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-weight: 400;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      margin: 0 0 0.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-pt {
+      margin: 0 0 1.1rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-lead {
+      max-width: 720px;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #2b2b2b;
+      margin: 0 0 1rem;
+    }
+
+    .hero-lead.pt { color: var(--muted); }
+
+    .hero-media {
+      margin-top: 2rem;
+      border-radius: 24px;
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 20%, #f0f0f0, #dcdcdc);
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.2rem 3rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #ececec;
+      border-radius: 18px;
+      padding: 1.6rem 1.8rem;
+    }
+
+    .card h3 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      margin: 0 0 0.4rem;
+    }
+
+    .card .pt-title {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .card p {
+      margin: 0 0 0.8rem;
+      line-height: 1.6;
+    }
+
+    .card .pt { color: var(--muted); font-size: 0.95rem; }
+
+    .outcomes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .outcomes h4 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1.1rem;
+      margin: 0 0 0.8rem;
+    }
+
+    .outcomes ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.6rem;
+      color: #2b2b2b;
+    }
+
+    .outcomes li {
+      border-left: 2px solid #111;
+      padding-left: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .contact h2 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1.8rem;
+      margin: 0 0 0.6rem;
+    }
+
+    .contact p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .contact .small {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    form { display: grid; gap: 0.9rem; }
+    .field-group { display: grid; gap: 0.5rem; }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      border: 1px solid #d7d7d7;
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.95rem;
+      background: #fff;
+      color: #111;
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      border: none;
+      background: #111;
+      color: #fff;
+      padding: 0.75rem 1.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      border: 1px solid #111;
+      padding: 0.75rem 1.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    footer {
+      padding: 2.5rem 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    @media (max-width: 900px) {
+      .section-grid,
+      .outcomes,
+      .contact { grid-template-columns: 1fr; }
+
+      .site-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Operational Diagnostics</h1>
-  <p>Página em construção.</p>
+  <main class="page">
+    <header class="site-header">
+      <a class="logo" href="/">Etheris</a>
+      <a class="cta" href="https://chat.etheris.com.br/">Iniciar Diagnóstico</a>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Operational Diagnostics / Diagnóstico Operacional</div>
+      <h1>Operational Diagnostics</h1>
+      <p class="hero-pt">Diagnóstico Operacional</p>
+      <p class="hero-lead">
+        Comprehensive operational clarity to expose structural constraints, critical dependencies, and performance drag.
+      </p>
+      <p class="hero-lead pt">
+        Clareza operacional profunda para expor restrições estruturais, dependências críticas e fricções de performance.
+      </p>
+      <div class="hero-media">Hero Visual Placeholder</div>
+    </section>
+
+    <section class="section">
+      <div class="section-grid">
+        <article class="card">
+          <h3>Structural Operational Assessment</h3>
+          <div class="pt-title">Diagnóstico Estrutural da Operação</div>
+          <p>Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
+          <p class="pt">Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
+        </article>
+
+        <article class="card">
+          <h3>Process and Critical Flow Analysis</h3>
+          <div class="pt-title">Análise de Processos e Fluxos Críticos</div>
+          <p>Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
+          <p class="pt">Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
+        </article>
+
+        <article class="card">
+          <h3>Systems, Data &amp; Dependency Evaluation</h3>
+          <div class="pt-title">Avaliação de Sistemas, Dados e Dependências</div>
+          <p>Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
+          <p class="pt">Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
+        </article>
+
+        <article class="card">
+          <h3>Operational Risk &amp; Bottleneck Identification</h3>
+          <div class="pt-title">Identificação de Riscos e Gargalos Operacionais</div>
+          <p>Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
+          <p class="pt">Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="outcomes">
+        <div>
+          <h4>Strategic Outcomes</h4>
+          <ul>
+            <li>Structural clarity on where performance collapses and why.</li>
+            <li>Prioritized bottleneck map with systemic impact ranking.</li>
+            <li>Actionable stabilization plan aligned to leadership priorities.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Entregáveis</h4>
+          <ul>
+            <li>Mapa executivo de gargalos e pontos críticos.</li>
+            <li>Diagnóstico de dependências, riscos e fragilidades.</li>
+            <li>Plano de estabilização de curto prazo e recomendações estratégicas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="contact">
+        <div>
+          <h2>Inicie uma conversa estratégica.</h2>
+          <p>Escolha iniciar o diagnóstico via chat ou envie um briefing direto para nossa equipe.</p>
+          <p class="small">Respondemos em até 1 dia útil.</p>
+          <div class="form-actions">
+            <a class="btn-secondary" href="https://chat.etheris.com.br/">Falar com consultor</a>
+          </div>
+        </div>
+        <form name="diagnostico-operacional" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="diagnostico-operacional" />
+          <div class="field-group">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" required />
+          </div>
+          <div class="field-group">
+            <label for="email">E-mail corporativo</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div class="field-group">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" required />
+          </div>
+          <div class="field-group">
+            <label for="cargo">Cargo</label>
+            <input id="cargo" name="cargo" type="text" />
+          </div>
+          <div class="field-group">
+            <label for="pais">País</label>
+            <input id="pais" name="pais" type="text" />
+          </div>
+          <div class="field-group">
+            <label for="mensagem">Briefing</label>
+            <textarea id="mensagem" name="mensagem"></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Enviar briefing</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      Etheris — Operational Diagnostics
+    </footer>
+  </main>
 </body>
 </html>
