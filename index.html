@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Etheris™ — Consultoria em Transformação Operacional e Tecnológica</title>
   <meta name="description" content="Etheris™ — Clareza estratégica para operações e tecnologia.">
   <link rel="canonical" href="https://etheris.com.br" />
@@ -12,19 +12,9 @@
     html, body {
       margin: 0;
       padding: 0;
-      width: 100%;
       height: 100%;
-      height: 100vh;
-      height: 100svh;
-      height: 100dvh;
-      min-height: 100%;
-      min-height: 100vh;
-      min-height: 100svh;
-      min-height: 100dvh;
-      height: calc(var(--vh, 1vh) * 100);
-      min-height: calc(var(--vh, 1vh) * 100);
       overflow: hidden;
-      background-color: #000;
+      background-color: #f9f9f9;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: #fff;
       display: flex;
@@ -35,29 +25,12 @@
       cursor: pointer;
     }
 
-    html {
-      height: -webkit-fill-available;
-    }
-
-    body {
-      min-height: -webkit-fill-available;
-    }
-
     .background-video {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      height: 100vh;
-      height: 100svh;
-      height: 100dvh;
-      height: calc(var(--vh, 1vh) * 100);
+      top: 0;
+      left: 0;
       min-width: 100%;
       min-height: 100%;
-      min-height: 100vh;
-      min-height: 100svh;
-      min-height: 100dvh;
-      min-height: calc(var(--vh, 1vh) * 100);
       object-fit: cover;
       z-index: 0;
       pointer-events: none;
@@ -115,7 +88,7 @@
       .background-video {
         object-position: center center;
         width: 100vw;
-        height: calc(var(--vh, 1vh) * 100);
+        height: 100vh;
       }
     }
 
@@ -151,7 +124,6 @@
     }
 
     :root {
-      --vh: 1vh;
       --menu-size: 0.72rem;
       --submenu-size: 0.65rem;
     }
@@ -227,7 +199,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.45rem;
-      margin-top: 1.2rem;
+      margin-top: 1.1rem;
       text-align: center;
       transform: translateY(-10px);
       transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -457,7 +429,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: calc(var(--vh, 1vh) * 100);
+      height: 100vh;
       background: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(14px);
       z-index: 10000;
@@ -692,20 +664,6 @@
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
     const SUBMENU_LINE_SEQ_TOTAL = 2600;
-
-    function setVh() {
-      const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-      const vh = viewportHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-
-    setVh();
-    window.addEventListener('resize', setVh);
-    window.addEventListener('orientationchange', setVh);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', setVh);
-      window.visualViewport.addEventListener('scroll', setVh);
-    }
 
     function forceVideoPlay() {
       video.muted = true;
@@ -1109,30 +1067,6 @@
   document.addEventListener("click", () => {
     window.location.assign("https://chat.etheris.com.br/");
   });
-
-
-    // INÍCIO DA CORREÇÃO FINAL
-    // Esta função é robusta e compatível com todos os navegadores, incluindo o Safari.
-    //function navigateToStore() {
-      //  const form = document.createElement('form');
-        //form.method = 'GET';
-     //   form.action = 'https://chat.etheris.com.br/';
-     //   form.style.display = 'none';
-      //  document.body.appendChild(form );
-      //  form.submit();
-   // }
-
-   // document.addEventListener("click", (e) => {
-     // if (!e.target.closest(".menu-button") && !e.target.closest(".mobile-menu")) {
-       // if (mobileMenu.classList.contains("open")) {
-         // mobileMenu.classList.remove("open");
-       //   stopHamburgerBlink();
-      //  } else {
-        //  navigateToStore();
-      //  }
-    //  }
-  //  });
-    // FIM DA CORREÇÃO FINAL
 
     document.querySelectorAll('.mobile-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
