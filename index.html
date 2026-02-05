@@ -24,6 +24,16 @@
       text-align: center;
       cursor: default;
     }
+    
+    *::selection { background: transparent; color: inherit; }
+    *::-moz-selection { background: transparent; color: inherit; }
+
+    body, .container, nav#top-menu, .mobile-menu {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
     .background-video {
       position: fixed;
