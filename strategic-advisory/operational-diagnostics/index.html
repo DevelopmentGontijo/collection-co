@@ -12,12 +12,13 @@
       --bg: #ffffff;
       --text: #0d0d0d;
       --muted: #6a6a6a;
-      --line: #e5e5e5;
       --hero-scale: 1;
       --hero-tint: 0;
       --hero-hue: 0deg;
       --header-bg-opacity: 0;
       --header-bg-scale: 1;
+      --field-border: #b9d0de;
+      --field-border-focus: #9fb9c9;
     }
 
     * {
@@ -38,24 +39,11 @@
       overflow-x: hidden;
     }
 
-    ::selection {
-      background: transparent;
-      color: inherit;
-    }
+    ::selection { background: transparent; color: inherit; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    a, button {
-      cursor: pointer;
-    }
-
-    input, textarea {
-      user-select: text;
-      cursor: text;
-    }
+    a { color: inherit; text-decoration: none; }
+    a, button { cursor: pointer; }
+    input, textarea { user-select: text; cursor: text; }
 
     .site-header {
       position: sticky;
@@ -117,13 +105,9 @@
       transition: border-color 0.4s ease, background 0.4s ease;
     }
 
-    .cta:hover {
-      border-color: rgba(0, 0, 0, 0.45);
-    }
+    .cta:hover { border-color: rgba(0, 0, 0, 0.45); }
 
-    main {
-      width: 100%;
-    }
+    main { width: 100%; }
 
     .hero {
       position: relative;
@@ -168,6 +152,7 @@
       --x: 0px;
       --y: 0px;
       --spread: 0px;
+      --slice-count: 9;
     }
 
     .hero-slice {
@@ -182,6 +167,12 @@
       white-space: nowrap;
       color: #111;
       line-height: 1;
+      clip-path: inset(
+        0
+        calc((var(--slice-count) - var(--i) - 1) * (100% / var(--slice-count)))
+        0
+        calc(var(--i) * (100% / var(--slice-count)))
+      );
       transform: translate(
         calc(var(--x) * var(--m) + var(--spread) * var(--sx)),
         calc(var(--y) * var(--m) + var(--spread) * var(--sy))
@@ -189,30 +180,10 @@
       will-change: transform;
     }
 
-    .hero-slice .word-main {
-      font-size: 1em;
-      display: inline-block;
-    }
+    .hero-slice .word-main { font-size: 1em; display: inline-block; }
+    .hero-slice .word-sub  { font-size: 0.77em; display: inline-block; margin-left: 0.35em; }
 
-    .hero-slice .word-sub {
-      font-size: 0.77em;
-      display: inline-block;
-      margin-left: 0.35em;
-    }
-
-    .slice-1 { clip-path: inset(0 88.9% 0 0);   --m: 0.18; --sx: -1;   --sy: -0.4; }
-    .slice-2 { clip-path: inset(0 77.8% 0 11.1%); --m: 0.25; --sx: -0.6; --sy: 0.1; }
-    .slice-3 { clip-path: inset(0 66.7% 0 22.2%); --m: 0.32; --sx: -0.3; --sy: -0.2; }
-    .slice-4 { clip-path: inset(0 55.6% 0 33.3%); --m: 0.40; --sx: -0.1; --sy: 0.2; }
-    .slice-5 { clip-path: inset(0 44.4% 0 44.4%); --m: 0.48; --sx: 0.0;  --sy: -0.1; }
-    .slice-6 { clip-path: inset(0 33.3% 0 55.6%); --m: 0.56; --sx: 0.2;  --sy: 0.25; }
-    .slice-7 { clip-path: inset(0 22.2% 0 66.7%); --m: 0.64; --sx: 0.4;  --sy: -0.05; }
-    .slice-8 { clip-path: inset(0 11.1% 0 77.8%); --m: 0.72; --sx: 0.7;  --sy: 0.15; }
-    .slice-9 { clip-path: inset(0 0 0 88.9%);    --m: 0.80; --sx: 0.9;  --sy: -0.2; }
-
-    section {
-      padding: 4rem 4vw;
-    }
+    section { padding: 4rem 4vw; }
 
     .section-title h2 {
       font-family: "Tenor Sans", sans-serif;
@@ -239,8 +210,7 @@
     }
 
     .card {
-      border-top: 1px solid var(--line);
-      padding-top: 1.4rem;
+      padding-top: 0.6rem;
     }
 
     .card h3 {
@@ -269,19 +239,10 @@
       transform: translateX(-18px);
       overflow: hidden;
       transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
-    }
-
-    .card p + p {
-      margin-top: 0.6rem;
-    }
-
-    .card p.en {
-      color: #2b2b2b;
-    }
-
-    .card p.pt {
       color: #4f4f4f;
     }
+
+    .card p + p { margin-top: 0.6rem; }
 
     .card:hover p,
     .card:focus-within p {
@@ -291,35 +252,72 @@
       transition-duration: 1.6s, 1.2s, 1.6s;
     }
 
-    .outcomes {
-      border-top: 1px solid var(--line);
-    }
-
-    .outcome-grid {
+    .drops {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin-top: 2.4rem;
+      gap: 1.6rem;
+      max-width: 960px;
+      margin: 0 auto;
     }
 
-    .outcome-card {
-      border-top: 1px solid var(--line);
-      padding-top: 1.2rem;
+    .drop {
+      border: none;
+    }
+
+    .drop summary {
+      list-style: none;
+      cursor: pointer;
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 1rem;
+      text-align: center;
+      color: #1a1a1a;
+      padding: 0.4rem 0;
+    }
+
+    .drop summary::-webkit-details-marker { display: none; }
+
+    .drop-content {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: max-height 1.2s ease, opacity 1.2s ease, transform 1.2s ease;
+      overflow: hidden;
+      text-align: left;
+      padding-left: 0.2rem;
+    }
+
+    .drop[open] .drop-content {
+      max-height: 480px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .drop-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.9rem 0 0;
+      display: grid;
+      gap: 0.6rem;
       color: #3d3d3d;
       font-size: 0.95rem;
-      line-height: 1.6;
+    }
+
+    .drop-content li {
+      padding-left: 0.6rem;
+      border-left: 2px solid #111;
     }
 
     .contact {
-      border-top: 1px solid var(--line);
       padding-bottom: 6rem;
     }
 
     .contact-inner {
       display: grid;
       grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
-      gap: 2.6rem;
-      margin-top: 2rem;
+      gap: 1.4rem;
+      margin-top: 1rem;
+      align-items: start;
     }
 
     .contact-copy p {
@@ -328,49 +326,52 @@
       line-height: 1.6;
     }
 
-    .form-field {
+    form {
       display: grid;
-      gap: 0.45rem;
-      margin-bottom: 1.2rem;
+      gap: 0.9rem;
     }
 
-    .form-field label {
-      font-size: 0.72rem;
+    .field-group {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: #666;
+      letter-spacing: 0.16em;
+      color: var(--muted);
     }
 
-    .form-field input,
-    .form-field textarea {
-      width: 100%;
-      border: 1px solid #d2d2d2;
-      border-radius: 10px;
-      padding: 0.9rem 1rem;
+    input, textarea, select {
+      border: 1px solid var(--field-border);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
       font-size: 0.95rem;
       background: #fff;
       color: #111;
       outline: none;
       box-shadow: none;
-      transition: border-color 0.35s ease;
     }
 
-    .form-field input:focus,
-    .form-field textarea:focus {
-      border-color: #9b9b9b;
-      outline: 1px solid #9b9b9b;
-      box-shadow: none;
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--field-border-focus);
+      outline: 1px solid var(--field-border-focus);
     }
 
-    .form-actions button {
+    textarea { min-height: 120px; resize: vertical; }
+
+    .btn-primary {
       border: none;
       background: #111;
       color: #fff;
-      padding: 0.9rem 1.6rem;
+      padding: 0.75rem 1.6rem;
       border-radius: 999px;
-      letter-spacing: 0.2em;
       text-transform: uppercase;
-      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      cursor: pointer;
+      justify-self: start;
     }
 
     footer {
@@ -383,40 +384,25 @@
       text-transform: uppercase;
       font-size: 0.75rem;
       color: #7a7a7a;
-      animation: footer-pulse 14s ease-in-out infinite;
+      animation: footer-pulse 12s ease-in-out infinite;
     }
 
     @keyframes footer-pulse {
-      0%, 50% { color: #7a7a7a; }
-      65% { color: #3f3f3f; }
-      80% { color: #6a6a6a; }
+      0%, 55% { color: #7a7a7a; }
+      70% { color: #2f2f2f; }
+      85% { color: #6a6a6a; }
       100% { color: #7a7a7a; }
     }
 
     @media (max-width: 880px) {
-      .contact-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .section-title p {
-        white-space: normal;
-      }
+      .contact-inner { grid-template-columns: 1fr; }
+      .section-title p { white-space: normal; }
     }
 
     @media (max-width: 640px) {
-      .hero {
-        padding-top: 6rem;
-        min-height: 60vh;
-      }
-
-      .hero-slice {
-        letter-spacing: 0.05em;
-      }
-
-      .cta {
-        font-size: 0.65rem;
-        padding: 0.5rem 1rem;
-      }
+      .hero { padding-top: 6rem; min-height: 60vh; }
+      .hero-slice { letter-spacing: 0.05em; }
+      .cta { font-size: 0.65rem; padding: 0.5rem 1rem; }
     }
 
     @media (hover: none) {
@@ -438,17 +424,7 @@
     <section class="hero">
       <div class="hero-content">
         <p class="hero-eyebrow">Operational Diagnostics</p>
-        <div class="hero-slices" aria-hidden="true">
-          <span class="hero-slice slice-1"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-2"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-3"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-4"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-5"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-6"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-7"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-8"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-          <span class="hero-slice slice-9"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
-        </div>
+        <div class="hero-slices" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -460,48 +436,62 @@
 
       <div class="cards">
         <article class="card">
-          <h3>Structural Operational Assessment</h3>
-          <span class="pt-title">Diagnóstico Estrutural da Operação</span>
-          <p class="en">Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
-          <p class="pt">Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
+          <h3>Diagnóstico Estrutural da Operação</h3>
+          <span class="pt-title">Arquitetura, fluxos e dependências</span>
+          <!-- EN: Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies. -->
+          <p>Avaliação do desenho organizacional e das dependências sistêmicas para revelar ineficiências estruturais.</p>
         </article>
 
         <article class="card">
-          <h3>Process and Critical Flow Analysis</h3>
-          <span class="pt-title">Análise de Processos e Fluxos Críticos</span>
-          <p class="en">Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
-          <p class="pt">Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
+          <h3>Análise de Processos e Fluxos Críticos</h3>
+          <span class="pt-title">Ponta a ponta, sem ruído</span>
+          <!-- EN: Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction. -->
+          <p>Mapeamento detalhado de processos para identificar gargalos, redundâncias e fricções operacionais.</p>
         </article>
 
         <article class="card">
-          <h3>Systems, Data &amp; Dependency Evaluation</h3>
-          <span class="pt-title">Avaliação de Sistemas, Dados e Dependências</span>
-          <p class="en">Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
-          <p class="pt">Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
+          <h3>Avaliação de Sistemas, Dados e Dependências</h3>
+          <span class="pt-title">Tecnologia como alavanca</span>
+          <!-- EN: Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance. -->
+          <p>Revisão de infraestrutura, integrações e pipelines que sustentam ou limitam a performance.</p>
         </article>
 
         <article class="card">
-          <h3>Operational Risk &amp; Bottleneck Identification</h3>
-          <span class="pt-title">Identificação de Riscos e Gargalos Operacionais</span>
-          <p class="en">Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
-          <p class="pt">Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
+          <h3>Identificação de Riscos e Gargalos Operacionais</h3>
+          <span class="pt-title">Exposição, impactos e estabilização</span>
+          <!-- EN: Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization. -->
+          <p>Diagnóstico de vulnerabilidades e riscos com foco em estabilização rápida e segura.</p>
         </article>
       </div>
     </section>
 
-    <section class="outcomes">
+    <section>
       <div class="section-title">
         <h2>Resultados e Entregáveis</h2>
-        <p>Visão estratégica, métricas comparáveis e prioridades claras para decisões executivas.</p>
       </div>
 
-      <div class="outcome-grid">
-        <div class="outcome-card">Mapa estrutural completo com dependências críticas.</div>
-        <div class="outcome-card">Diagnóstico dos principais gargalos de performance.</div>
-        <div class="outcome-card">Ranking de fricções operacionais e riscos latentes.</div>
-        <div class="outcome-card">Inventário de sistemas e fluxos de dados críticos.</div>
-        <div class="outcome-card">Plano de estabilização e recomendações acionáveis.</div>
-        <div class="outcome-card">Base para transformação com foco em ROI operacional.</div>
+      <div class="drops">
+        <details class="drop">
+          <summary>Resultados</summary>
+          <div class="drop-content">
+            <ul>
+              <li>Clareza estrutural sobre onde a performance colapsa e por quê.</li>
+              <li>Mapa priorizado de gargalos com impacto sistêmico.</li>
+              <li>Plano de estabilização alinhado às prioridades da liderança.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="drop">
+          <summary>Entregáveis</summary>
+          <div class="drop-content">
+            <ul>
+              <li>Mapa executivo de gargalos e pontos críticos.</li>
+              <li>Diagnóstico de dependências, riscos e fragilidades.</li>
+              <li>Plano de estabilização de curto prazo e recomendações estratégicas.</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -515,26 +505,33 @@
           <p>Envie um briefing direto para alinharmos escopo, prioridade e profundidade do diagnóstico.</p>
         </div>
 
-        <form>
-          <div class="form-field">
-            <label for="name">Nome</label>
-            <input id="name" name="name" type="text" placeholder="Seu nome" />
+        <form name="diagnostico-operacional" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="diagnostico-operacional" />
+          <div class="field-group">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" required />
           </div>
-          <div class="form-field">
-            <label for="email">Email Corporativo</label>
-            <input id="email" name="email" type="email" placeholder="voce@empresa.com" />
+          <div class="field-group">
+            <label for="email">E-mail corporativo</label>
+            <input id="email" name="email" type="email" required />
           </div>
-          <div class="form-field">
-            <label for="company">Empresa</label>
-            <input id="company" name="company" type="text" placeholder="Nome da empresa" />
+          <div class="field-group">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" required />
           </div>
-          <div class="form-field">
-            <label for="message">Contexto</label>
-            <textarea id="message" name="message" rows="4" placeholder="Objetivos, desafios e urgência"></textarea>
+          <div class="field-group">
+            <label for="cargo">Cargo</label>
+            <input id="cargo" name="cargo" type="text" />
           </div>
-          <div class="form-actions">
-            <button type="submit">Enviar</button>
+          <div class="field-group">
+            <label for="pais">País</label>
+            <input id="pais" name="pais" type="text" />
           </div>
+          <div class="field-group">
+            <label for="mensagem">Briefing</label>
+            <textarea id="mensagem" name="mensagem"></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Enviar briefing</button>
         </form>
       </div>
     </section>
@@ -548,6 +545,28 @@
     const hero = document.querySelector(".hero");
     const slices = document.querySelector(".hero-slices");
     const header = document.querySelector(".site-header");
+
+    // AJUSTE AQUI A QUANTIDADE DE CORTES
+    const SLICE_COUNT = 9;
+
+    slices.style.setProperty("--slice-count", SLICE_COUNT);
+
+    for (let i = 0; i < SLICE_COUNT; i++) {
+      const span = document.createElement("span");
+      span.className = "hero-slice";
+      span.style.setProperty("--i", i);
+
+      const mid = (SLICE_COUNT - 1) / 2;
+      const norm = mid === 0 ? 0 : (i - mid) / mid;
+
+      const m = 0.18 + (i / Math.max(1, SLICE_COUNT - 1)) * 0.62;
+      span.style.setProperty("--m", m.toFixed(3));
+      span.style.setProperty("--sx", norm.toFixed(3));
+      span.style.setProperty("--sy", (-norm * 0.3).toFixed(3));
+
+      span.innerHTML = '<span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span>';
+      slices.appendChild(span);
+    }
 
     let targetX = 0;
     let targetY = 0;
@@ -577,10 +596,8 @@
       targetY = 0;
     }
 
-    if (hero) {
-      hero.addEventListener("mousemove", handleMove);
-      hero.addEventListener("mouseleave", resetMagnet);
-    }
+    hero.addEventListener("mousemove", handleMove);
+    hero.addEventListener("mouseleave", resetMagnet);
 
     animateMagnet();
 
@@ -594,13 +611,8 @@
       document.documentElement.style.setProperty("--header-bg-opacity", progress.toFixed(3));
       document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
 
-      if (slices) {
-        slices.style.setProperty("--spread", `${progress * 22}px`);
-      }
-
-      if (header) {
-        header.classList.toggle("header-on", progress > 0.02);
-      }
+      slices.style.setProperty("--spread", `${progress * 22}px`);
+      header.classList.toggle("header-on", progress > 0.02);
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
