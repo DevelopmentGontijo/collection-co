@@ -65,10 +65,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.2rem 4vw;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, calc(1 - var(--header-bg-opacity)));
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       overflow: hidden;
+      transition: background 0.5s ease;
     }
 
     .site-header::before {
@@ -79,17 +80,21 @@
       opacity: var(--header-bg-opacity);
       transform: scale(var(--header-bg-scale));
       transition: opacity 0.5s ease, transform 0.5s ease;
-      filter: brightness(1.08) saturate(1.05);
+      filter: brightness(1.08) saturate(1.08);
       z-index: -1;
     }
 
     .site-header.header-on::before {
-      animation: header-shift 16s ease-in-out infinite;
+      animation: tint-shift 18s ease-in-out infinite;
     }
 
-    @keyframes header-shift {
-      0%, 100% { filter: brightness(1.08) saturate(1.05) hue-rotate(0deg); }
-      50% { filter: brightness(1.15) saturate(1.12) hue-rotate(14deg); }
+    @keyframes tint-shift {
+      0%, 100% {
+        filter: brightness(calc(1 + var(--hero-tint))) saturate(1.08) hue-rotate(0deg);
+      }
+      50% {
+        filter: brightness(calc(1.12 + var(--hero-tint))) saturate(1.18) hue-rotate(14deg);
+      }
     }
 
     .brand {
@@ -137,6 +142,7 @@
       transform: scale(var(--hero-scale));
       transition: transform 0.8s ease, filter 0.8s ease;
       filter: brightness(calc(1 + var(--hero-tint))) saturate(1.08) hue-rotate(var(--hero-hue));
+      animation: tint-shift 18s ease-in-out infinite;
       z-index: 0;
     }
 
@@ -158,7 +164,7 @@
     .hero-slices {
       position: relative;
       width: 100%;
-      height: clamp(2.4rem, 6vw, 4.2rem);
+      height: clamp(2.2rem, 5.4vw, 3.8rem);
       --x: 0px;
       --y: 0px;
       --spread: 0px;
@@ -170,16 +176,28 @@
       top: 0;
       width: 100%;
       font-family: "Tenor Sans", sans-serif;
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-size: clamp(2.2rem, 5.4vw, 3.8rem);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       white-space: nowrap;
       color: #111;
+      line-height: 1;
       transform: translate(
         calc(var(--x) * var(--m) + var(--spread) * var(--sx)),
         calc(var(--y) * var(--m) + var(--spread) * var(--sy))
       );
       will-change: transform;
+    }
+
+    .hero-slice .word-main {
+      font-size: 1em;
+      display: inline-block;
+    }
+
+    .hero-slice .word-sub {
+      font-size: 0.77em;
+      display: inline-block;
+      margin-left: 0.35em;
     }
 
     .slice-1 { clip-path: inset(0 88.9% 0 0);   --m: 0.18; --sx: -1;   --sy: -0.4; }
@@ -210,9 +228,6 @@
       color: var(--muted);
       max-width: 100%;
       line-height: 1.6;
-    }
-
-    .section-title .no-break {
       white-space: nowrap;
     }
 
@@ -253,7 +268,7 @@
       opacity: 0;
       transform: translateX(-18px);
       overflow: hidden;
-      transition: max-height 0.45s ease, opacity 0.45s ease, transform 0.45s ease;
+      transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
     }
 
     .card p + p {
@@ -273,45 +288,26 @@
       max-height: 220px;
       opacity: 1;
       transform: translateX(0);
-      transition-duration: 0.9s, 0.7s, 0.9s;
+      transition-duration: 1.6s, 1.2s, 1.6s;
     }
 
     .outcomes {
       border-top: 1px solid var(--line);
     }
 
-    .outcome-columns {
+    .outcome-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2.6rem;
-      margin-top: 2.2rem;
+      gap: 2rem;
+      margin-top: 2.4rem;
     }
 
-    .outcome-rail {
-      border-left: 1px solid #e1e1e1;
-      padding-left: 1.4rem;
-      display: grid;
-      gap: 1.2rem;
-    }
-
-    .outcome-item {
-      position: relative;
-      padding-left: 0.4rem;
-      color: #3c3c3c;
-      line-height: 1.55;
+    .outcome-card {
+      border-top: 1px solid var(--line);
+      padding-top: 1.2rem;
+      color: #3d3d3d;
       font-size: 0.95rem;
-    }
-
-    .outcome-item::before {
-      content: "";
-      position: absolute;
-      left: -1.4rem;
-      top: 0.4rem;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #111;
-      opacity: 0.35;
+      line-height: 1.6;
     }
 
     .contact {
@@ -348,7 +344,7 @@
     .form-field input,
     .form-field textarea {
       width: 100%;
-      border: 1px solid #5f5f5f;
+      border: 1px solid #d2d2d2;
       border-radius: 10px;
       padding: 0.9rem 1rem;
       font-size: 0.95rem;
@@ -361,8 +357,8 @@
 
     .form-field input:focus,
     .form-field textarea:focus {
-      border-color: #8a8a8a;
-      outline: 1px solid #8a8a8a;
+      border-color: #9b9b9b;
+      outline: 1px solid #9b9b9b;
       box-shadow: none;
     }
 
@@ -387,13 +383,13 @@
       text-transform: uppercase;
       font-size: 0.75rem;
       color: #7a7a7a;
-      animation: footer-breathe 14s ease-in-out infinite;
+      animation: footer-pulse 14s ease-in-out infinite;
     }
 
-    @keyframes footer-breathe {
+    @keyframes footer-pulse {
       0%, 50% { color: #7a7a7a; }
-      65% { color: #4a4a4a; }
-      80% { color: #7a7a7a; }
+      65% { color: #3f3f3f; }
+      80% { color: #6a6a6a; }
       100% { color: #7a7a7a; }
     }
 
@@ -402,7 +398,7 @@
         grid-template-columns: 1fr;
       }
 
-      .section-title .no-break {
+      .section-title p {
         white-space: normal;
       }
     }
@@ -443,15 +439,15 @@
       <div class="hero-content">
         <p class="hero-eyebrow">Operational Diagnostics</p>
         <div class="hero-slices" aria-hidden="true">
-          <span class="hero-slice slice-1">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-2">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-3">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-4">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-5">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-6">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-7">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-8">ETHERIS VERDADE ANTES DA DECISÃO</span>
-          <span class="hero-slice slice-9">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-1"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-2"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-3"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-4"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-5"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-6"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-7"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-8"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
+          <span class="hero-slice slice-9"><span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span></span>
         </div>
       </div>
     </section>
@@ -459,7 +455,7 @@
     <section>
       <div class="section-title">
         <h2>Diagnóstico Operacional</h2>
-        <p class="no-break">Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
+        <p>Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
       </div>
 
       <div class="cards">
@@ -499,29 +495,24 @@
         <p>Visão estratégica, métricas comparáveis e prioridades claras para decisões executivas.</p>
       </div>
 
-      <div class="outcome-columns">
-        <div class="outcome-rail">
-          <div class="outcome-item">Mapa estrutural completo com dependências críticas.</div>
-          <div class="outcome-item">Diagnóstico dos principais gargalos de performance.</div>
-          <div class="outcome-item">Ranking de fricções operacionais e riscos latentes.</div>
-        </div>
-        <div class="outcome-rail">
-          <div class="outcome-item">Inventário de sistemas e fluxos de dados críticos.</div>
-          <div class="outcome-item">Plano de estabilização e recomendações acionáveis.</div>
-          <div class="outcome-item">Base para transformação com foco em ROI operacional.</div>
-        </div>
+      <div class="outcome-grid">
+        <div class="outcome-card">Mapa estrutural completo com dependências críticas.</div>
+        <div class="outcome-card">Diagnóstico dos principais gargalos de performance.</div>
+        <div class="outcome-card">Ranking de fricções operacionais e riscos latentes.</div>
+        <div class="outcome-card">Inventário de sistemas e fluxos de dados críticos.</div>
+        <div class="outcome-card">Plano de estabilização e recomendações acionáveis.</div>
+        <div class="outcome-card">Base para transformação com foco em ROI operacional.</div>
       </div>
     </section>
 
     <section class="contact">
       <div class="section-title">
         <h2>Briefing Estratégico</h2>
-        <p>Consolide suas prioridades e pontos críticos com precisão. A análise inicial orienta o desenho da intervenção.</p>
       </div>
 
       <div class="contact-inner">
         <div class="contact-copy">
-          <p>Envie as informações essenciais para acelerarmos o diagnóstico e alinhar o escopo da iniciativa.</p>
+          <p>Envie um briefing direto para alinharmos escopo, prioridade e profundidade do diagnóstico.</p>
         </div>
 
         <form>
