@@ -3,607 +3,587 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diagnóstico Operacional — Etheris</title>
-  <meta name="description" content="Diagnóstico Operacional — Clareza estrutural, fluxo crítico e estabilização de performance." />
+  <title>Operational Diagnostics — Etheris</title>
+  <meta name="description" content="Diagnóstico Operacional — Etheris. Clareza estrutural, processos críticos e governança operacional." />
   <link rel="icon" href="/Etheris-F.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&family=Tenor+Sans&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f6f6f4;
-      --text: #0b0b0b;
-      --muted: #6b6b6b;
-      --line: #d9d9d9;
-      --card: #fbfbfa;
-      --off: #f8f8f2;
-      --slice-count: 5;
+      --bg: #ffffff;
+      --text: #0d0d0d;
+      --muted: #6a6a6a;
+      --line: #e5e5e5;
+      --hero-scale: 1;
+      --hero-tint: 0;
+      --header-bg-opacity: 0;
+      --header-bg-scale: 1;
     }
 
-    * { box-sizing: border-box; }
-    *::selection { background: transparent; color: inherit; }
-    *::-moz-selection { background: transparent; color: inherit; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
 
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       cursor: default;
+      overflow-x: hidden;
     }
 
-    body, main, header, footer {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+    ::selection {
+      background: transparent;
+      color: inherit;
     }
 
-    a, button, input, textarea, select { font-family: inherit; }
-    a { color: inherit; text-decoration: none; cursor: pointer; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    .page {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 2.8rem 6vw 5rem;
+    a, button {
+      cursor: pointer;
+    }
+
+    input, textarea {
+      user-select: text;
+      cursor: text;
     }
 
     .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.6rem 0 2.6rem;
-      border-bottom: 1px solid var(--line);
+      padding: 1.2rem 4vw;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      overflow: hidden;
     }
 
-    .logo {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.12em;
+    .site-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/hero/minimalis.jpg") center / cover no-repeat;
+      opacity: var(--header-bg-opacity);
+      transform: scale(var(--header-bg-scale));
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      filter: brightness(1.08) saturate(1.05);
+      z-index: -1;
+    }
+
+    .brand {
+      font-family: "Tenor Sans", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
+      color: #0f0f0f;
     }
 
     .cta {
-      border: 1px solid #111;
-      padding: 0.65rem 1.3rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      transition: all 0.3s ease;
+      letter-spacing: 0.28em;
+      color: #111;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      transition: border-color 0.4s ease, background 0.4s ease;
     }
 
     .cta:hover {
-      background: #111;
-      color: #fff;
+      border-color: rgba(0, 0, 0, 0.45);
+    }
+
+    main {
+      width: 100%;
     }
 
     .hero {
-      padding: 3.5rem 0 3rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-
-    h1 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-weight: 400;
-      font-size: clamp(2.2rem, 4vw, 3.4rem);
-      margin: 0 0 0.6rem;
-      letter-spacing: 0.02em;
-    }
-
-    .hero-lead {
-      width: 100%;
-      max-width: none;
-      font-size: 1.02rem;
-      line-height: 1.7;
-      color: #2b2b2b;
-      margin: 0 0 1.2rem;
-    }
-
-    .hero-visual {
-      margin-top: 2rem;
-      border-radius: 28px;
-      overflow: hidden;
-      background: url('/strategic-advisory/operational-diagnostics/assets/hero/minimalis.jpg') center/cover no-repeat;
-      min-height: 360px;
       position: relative;
-      isolation: isolate;
-    }
-
-    .hero-visual::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
-      z-index: 1;
-      transition: background 0.9s ease;
-    }
-
-    .hero-visual.scatter::after {
-      background: rgba(248, 248, 244, 0.82);
-    }
-
-    .hero-sliced {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: block;
-      --move-x: 14px;
-      --move-y: 10px;
-      --rot: 0.4deg;
-    }
-
-    .hero-sliced.scatter {
-      --move-x: 40px;
-      --move-y: 30px;
-      --rot: 1.4deg;
-    }
-
-    .slice {
-      position: absolute;
-      inset: 0;
+      min-height: 72vh;
+      padding: 7rem 4vw 4rem;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      clip-path: inset(
-        calc(var(--i) * (100% / var(--slice-count)))
-        0
-        calc((var(--slice-count) - var(--i) - 1) * (100% / var(--slice-count)))
-        0
-      );
-      transform: translate3d(
-        calc(var(--mx, 0) * var(--depth) * var(--move-x)),
-        calc(var(--my, 0) * var(--depth) * var(--move-y)),
-        0
-      ) rotate(calc(var(--depth) * var(--rot)));
-      transition: transform 0.6s ease-out;
-      pointer-events: none;
-    }
-
-    .hero-sliced.scatter .slice {
-      transition-duration: 1.8s;
-    }
-
-    .slice-text {
-      font-family: 'Tenor Sans', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #101010;
-      mix-blend-mode: multiply;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      padding: 0 6vw;
-      white-space: nowrap;
-      width: 100%;
-      text-align: center;
-    }
-
-    .slice-brand {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      letter-spacing: 0.22em;
-    }
-
-    .slice-title {
-      font-size: clamp(1.2rem, 3.6vw, 2.6rem);
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
+      align-items: flex-end;
       overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
     }
 
-    .section {
-      padding: 3rem 0;
-      border-bottom: 1px solid var(--line);
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/hero/minimalis.jpg") center / cover no-repeat;
+      transform: scale(var(--hero-scale));
+      transition: transform 0.8s ease, filter 0.8s ease;
+      filter: brightness(calc(1 + var(--hero-tint))) saturate(1.05);
+      z-index: 0;
     }
 
-    .section-grid {
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      text-align: left;
+    }
+
+    .hero-eyebrow {
+      margin: 0 0 1.4rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #5f5f5f;
+    }
+
+    .hero-slices {
+      position: relative;
+      width: 100%;
+      height: clamp(2.8rem, 7.2vw, 5.4rem);
+      --x: 0px;
+      --y: 0px;
+      --spread: 0px;
+    }
+
+    .hero-slice {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      font-family: "Tenor Sans", sans-serif;
+      font-size: clamp(2.8rem, 7.2vw, 5.4rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: #111;
+      transform: translate(
+        calc(var(--x) * var(--m) + var(--spread) * var(--sx)),
+        calc(var(--y) * var(--m) + var(--spread) * var(--sy))
+      );
+      will-change: transform;
+    }
+
+    .slice-1 { clip-path: inset(0 80% 0 0); --m: 0.25; --sx: -1; --sy: -0.4; }
+    .slice-2 { clip-path: inset(0 60% 0 20%); --m: 0.35; --sx: -0.4; --sy: 0.2; }
+    .slice-3 { clip-path: inset(0 40% 0 40%); --m: 0.45; --sx: 0; --sy: -0.2; }
+    .slice-4 { clip-path: inset(0 20% 0 60%); --m: 0.55; --sx: 0.4; --sy: 0.3; }
+    .slice-5 { clip-path: inset(0 0 0 80%);  --m: 0.65; --sx: 0.9; --sy: -0.1; }
+
+    section {
+      padding: 4rem 4vw;
+    }
+
+    .section-title h2 {
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 1.05rem;
+      margin: 0 0 0.6rem;
+      color: #1a1a1a;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    .cards {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2.4rem 3.4rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.2rem;
+      margin-top: 2.4rem;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid #ececec;
-      border-radius: 18px;
-      padding: 1.6rem 1.8rem;
-      transition: background-color 0.9s ease, border-color 0.9s ease;
+      border-top: 1px solid var(--line);
+      padding-top: 1.4rem;
     }
 
     .card h3 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-weight: 400;
-      font-size: 1.25rem;
-      margin: 0 0 0.4rem;
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: "Tenor Sans", sans-serif;
+      color: #111;
     }
 
     .card .pt-title {
+      display: block;
+      color: #757575;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
     }
 
     .card p {
       margin: 0;
+      color: #4d4d4d;
       line-height: 1.6;
+      max-height: 0;
+      opacity: 0;
       transform: translateX(-18px);
-      opacity: 0.82;
-      transition: transform 1.4s ease, opacity 1.4s ease;
+      overflow: hidden;
+      transition: max-height 0.45s ease, opacity 0.45s ease, transform 0.45s ease;
     }
 
-    .card:hover {
-      background: var(--off);
-      border-color: #e6e6e2;
-      transition-duration: 1.1s;
+    .card p + p {
+      margin-top: 0.6rem;
     }
 
     .card:hover p,
-    .card.in-view p {
-      transform: translateX(0);
+    .card:focus-within p {
+      max-height: 220px;
       opacity: 1;
-    }
-
-    .card:not(:hover) {
-      transition-duration: 0.25s;
+      transform: translateX(0);
+      transition-duration: 0.9s, 0.7s, 0.9s;
     }
 
     .outcomes {
+      border-top: 1px solid var(--line);
+    }
+
+    .outcome-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2rem;
+      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
+      gap: 3rem;
+      margin-top: 2rem;
     }
 
-    .outcomes h4 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-weight: 400;
-      font-size: 1.1rem;
-      margin: 0 0 0.8rem;
-    }
-
-    .outcomes ul {
-      margin: 0;
-      padding: 0;
+    .outcome-list {
       list-style: none;
+      padding: 0;
+      margin: 0;
       display: grid;
-      gap: 0.6rem;
-      color: #2b2b2b;
+      gap: 1rem;
     }
 
-    .outcomes li {
-      border-left: 2px solid #111;
-      padding-left: 0.75rem;
-      font-size: 0.95rem;
+    .outcome-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      color: #3d3d3d;
+      line-height: 1.5;
+    }
+
+    .outcome-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #111;
+      margin-top: 0.45rem;
+      opacity: 0.6;
+      flex: 0 0 auto;
     }
 
     .contact {
+      border-top: 1px solid var(--line);
+      padding-bottom: 6rem;
+    }
+
+    .contact-inner {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2rem;
-      align-items: start;
+      grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
+      gap: 2.6rem;
+      margin-top: 2rem;
     }
 
-    .contact h2 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-weight: 400;
-      font-size: 1.8rem;
-      margin: 0 0 0.6rem;
+    .contact-copy h2 {
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 1.05rem;
+      margin: 0 0 0.8rem;
+      color: #1a1a1a;
     }
 
-    .contact p {
-      margin: 0 0 1rem;
-      color: var(--muted);
+    .contact-copy p {
+      margin: 0;
+      color: #666;
       line-height: 1.6;
     }
 
-    form {
+    .form-field {
       display: grid;
-      gap: 0.9rem;
+      gap: 0.45rem;
+      margin-bottom: 1.2rem;
     }
 
-    .field-group {
-      display: grid;
-      gap: 0.5rem;
-    }
-
-    label {
-      font-size: 0.8rem;
+    .form-field label {
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
+      letter-spacing: 0.2em;
+      color: #666;
     }
 
-    input, textarea, select {
-      border: 1px solid #d7d7d7;
-      border-radius: 12px;
-      padding: 0.75rem 0.9rem;
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      border: 1px solid #d2d2d2;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
       font-size: 0.95rem;
       background: #fff;
       color: #111;
+      outline: none;
+      box-shadow: none;
+      transition: border-color 0.35s ease;
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: #9b9b9b;
+      outline: 1px solid #9b9b9b;
+      box-shadow: none;
     }
 
-    .form-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .btn-primary {
+    .form-actions button {
       border: none;
       background: #111;
       color: #fff;
-      padding: 0.75rem 1.6rem;
+      padding: 0.9rem 1.6rem;
       border-radius: 999px;
-      text-transform: uppercase;
       letter-spacing: 0.2em;
-      font-size: 0.75rem;
-      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.72rem;
     }
 
     footer {
-      padding: 2.5rem 0 0;
-      color: var(--muted);
-      font-size: 0.8rem;
+      padding: 3rem 4vw 4rem;
+    }
+
+    .footer-note {
+      font-family: "Tenor Sans", sans-serif;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      animation: footer-blink 10s ease-in-out infinite;
+      font-size: 0.75rem;
+      color: #7a7a7a;
+      animation: footer-breathe 12s ease-in-out infinite;
     }
 
-    @keyframes footer-blink {
-      0% { opacity: 0; }
-      15% { opacity: 1; }
-      30% { opacity: 0; }
-      100% { opacity: 0; }
+    @keyframes footer-breathe {
+      0%, 70% { color: #7a7a7a; }
+      85% { color: #4f4f4f; }
+      100% { color: #7a7a7a; }
     }
 
-    @media (max-width: 900px) {
-      .section-grid,
-      .outcomes,
-      .contact {
+    @media (max-width: 880px) {
+      .outcome-grid,
+      .contact-inner {
         grid-template-columns: 1fr;
       }
+    }
 
-      .site-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 6rem;
+        min-height: 60vh;
+      }
+
+      .hero-slice {
+        letter-spacing: 0.05em;
+      }
+
+      .cta {
+        font-size: 0.65rem;
+        padding: 0.5rem 1rem;
       }
     }
 
-    @media (max-width: 768px) {
-      .hero-visual {
-        min-height: 240px;
-        border-radius: 22px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .slice {
+    @media (hover: none) {
+      .card p {
+        max-height: none;
+        opacity: 1;
         transform: none;
-        transition: none;
       }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <header class="site-header">
-      <a class="logo" href="/">Etheris</a>
-      <a class="cta" href="https://chat.etheris.com.br/">Iniciar Diagnóstico</a>
-    </header>
+  <header class="site-header">
+    <a class="brand" href="/">Etheris</a>
+    <a class="cta" href="https://chat.etheris.com.br/">Iniciar Conversa</a>
+  </header>
 
+  <main>
     <section class="hero">
-      <div class="eyebrow">Operational Diagnostics</div>
-      <h1 class="sr-only">Diagnóstico Operacional</h1>
-      <p class="hero-lead">
-        Clareza operacional profunda para expor restrições estruturais, dependências críticas e fricções de performance.
-      </p>
-      <div class="hero-visual" id="heroVisual">
-        <div class="hero-sliced" id="heroSliced" aria-hidden="true">
-          <div class="slice" style="--i: 0; --depth: -3;">
-            <div class="slice-text">
-              <span class="slice-brand">Etheris</span>
-              <span class="slice-title">Diagnóstico Operacional</span>
-            </div>
-          </div>
-          <div class="slice" style="--i: 1; --depth: -2;">
-            <div class="slice-text">
-              <span class="slice-brand">Etheris</span>
-              <span class="slice-title">Diagnóstico Operacional</span>
-            </div>
-          </div>
-          <div class="slice" style="--i: 2; --depth: -1;">
-            <div class="slice-text">
-              <span class="slice-brand">Etheris</span>
-              <span class="slice-title">Diagnóstico Operacional</span>
-            </div>
-          </div>
-          <div class="slice" style="--i: 3; --depth: 1;">
-            <div class="slice-text">
-              <span class="slice-brand">Etheris</span>
-              <span class="slice-title">Diagnóstico Operacional</span>
-            </div>
-          </div>
-          <div class="slice" style="--i: 4; --depth: 2;">
-            <div class="slice-text">
-              <span class="slice-brand">Etheris</span>
-              <span class="slice-title">Diagnóstico Operacional</span>
-            </div>
-          </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Operational Diagnostics</p>
+        <div class="hero-slices" aria-hidden="true">
+          <span class="hero-slice slice-1">Etheris Operational Diagnostics</span>
+          <span class="hero-slice slice-2">Etheris Operational Diagnostics</span>
+          <span class="hero-slice slice-3">Etheris Operational Diagnostics</span>
+          <span class="hero-slice slice-4">Etheris Operational Diagnostics</span>
+          <span class="hero-slice slice-5">Etheris Operational Diagnostics</span>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-grid">
+    <section>
+      <div class="section-title">
+        <h2>Diagnóstico Operacional</h2>
+        <p>Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
+      </div>
+
+      <div class="cards">
         <article class="card">
-          <h3>Diagnóstico Estrutural da Operação</h3>
-          <div class="pt-title">Arquitetura, fluxos e dependências</div>
-          <p>Avaliação do desenho organizacional e das dependências sistêmicas para revelar ineficiências estruturais.</p>
+          <h3>Structural Operational Assessment</h3>
+          <span class="pt-title">Diagnóstico Estrutural da Operação</span>
+          <p>Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
+          <p>Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
         </article>
 
         <article class="card">
-          <h3>Análise de Processos e Fluxos Críticos</h3>
-          <div class="pt-title">Ponta a ponta, sem ruído</div>
-          <p>Mapeamento detalhado de processos para identificar gargalos, redundâncias e fricções operacionais.</p>
+          <h3>Process and Critical Flow Analysis</h3>
+          <span class="pt-title">Análise de Processos e Fluxos Críticos</span>
+          <p>Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
+          <p>Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
         </article>
 
         <article class="card">
-          <h3>Avaliação de Sistemas, Dados e Dependências</h3>
-          <div class="pt-title">Tecnologia como alavanca</div>
-          <p>Revisão de infraestrutura, integrações e pipelines que sustentam ou limitam a performance.</p>
+          <h3>Systems, Data &amp; Dependency Evaluation</h3>
+          <span class="pt-title">Avaliação de Sistemas, Dados e Dependências</span>
+          <p>Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
+          <p>Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
         </article>
 
         <article class="card">
-          <h3>Identificação de Riscos e Gargalos Operacionais</h3>
-          <div class="pt-title">Exposição, impactos e estabilização</div>
-          <p>Diagnóstico de vulnerabilidades e riscos com foco em estabilização rápida e segura.</p>
+          <h3>Operational Risk &amp; Bottleneck Identification</h3>
+          <span class="pt-title">Identificação de Riscos e Gargalos Operacionais</span>
+          <p>Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
+          <p>Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
         </article>
       </div>
     </section>
 
-    <section class="section">
-      <div class="outcomes">
-        <div>
-          <h4>Resultados Estratégicos</h4>
-          <ul>
-            <li>Clareza estrutural sobre onde a performance colapsa e por quê.</li>
-            <li>Mapa priorizado de gargalos com impacto sistêmico.</li>
-            <li>Plano de estabilização alinhado às prioridades da liderança.</li>
-          </ul>
-        </div>
-        <div>
-          <h4>Entregáveis</h4>
-          <ul>
-            <li>Mapa executivo de gargalos e pontos críticos.</li>
-            <li>Diagnóstico de dependências, riscos e fragilidades.</li>
-            <li>Plano de estabilização de curto prazo e recomendações estratégicas.</li>
-          </ul>
-        </div>
+    <section class="outcomes">
+      <div class="section-title">
+        <h2>Resultados e Entregáveis</h2>
+        <p>Visão estratégica, métricas comparáveis e prioridades claras para decisões executivas.</p>
+      </div>
+
+      <div class="outcome-grid">
+        <ul class="outcome-list">
+          <li class="outcome-item"><span class="outcome-dot"></span>Mapa estrutural completo com dependências críticas.</li>
+          <li class="outcome-item"><span class="outcome-dot"></span>Diagnóstico dos principais gargalos de performance.</li>
+          <li class="outcome-item"><span class="outcome-dot"></span>Ranking de fricções operacionais e riscos latentes.</li>
+        </ul>
+        <ul class="outcome-list">
+          <li class="outcome-item"><span class="outcome-dot"></span>Inventário de sistemas e fluxos de dados críticos.</li>
+          <li class="outcome-item"><span class="outcome-dot"></span>Plano de estabilização e recomendações acionáveis.</li>
+          <li class="outcome-item"><span class="outcome-dot"></span>Base para transformação com foco em ROI operacional.</li>
+        </ul>
       </div>
     </section>
 
-    <section class="section">
-      <div class="contact">
-        <div>
-          <h2>Briefing estratégico</h2>
-          <p>Envie um resumo direto para iniciarmos o diagnóstico com clareza e foco.</p>
+    <section class="contact">
+      <div class="section-title">
+        <h2>Briefing Estratégico</h2>
+        <p>Consolide suas prioridades e pontos críticos com precisão. A análise inicial orienta o desenho da intervenção.</p>
+      </div>
+
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <h2>Briefing Estratégico</h2>
+          <p>Envie as informações essenciais para acelerarmos o diagnóstico e alinhar o escopo da iniciativa.</p>
         </div>
-        <form name="diagnostico-operacional" method="POST" data-netlify="true">
-          <input type="hidden" name="form-name" value="diagnostico-operacional" />
-          <div class="field-group">
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" required />
+
+        <form>
+          <div class="form-field">
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" placeholder="Seu nome" />
           </div>
-          <div class="field-group">
-            <label for="email">E-mail corporativo</label>
-            <input id="email" name="email" type="email" required />
+          <div class="form-field">
+            <label for="email">Email Corporativo</label>
+            <input id="email" name="email" type="email" placeholder="voce@empresa.com" />
           </div>
-          <div class="field-group">
-            <label for="empresa">Empresa</label>
-            <input id="empresa" name="empresa" type="text" required />
+          <div class="form-field">
+            <label for="company">Empresa</label>
+            <input id="company" name="company" type="text" placeholder="Nome da empresa" />
           </div>
-          <div class="field-group">
-            <label for="cargo">Cargo</label>
-            <input id="cargo" name="cargo" type="text" />
+          <div class="form-field">
+            <label for="message">Contexto</label>
+            <textarea id="message" name="message" rows="4" placeholder="Objetivos, desafios e urgência"></textarea>
           </div>
-          <div class="field-group">
-            <label for="pais">País</label>
-            <input id="pais" name="pais" type="text" />
+          <div class="form-actions">
+            <button type="submit">Enviar</button>
           </div>
-          <div class="field-group">
-            <label for="mensagem">Briefing</label>
-            <textarea id="mensagem" name="mensagem"></textarea>
-          </div>
-          <button class="btn-primary" type="submit">Enviar briefing</button>
         </form>
       </div>
     </section>
-
-    <footer>
-      Etheris — Diagnóstico Operacional
-    </footer>
   </main>
 
+  <footer>
+    <div class="footer-note">Etheris — Diagnóstico Operacional</div>
+  </footer>
+
   <script>
-    const heroSliced = document.getElementById('heroSliced');
-    const heroVisual = document.getElementById('heroVisual');
+    const hero = document.querySelector(".hero");
+    const slices = document.querySelector(".hero-slices");
 
-    if (heroSliced && heroVisual && window.matchMedia('(pointer: fine)').matches) {
-      const setScatter = () => {
-        heroSliced.classList.add('scatter');
-        heroVisual.classList.add('scatter');
-        clearTimeout(heroSliced._scatterTimer);
-        heroSliced._scatterTimer = setTimeout(() => {
-          heroSliced.classList.remove('scatter');
-          heroVisual.classList.remove('scatter');
-        }, 1600);
-      };
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
-      const update = (e) => {
-        const rect = heroSliced.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        heroSliced.style.setProperty('--mx', x.toFixed(3));
-        heroSliced.style.setProperty('--my', y.toFixed(3));
-        setScatter();
-      };
-
-      heroVisual.addEventListener('pointermove', update);
-      heroVisual.addEventListener('pointerleave', () => {
-        heroSliced.style.setProperty('--mx', 0);
-        heroSliced.style.setProperty('--my', 0);
-      });
-
-      let scrollTimer;
-      window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimer);
-        heroSliced.style.setProperty('--mx', 0);
-        heroSliced.style.setProperty('--my', 0);
-        setScatter();
-        scrollTimer = setTimeout(() => {
-          heroSliced.classList.remove('scatter');
-          heroVisual.classList.remove('scatter');
-        }, 900);
-      }, { passive: true });
+    function animateMagnet() {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      if (slices) {
+        slices.style.setProperty("--x", `${currentX}px`);
+        slices.style.setProperty("--y", `${currentY}px`);
+      }
+      requestAnimationFrame(animateMagnet);
     }
 
-    const cards = document.querySelectorAll('.card');
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-          }
-        });
-      }, { threshold: 0.25 });
-
-      cards.forEach((card) => observer.observe(card));
+    function handleMove(event) {
+      const rect = hero.getBoundingClientRect();
+      const dx = event.clientX - rect.left - rect.width / 2;
+      const dy = event.clientY - rect.top - rect.height / 2;
+      targetX = dx * 0.18;
+      targetY = dy * 0.18;
     }
+
+    function resetMagnet() {
+      targetX = 0;
+      targetY = 0;
+    }
+
+    if (hero) {
+      hero.addEventListener("mousemove", handleMove);
+      hero.addEventListener("mouseleave", resetMagnet);
+    }
+
+    animateMagnet();
+
+    function handleScroll() {
+      const maxScroll = Math.max(200, window.innerHeight * 0.7);
+      const progress = Math.min(1, window.scrollY / maxScroll);
+
+      document.documentElement.style.setProperty("--hero-scale", (1 + progress * 0.08).toFixed(3));
+      document.documentElement.style.setProperty("--hero-tint", (progress * 0.16).toFixed(3));
+      document.documentElement.style.setProperty("--header-bg-opacity", progress.toFixed(3));
+      document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
+
+      if (slices) {
+        slices.style.setProperty("--spread", `${progress * 24}px`);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
   </script>
 </body>
 </html>
