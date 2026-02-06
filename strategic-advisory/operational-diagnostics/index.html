@@ -15,6 +15,7 @@
       --line: #e5e5e5;
       --hero-scale: 1;
       --hero-tint: 0;
+      --hero-hue: 0deg;
       --header-bg-opacity: 0;
       --header-bg-scale: 1;
     }
@@ -82,6 +83,15 @@
       z-index: -1;
     }
 
+    .site-header.header-on::before {
+      animation: header-shift 16s ease-in-out infinite;
+    }
+
+    @keyframes header-shift {
+      0%, 100% { filter: brightness(1.08) saturate(1.05) hue-rotate(0deg); }
+      50% { filter: brightness(1.15) saturate(1.12) hue-rotate(14deg); }
+    }
+
     .brand {
       font-family: "Tenor Sans", sans-serif;
       font-size: 0.95rem;
@@ -126,7 +136,7 @@
       background: url("assets/hero/minimalis.jpg") center / cover no-repeat;
       transform: scale(var(--hero-scale));
       transition: transform 0.8s ease, filter 0.8s ease;
-      filter: brightness(calc(1 + var(--hero-tint))) saturate(1.05);
+      filter: brightness(calc(1 + var(--hero-tint))) saturate(1.08) hue-rotate(var(--hero-hue));
       z-index: 0;
     }
 
@@ -148,7 +158,7 @@
     .hero-slices {
       position: relative;
       width: 100%;
-      height: clamp(2.8rem, 7.2vw, 5.4rem);
+      height: clamp(2.4rem, 6vw, 4.2rem);
       --x: 0px;
       --y: 0px;
       --spread: 0px;
@@ -160,8 +170,8 @@
       top: 0;
       width: 100%;
       font-family: "Tenor Sans", sans-serif;
-      font-size: clamp(2.8rem, 7.2vw, 5.4rem);
-      letter-spacing: 0.08em;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       white-space: nowrap;
       color: #111;
@@ -172,11 +182,15 @@
       will-change: transform;
     }
 
-    .slice-1 { clip-path: inset(0 80% 0 0); --m: 0.25; --sx: -1; --sy: -0.4; }
-    .slice-2 { clip-path: inset(0 60% 0 20%); --m: 0.35; --sx: -0.4; --sy: 0.2; }
-    .slice-3 { clip-path: inset(0 40% 0 40%); --m: 0.45; --sx: 0; --sy: -0.2; }
-    .slice-4 { clip-path: inset(0 20% 0 60%); --m: 0.55; --sx: 0.4; --sy: 0.3; }
-    .slice-5 { clip-path: inset(0 0 0 80%);  --m: 0.65; --sx: 0.9; --sy: -0.1; }
+    .slice-1 { clip-path: inset(0 88.9% 0 0);   --m: 0.18; --sx: -1;   --sy: -0.4; }
+    .slice-2 { clip-path: inset(0 77.8% 0 11.1%); --m: 0.25; --sx: -0.6; --sy: 0.1; }
+    .slice-3 { clip-path: inset(0 66.7% 0 22.2%); --m: 0.32; --sx: -0.3; --sy: -0.2; }
+    .slice-4 { clip-path: inset(0 55.6% 0 33.3%); --m: 0.40; --sx: -0.1; --sy: 0.2; }
+    .slice-5 { clip-path: inset(0 44.4% 0 44.4%); --m: 0.48; --sx: 0.0;  --sy: -0.1; }
+    .slice-6 { clip-path: inset(0 33.3% 0 55.6%); --m: 0.56; --sx: 0.2;  --sy: 0.25; }
+    .slice-7 { clip-path: inset(0 22.2% 0 66.7%); --m: 0.64; --sx: 0.4;  --sy: -0.05; }
+    .slice-8 { clip-path: inset(0 11.1% 0 77.8%); --m: 0.72; --sx: 0.7;  --sy: 0.15; }
+    .slice-9 { clip-path: inset(0 0 0 88.9%);    --m: 0.80; --sx: 0.9;  --sy: -0.2; }
 
     section {
       padding: 4rem 4vw;
@@ -194,8 +208,12 @@
     .section-title p {
       margin: 0;
       color: var(--muted);
-      max-width: 720px;
+      max-width: 100%;
       line-height: 1.6;
+    }
+
+    .section-title .no-break {
+      white-space: nowrap;
     }
 
     .cards {
@@ -230,7 +248,6 @@
 
     .card p {
       margin: 0;
-      color: #4d4d4d;
       line-height: 1.6;
       max-height: 0;
       opacity: 0;
@@ -241,6 +258,14 @@
 
     .card p + p {
       margin-top: 0.6rem;
+    }
+
+    .card p.en {
+      color: #2b2b2b;
+    }
+
+    .card p.pt {
+      color: #4f4f4f;
     }
 
     .card:hover p,
@@ -255,37 +280,38 @@
       border-top: 1px solid var(--line);
     }
 
-    .outcome-grid {
+    .outcome-columns {
       display: grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr);
-      gap: 3rem;
-      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.6rem;
+      margin-top: 2.2rem;
     }
 
-    .outcome-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .outcome-rail {
+      border-left: 1px solid #e1e1e1;
+      padding-left: 1.4rem;
       display: grid;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .outcome-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem;
-      color: #3d3d3d;
-      line-height: 1.5;
+      position: relative;
+      padding-left: 0.4rem;
+      color: #3c3c3c;
+      line-height: 1.55;
+      font-size: 0.95rem;
     }
 
-    .outcome-dot {
-      width: 8px;
-      height: 8px;
+    .outcome-item::before {
+      content: "";
+      position: absolute;
+      left: -1.4rem;
+      top: 0.4rem;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #111;
-      margin-top: 0.45rem;
-      opacity: 0.6;
-      flex: 0 0 auto;
+      opacity: 0.35;
     }
 
     .contact {
@@ -298,15 +324,6 @@
       grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
       gap: 2.6rem;
       margin-top: 2rem;
-    }
-
-    .contact-copy h2 {
-      font-family: "Tenor Sans", sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 1.05rem;
-      margin: 0 0 0.8rem;
-      color: #1a1a1a;
     }
 
     .contact-copy p {
@@ -331,7 +348,7 @@
     .form-field input,
     .form-field textarea {
       width: 100%;
-      border: 1px solid #d2d2d2;
+      border: 1px solid #5f5f5f;
       border-radius: 10px;
       padding: 0.9rem 1rem;
       font-size: 0.95rem;
@@ -344,8 +361,8 @@
 
     .form-field input:focus,
     .form-field textarea:focus {
-      border-color: #9b9b9b;
-      outline: 1px solid #9b9b9b;
+      border-color: #8a8a8a;
+      outline: 1px solid #8a8a8a;
       box-shadow: none;
     }
 
@@ -370,19 +387,23 @@
       text-transform: uppercase;
       font-size: 0.75rem;
       color: #7a7a7a;
-      animation: footer-breathe 12s ease-in-out infinite;
+      animation: footer-breathe 14s ease-in-out infinite;
     }
 
     @keyframes footer-breathe {
-      0%, 70% { color: #7a7a7a; }
-      85% { color: #4f4f4f; }
+      0%, 50% { color: #7a7a7a; }
+      65% { color: #4a4a4a; }
+      80% { color: #7a7a7a; }
       100% { color: #7a7a7a; }
     }
 
     @media (max-width: 880px) {
-      .outcome-grid,
       .contact-inner {
         grid-template-columns: 1fr;
+      }
+
+      .section-title .no-break {
+        white-space: normal;
       }
     }
 
@@ -422,11 +443,15 @@
       <div class="hero-content">
         <p class="hero-eyebrow">Operational Diagnostics</p>
         <div class="hero-slices" aria-hidden="true">
-          <span class="hero-slice slice-1">Etheris Operational Diagnostics</span>
-          <span class="hero-slice slice-2">Etheris Operational Diagnostics</span>
-          <span class="hero-slice slice-3">Etheris Operational Diagnostics</span>
-          <span class="hero-slice slice-4">Etheris Operational Diagnostics</span>
-          <span class="hero-slice slice-5">Etheris Operational Diagnostics</span>
+          <span class="hero-slice slice-1">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-2">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-3">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-4">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-5">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-6">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-7">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-8">ETHERIS VERDADE ANTES DA DECISÃO</span>
+          <span class="hero-slice slice-9">ETHERIS VERDADE ANTES DA DECISÃO</span>
         </div>
       </div>
     </section>
@@ -434,36 +459,36 @@
     <section>
       <div class="section-title">
         <h2>Diagnóstico Operacional</h2>
-        <p>Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
+        <p class="no-break">Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
       </div>
 
       <div class="cards">
         <article class="card">
           <h3>Structural Operational Assessment</h3>
           <span class="pt-title">Diagnóstico Estrutural da Operação</span>
-          <p>Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
-          <p>Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
+          <p class="en">Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies.</p>
+          <p class="pt">Avaliação abrangente do desenho organizacional, fluxos operacionais e dependências sistêmicas, revelando ineficiências estruturais.</p>
         </article>
 
         <article class="card">
           <h3>Process and Critical Flow Analysis</h3>
           <span class="pt-title">Análise de Processos e Fluxos Críticos</span>
-          <p>Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
-          <p>Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
+          <p class="en">Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction.</p>
+          <p class="pt">Mapeamento e análise detalhada de processos ponta a ponta, identificando gargalos, redundâncias e pontos de atrito operacional.</p>
         </article>
 
         <article class="card">
           <h3>Systems, Data &amp; Dependency Evaluation</h3>
           <span class="pt-title">Avaliação de Sistemas, Dados e Dependências</span>
-          <p>Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
-          <p>Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
+          <p class="en">Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance.</p>
+          <p class="pt">Revisão técnica de infraestrutura de TI, integração de sistemas, pipelines de dados e dependências críticas de pessoas que impactam a performance.</p>
         </article>
 
         <article class="card">
           <h3>Operational Risk &amp; Bottleneck Identification</h3>
           <span class="pt-title">Identificação de Riscos e Gargalos Operacionais</span>
-          <p>Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
-          <p>Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
+          <p class="en">Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization.</p>
+          <p class="pt">Avaliação de vulnerabilidades operacionais, exposição a riscos e ineficiências, oferecendo insights acionáveis para estabilização.</p>
         </article>
       </div>
     </section>
@@ -474,17 +499,17 @@
         <p>Visão estratégica, métricas comparáveis e prioridades claras para decisões executivas.</p>
       </div>
 
-      <div class="outcome-grid">
-        <ul class="outcome-list">
-          <li class="outcome-item"><span class="outcome-dot"></span>Mapa estrutural completo com dependências críticas.</li>
-          <li class="outcome-item"><span class="outcome-dot"></span>Diagnóstico dos principais gargalos de performance.</li>
-          <li class="outcome-item"><span class="outcome-dot"></span>Ranking de fricções operacionais e riscos latentes.</li>
-        </ul>
-        <ul class="outcome-list">
-          <li class="outcome-item"><span class="outcome-dot"></span>Inventário de sistemas e fluxos de dados críticos.</li>
-          <li class="outcome-item"><span class="outcome-dot"></span>Plano de estabilização e recomendações acionáveis.</li>
-          <li class="outcome-item"><span class="outcome-dot"></span>Base para transformação com foco em ROI operacional.</li>
-        </ul>
+      <div class="outcome-columns">
+        <div class="outcome-rail">
+          <div class="outcome-item">Mapa estrutural completo com dependências críticas.</div>
+          <div class="outcome-item">Diagnóstico dos principais gargalos de performance.</div>
+          <div class="outcome-item">Ranking de fricções operacionais e riscos latentes.</div>
+        </div>
+        <div class="outcome-rail">
+          <div class="outcome-item">Inventário de sistemas e fluxos de dados críticos.</div>
+          <div class="outcome-item">Plano de estabilização e recomendações acionáveis.</div>
+          <div class="outcome-item">Base para transformação com foco em ROI operacional.</div>
+        </div>
       </div>
     </section>
 
@@ -496,7 +521,6 @@
 
       <div class="contact-inner">
         <div class="contact-copy">
-          <h2>Briefing Estratégico</h2>
           <p>Envie as informações essenciais para acelerarmos o diagnóstico e alinhar o escopo da iniciativa.</p>
         </div>
 
@@ -532,6 +556,7 @@
   <script>
     const hero = document.querySelector(".hero");
     const slices = document.querySelector(".hero-slices");
+    const header = document.querySelector(".site-header");
 
     let targetX = 0;
     let targetY = 0;
@@ -539,8 +564,8 @@
     let currentY = 0;
 
     function animateMagnet() {
-      currentX += (targetX - currentX) * 0.08;
-      currentY += (targetY - currentY) * 0.08;
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
       if (slices) {
         slices.style.setProperty("--x", `${currentX}px`);
         slices.style.setProperty("--y", `${currentY}px`);
@@ -552,8 +577,8 @@
       const rect = hero.getBoundingClientRect();
       const dx = event.clientX - rect.left - rect.width / 2;
       const dy = event.clientY - rect.top - rect.height / 2;
-      targetX = dx * 0.18;
-      targetY = dy * 0.18;
+      targetX = dx * 0.14;
+      targetY = dy * 0.14;
     }
 
     function resetMagnet() {
@@ -572,13 +597,18 @@
       const maxScroll = Math.max(200, window.innerHeight * 0.7);
       const progress = Math.min(1, window.scrollY / maxScroll);
 
-      document.documentElement.style.setProperty("--hero-scale", (1 + progress * 0.08).toFixed(3));
-      document.documentElement.style.setProperty("--hero-tint", (progress * 0.16).toFixed(3));
+      document.documentElement.style.setProperty("--hero-scale", (1 + progress * 0.1).toFixed(3));
+      document.documentElement.style.setProperty("--hero-tint", (progress * 0.18).toFixed(3));
+      document.documentElement.style.setProperty("--hero-hue", `${(progress * 12).toFixed(2)}deg`);
       document.documentElement.style.setProperty("--header-bg-opacity", progress.toFixed(3));
       document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
 
       if (slices) {
-        slices.style.setProperty("--spread", `${progress * 24}px`);
+        slices.style.setProperty("--spread", `${progress * 22}px`);
+      }
+
+      if (header) {
+        header.classList.toggle("header-on", progress > 0.02);
       }
     }
 
