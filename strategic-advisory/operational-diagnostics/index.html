@@ -15,7 +15,7 @@
       --hero-scale: 1;
       --hero-tint: 0;
       --hero-hue: 0deg;
-      --header-bg-opacity: 1;
+      --header-bg-opacity: 0;
       --header-bg-scale: 1.02;
       --field-border: #b9d0de;
       --field-border-focus: #9fb9c9;
@@ -53,11 +53,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.2rem 4vw;
-      background: rgba(255, 255, 255, calc(1 - var(--header-bg-opacity)));
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      transition: background 0.5s ease;
+      transition: background 0.6s ease;
     }
 
     .site-header::before {
@@ -67,8 +67,8 @@
       background: url("assets/hero/minimalis.jpg") center / cover no-repeat;
       opacity: var(--header-bg-opacity);
       transform: scale(var(--header-bg-scale));
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      filter: brightness(1.08) saturate(1.08);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      filter: brightness(1.16) saturate(1.05);
       z-index: -1;
     }
 
@@ -78,10 +78,10 @@
 
     @keyframes tint-shift {
       0%, 100% {
-        filter: brightness(calc(1 + var(--hero-tint))) saturate(1.08) hue-rotate(0deg);
+        filter: brightness(calc(1.04 + var(--hero-tint))) saturate(1.06) hue-rotate(0deg);
       }
       50% {
-        filter: brightness(calc(1.12 + var(--hero-tint))) saturate(1.18) hue-rotate(14deg);
+        filter: brightness(calc(1.15 + var(--hero-tint))) saturate(1.16) hue-rotate(14deg);
       }
     }
 
@@ -246,68 +246,52 @@
       color: #4f4f4f;
     }
 
-    .card p + p { margin-top: 0.6rem; }
+    .card-extra {
+      margin-top: 0.9rem;
+      max-height: 0;
+      opacity: 0;
+      transform: translateX(-12px);
+      overflow: hidden;
+      transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
+    }
+
+    .card-extra-title {
+      display: block;
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      color: #111;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-extra ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.8rem;
+      display: grid;
+      gap: 0.45rem;
+      color: #3d3d3d;
+      font-size: 0.92rem;
+    }
+
+    .card-extra li {
+      padding-left: 0.6rem;
+      border-left: 2px solid #111;
+    }
 
     .card:hover p,
-    .card:focus-within p {
-      max-height: 220px;
+    .card:focus-within p,
+    .card:hover .card-extra,
+    .card:focus-within .card-extra {
+      max-height: 320px;
       opacity: 1;
       transform: translateX(0);
       transition-duration: 1.6s, 1.2s, 1.6s;
     }
 
-    .results-section {
-      margin-top: 3rem;
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      max-width: 1100px;
-      margin: 1.8rem auto 0;
-    }
-
-    .results-card {
-      border: 1px solid #e6e6e6;
-      border-radius: 18px;
-      padding: 1.6rem 1.8rem;
-      background: #fff;
-      transition: transform 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
-    }
-
-    .results-card:hover {
-      transform: translateY(-6px);
-      border-color: #d9d9d9;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.06);
-    }
-
-    .results-card h3 {
-      font-family: "Tenor Sans", sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.95rem;
-      margin: 0 0 1rem;
-      color: #111;
-    }
-
-    .results-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 0.7rem;
-      color: #3d3d3d;
-      font-size: 0.95rem;
-    }
-
-    .results-card li {
-      padding-left: 0.7rem;
-      border-left: 2px solid #111;
-    }
-
     .contact {
-      padding-bottom: 4rem;
+      padding-bottom: 3rem;
     }
 
     .contact-inner {
@@ -373,7 +357,7 @@
     }
 
     footer {
-      padding: 2.2rem 4vw 2.4rem;
+      padding: 2rem 4vw 2.2rem;
     }
 
     .footer-note {
@@ -411,7 +395,8 @@
     }
 
     @media (hover: none) {
-      .card p {
+      .card p,
+      .card-extra {
         max-height: none;
         opacity: 1;
         transform: none;
@@ -448,56 +433,78 @@
         <article class="card">
           <h3>Diagnóstico Estrutural da Operação</h3>
           <span class="pt-title">ARQUITETURA, FLUXOS E DEPENDÊNCIAS</span>
-          <!-- EN: Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies. -->
           <p>Avaliação do desenho organizacional e das dependências sistêmicas para revelar ineficiências estruturais.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>Leitura clara das fragilidades estruturais.</li>
+              <li>Visão de dependências críticas.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>Mapa estrutural executivo.</li>
+              <li>Diagnóstico de dependências.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Análise de Processos e Fluxos Críticos</h3>
           <span class="pt-title">PONTA A PONTA, SEM RUÍDO</span>
-          <!-- EN: Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction. -->
           <p>Mapeamento detalhado de processos para identificar gargalos, redundâncias e fricções operacionais.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>Identificação de gargalos sistêmicos.</li>
+              <li>Eliminação de redundâncias críticas.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>Mapa de fluxo ponta a ponta.</li>
+              <li>Ranking de fricções operacionais.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Avaliação de Sistemas, Dados e Dependências</h3>
           <span class="pt-title">TECNOLOGIA COMO ALAVANCA</span>
-          <!-- EN: Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance. -->
           <p>Revisão de infraestrutura, integrações e pipelines que sustentam ou limitam a performance.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>Visibilidade completa de pipelines críticos.</li>
+              <li>Diagnóstico da infraestrutura real.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>Inventário de sistemas e dados.</li>
+              <li>Matriz de dependências tecnológicas.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Identificação de Riscos e Gargalos Operacionais</h3>
           <span class="pt-title">EXPOSIÇÃO, IMPACTOS E ESTABILIZAÇÃO</span>
-          <!-- EN: Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization. -->
           <p>Diagnóstico de vulnerabilidades e riscos com foco em estabilização rápida e segura.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>Riscos críticos priorizados.</li>
+              <li>Plano claro de estabilização.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>Mapa de riscos operacionais.</li>
+              <li>Plano de estabilização imediato.</li>
+            </ul>
+          </div>
         </article>
-      </div>
-    </section>
-
-    <section class="results-section">
-      <div class="section-title">
-        <h2>Resultados e Entregáveis</h2>
-      </div>
-
-      <div class="results-grid">
-        <div class="results-card">
-          <h3>Resultados</h3>
-          <ul>
-            <li>Clareza estrutural sobre onde a performance colapsa e por quê.</li>
-            <li>Mapa priorizado de gargalos com impacto sistêmico.</li>
-            <li>Plano de estabilização alinhado às prioridades da liderança.</li>
-          </ul>
-        </div>
-
-        <div class="results-card">
-          <h3>Entregáveis</h3>
-          <ul>
-            <li>Mapa executivo de gargalos e pontos críticos.</li>
-            <li>Diagnóstico de dependências, riscos e fragilidades.</li>
-            <li>Plano de estabilização de curto prazo e recomendações estratégicas.</li>
-          </ul>
-        </div>
       </div>
     </section>
 
@@ -641,14 +648,13 @@
       const maxScroll = Math.max(200, window.innerHeight * 0.7);
       const progress = Math.min(1, window.scrollY / maxScroll);
 
-      const headerOpacity = 1 - progress;
       document.documentElement.style.setProperty("--hero-scale", (1 + progress * 0.1).toFixed(3));
       document.documentElement.style.setProperty("--hero-tint", (progress * 0.18).toFixed(3));
       document.documentElement.style.setProperty("--hero-hue", `${(progress * 12).toFixed(2)}deg`);
-      document.documentElement.style.setProperty("--header-bg-opacity", headerOpacity.toFixed(3));
-      document.documentElement.style.setProperty("--header-bg-scale", (1 + headerOpacity * 0.02).toFixed(3));
+      document.documentElement.style.setProperty("--header-bg-opacity", progress.toFixed(3));
+      document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
 
-      header.classList.toggle("header-on", headerOpacity > 0.02);
+      header.classList.toggle("header-on", progress > 0.08);
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
