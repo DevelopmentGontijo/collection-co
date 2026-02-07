@@ -244,6 +244,8 @@
       overflow: hidden;
       transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
       color: #4f4f4f;
+      font-family: "Tenor Sans", sans-serif;
+      font-size: 0.95rem;
     }
 
     .card-extra {
@@ -273,6 +275,7 @@
       gap: 0.45rem;
       color: #3d3d3d;
       font-size: 0.92rem;
+      font-family: "Tenor Sans", sans-serif;
     }
 
     .card-extra li {
@@ -291,6 +294,7 @@
     }
 
     .contact {
+      padding-top: 2.6rem;
       padding-bottom: 3rem;
     }
 
@@ -298,8 +302,22 @@
       display: grid;
       grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
       gap: 1rem;
-      margin-top: 0.4rem;
+      margin-top: 0.25rem;
       align-items: start;
+    }
+
+    .briefing-title {
+      animation: none;
+    }
+
+    .briefing-title.blink-once {
+      animation: briefing-blink 3.2s ease;
+    }
+
+    @keyframes briefing-blink {
+      0% { opacity: 0.2; filter: blur(6px); }
+      55% { opacity: 1; filter: blur(0); }
+      100% { opacity: 1; filter: blur(0); }
     }
 
     .contact-copy p {
@@ -311,6 +329,17 @@
     form {
       display: grid;
       gap: 0.9rem;
+    }
+
+    .briefing-form.pulse-once input,
+    .briefing-form.pulse-once textarea {
+      animation: field-loop 2.8s ease;
+    }
+
+    @keyframes field-loop {
+      0% { border-color: var(--field-border); }
+      50% { border-color: var(--field-border-focus); }
+      100% { border-color: var(--field-border); }
     }
 
     .field-group {
@@ -510,7 +539,7 @@
 
     <section class="contact">
       <div class="section-title">
-        <h2>Briefing Estratégico</h2>
+        <h2 class="briefing-title">Briefing Estratégico</h2>
       </div>
 
       <div class="contact-inner">
@@ -518,7 +547,7 @@
           <p>Envie um briefing direto para alinharmos escopo, prioridade e profundidade do diagnóstico.</p>
         </div>
 
-        <form name="diagnostico-operacional" method="POST" data-netlify="true">
+        <form class="briefing-form" name="diagnostico-operacional" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="diagnostico-operacional" />
           <div class="field-group">
             <label for="nome">Nome</label>
@@ -558,6 +587,8 @@
     const hero = document.querySelector(".hero");
     const heroText = document.querySelector(".hero-text");
     const header = document.querySelector(".site-header");
+    const briefingTitle = document.querySelector(".briefing-title");
+    const briefingForm = document.querySelector(".briefing-form");
 
     function wrapGlyphs(span) {
       const text = span.textContent;
@@ -578,6 +609,7 @@
     let targetMX = 0, targetMY = 0;
     let currentMX = 0, currentMY = 0;
     let idleTimer = null;
+    let bottomTriggered = false;
 
     function resetScatter() {
       heroText.classList.remove("scattering");
@@ -644,6 +676,18 @@
 
     hero.addEventListener("touchend", resetScatter);
 
+    function triggerBriefingBlink() {
+      briefingTitle.classList.remove("blink-once");
+      briefingForm.classList.remove("pulse-once");
+      void briefingTitle.offsetWidth;
+      briefingTitle.classList.add("blink-once");
+      briefingForm.classList.add("pulse-once");
+      setTimeout(() => {
+        briefingTitle.classList.remove("blink-once");
+        briefingForm.classList.remove("pulse-once");
+      }, 3200);
+    }
+
     function handleScroll() {
       const maxScroll = Math.max(200, window.innerHeight * 0.7);
       const progress = Math.min(1, window.scrollY / maxScroll);
@@ -655,6 +699,15 @@
       document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
 
       header.classList.toggle("header-on", progress > 0.08);
+
+      const bottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 2);
+      if (bottom && !bottomTriggered) {
+        bottomTriggered = true;
+        triggerBriefingBlink();
+      }
+      if (!bottom) {
+        bottomTriggered = false;
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
