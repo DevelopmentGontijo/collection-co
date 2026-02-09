@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -302,6 +302,69 @@
       padding-bottom: 2rem;
     }
 
+    .contact-inner {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
+      gap: 1rem;
+      margin-top: 0.25rem;
+      align-items: start;
+    }
+
+    .contact-copy p {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    form {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--field-border);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.95rem;
+      background: #fff;
+      color: #111;
+      outline: none;
+      box-shadow: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--field-border-focus);
+      outline: 1px solid var(--field-border-focus);
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .btn-primary {
+      border: none;
+      background: #111;
+      color: #fff;
+      padding: 0.75rem 1.6rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      cursor: pointer;
+      justify-self: start;
+    }
+
     footer {
       padding: 1.4rem 4vw 1.6rem;
     }
@@ -379,7 +442,6 @@
             </ul>
           </div>
         </article>
-
         <article class="card">
           <h3>Análise de Processos e Fluxos Críticos</h3>
           <span class="pt-title">PONTA A PONTA, SEM RUÍDO</span>
@@ -397,7 +459,6 @@
             </ul>
           </div>
         </article>
-
         <article class="card">
           <h3>Avaliação de Sistemas, Dados e Dependências</h3>
           <span class="pt-title">TECNOLOGIA COMO ALAVANCA</span>
@@ -415,7 +476,6 @@
             </ul>
           </div>
         </article>
-
         <article class="card">
           <h3>Identificação de Riscos e Gargalos Operacionais</h3>
           <span class="pt-title">EXPOSIÇÃO, IMPACTOS E ESTABILIZAÇÃO</span>
@@ -433,6 +493,47 @@
             </ul>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="contact">
+      <div class="section-title">
+        <h2>Briefing Estratégico</h2>
+      </div>
+
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <p>Envie um briefing direto para alinharmos escopo, prioridade e profundidade do diagnóstico.</p>
+        </div>
+
+        <form name="diagnostico-operacional" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="diagnostico-operacional" />
+          <div class="field-group">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" required />
+          </div>
+          <div class="field-group">
+            <label for="email">E-mail corporativo</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div class="field-group">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" required />
+          </div>
+          <div class="field-group">
+            <label for="cargo">Cargo</label>
+            <input id="cargo" name="cargo" type="text" />
+          </div>
+          <div class="field-group">
+            <label for="pais">País</label>
+            <input id="pais" name="pais" type="text" />
+          </div>
+          <div class="field-group">
+            <label for="mensagem">Briefing</label>
+            <textarea id="mensagem" name="mensagem"></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Enviar briefing</button>
+        </form>
       </div>
     </section>
   </main>
@@ -469,7 +570,6 @@
     let pointer = { x: 0, y: 0 };
     let active = false;
     let idleTimer = null;
-    let rafMove = false;
 
     function cacheGlyphs() {
       glyphData.forEach(d => {
@@ -496,23 +596,6 @@
       idleTimer = setTimeout(resetScatter, 7000);
     }
 
-    function onPointerMove(x, y) {
-      if (rafMove) return;
-      rafMove = true;
-      requestAnimationFrame(() => {
-        rafMove = false;
-        activatePointer(x, y);
-      });
-    }
-
-    hero.addEventListener("mousemove", (e) => onPointerMove(e.clientX, e.clientY));
-    hero.addEventListener("mouseleave", resetScatter);
-    hero.addEventListener("touchmove", (e) => {
-      if (!e.touches || !e.touches[0]) return;
-      onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
-    hero.addEventListener("touchend", resetScatter);
-
     function animate() {
       smoothX += (pointer.x - smoothX) * 0.18;
       smoothY += (pointer.y - smoothY) * 0.18;
@@ -521,18 +604,18 @@
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
 
-      targetMX = (smoothX - cx) * 0.055;
-      targetMY = (smoothY - cy) * 0.055;
+      targetMX = (smoothX - cx) * 0.05;
+      targetMY = (smoothY - cy) * 0.05;
 
-      currentMX += (targetMX - currentMX) * 0.1;
-      currentMY += (targetMY - currentMY) * 0.1;
+      currentMX += (targetMX - currentMX) * 0.12;
+      currentMY += (targetMY - currentMY) * 0.12;
 
       heroText.style.setProperty("--mx", `${currentMX}px`);
       heroText.style.setProperty("--my", `${currentMY}px`);
 
       if (active) {
-        const radius = 200;
-        const maxMove = 28;
+        const radius = 210;
+        const maxMove = 26;
 
         glyphData.forEach(d => {
           const gx = d.x + currentMX;
@@ -544,7 +627,7 @@
           const move = force * maxMove;
           const tx = (dx / dist) * move;
           const ty = (dy / dist) * move;
-          const scale = 1 - force * 0.28;
+          const scale = 1 - force * 0.25;
           d.el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
         });
       }
@@ -553,6 +636,15 @@
     }
     animate();
 
+    hero.addEventListener("mousemove", (e) => activatePointer(e.clientX, e.clientY));
+    hero.addEventListener("mouseleave", resetScatter);
+    hero.addEventListener("touchmove", (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      const t = e.touches[0];
+      activatePointer(t.clientX, t.clientY);
+    }, { passive: true });
+    hero.addEventListener("touchend", resetScatter);
+
     function handleScroll() {
       const heroMax = Math.max(200, window.innerHeight * 0.7);
       const heroProgress = Math.min(1, window.scrollY / heroMax);
@@ -560,8 +652,8 @@
       const docMax = document.documentElement.scrollHeight - window.innerHeight;
       const pageProgress = docMax > 0 ? Math.min(1, window.scrollY / docMax) : 0;
 
-      const headerStart = 0.85;
-      const headerEnd = 0.98;
+      const headerStart = 0.9;
+      const headerEnd = 0.99;
       const headerOpacity = Math.min(1, Math.max(0, (pageProgress - headerStart) / (headerEnd - headerStart)));
 
       document.documentElement.style.setProperty("--hero-scale", (1 + heroProgress * 0.1).toFixed(3));
