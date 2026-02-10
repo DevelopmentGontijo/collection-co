@@ -58,7 +58,11 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      transition: background 0.6s ease;
+      transition: background 0.6s ease, padding 0.6s ease;
+    }
+
+    .site-header.compact {
+      padding: 0.8rem 4vw;
     }
 
     .site-header::before {
@@ -164,7 +168,7 @@
       align-items: baseline;
       gap: 0.35em;
       transform: translate(var(--mx, 0px), var(--my, 0px));
-      transition: transform 1.4s ease;
+      transition: transform 1.6s ease;
       will-change: transform;
     }
 
@@ -173,12 +177,12 @@
 
     .glyph {
       display: inline-block;
-      transition: transform 1.2s ease;
+      transition: transform 1.35s ease;
       will-change: transform;
     }
 
     .hero-text.scattering .glyph {
-      transition-duration: 0.5s;
+      transition-duration: 0.55s;
     }
 
     section { padding: 4rem 4vw; }
@@ -300,12 +304,12 @@
 
     .contact {
       padding-top: 2.2rem;
-      padding-bottom: 1.6rem;
+      padding-bottom: 0.8rem;
       transition: min-height 1s ease, padding 1s ease;
     }
 
     .contact.focus {
-      min-height: calc(100vh - 80px);
+      min-height: calc(100vh - 72px);
       padding-top: 1.2rem;
       padding-bottom: 1.2rem;
       display: flex;
@@ -319,6 +323,20 @@
       gap: 1rem;
       margin-top: 0.25rem;
       align-items: start;
+    }
+
+    .briefing-title {
+      animation: none;
+    }
+
+    .briefing-title.blink-once {
+      animation: briefing-once 3.4s ease;
+    }
+
+    @keyframes briefing-once {
+      0% { opacity: 0.2; filter: blur(6px); }
+      40% { opacity: 1; filter: blur(0); }
+      100% { opacity: 1; filter: blur(0); }
     }
 
     .contact-copy p {
@@ -377,7 +395,7 @@
     }
 
     footer {
-      padding: 1.2rem 4vw 1.6rem;
+      padding: 0.6rem 4vw 1.2rem;
     }
 
     .footer-note {
@@ -530,7 +548,7 @@
 
     <section class="contact">
       <div class="section-title">
-        <h2>Briefing Estratégico</h2>
+        <h2 class="briefing-title">Briefing Estratégico</h2>
       </div>
 
       <div class="contact-inner">
@@ -578,6 +596,7 @@
     const hero = document.querySelector(".hero");
     const heroText = document.querySelector(".hero-text");
     const header = document.querySelector(".site-header");
+    const briefingTitle = document.querySelector(".briefing-title");
     const contactSection = document.querySelector(".contact");
 
     function wrapGlyphs(span) {
@@ -639,18 +658,18 @@
     }
 
     function animate() {
-      smooth.x += (pointer.x - smooth.x) * 0.14;
-      smooth.y += (pointer.y - smooth.y) * 0.14;
+      smooth.x += (pointer.x - smooth.x) * 0.1;
+      smooth.y += (pointer.y - smooth.y) * 0.1;
 
-      textCurrentX += (textTargetX - textCurrentX) * 0.06;
-      textCurrentY += (textTargetY - textCurrentY) * 0.06;
+      textCurrentX += (textTargetX - textCurrentX) * 0.04;
+      textCurrentY += (textTargetY - textCurrentY) * 0.04;
 
       heroText.style.setProperty("--mx", `${textCurrentX}px`);
       heroText.style.setProperty("--my", `${textCurrentY}px`);
 
       if (active) {
-        const radius = 220;
-        const maxMove = 22;
+        const radius = 260;
+        const maxMove = 16;
 
         glyphData.forEach(d => {
           const dx = d.x - smooth.x;
@@ -661,7 +680,7 @@
 
           const tx = (dx / dist) * move;
           const ty = (dy / dist) * move;
-          const scale = 1 - force * 0.22;
+          const scale = 1 - force * 0.18;
 
           d.el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
         });
@@ -674,8 +693,8 @@
       const rect = hero.getBoundingClientRect();
       const dx = event.clientX - (rect.left + rect.width / 2);
       const dy = event.clientY - (rect.top + rect.height / 2);
-      textTargetX = dx * 0.03;
-      textTargetY = dy * 0.03;
+      textTargetX = dx * 0.02;
+      textTargetY = dy * 0.02;
       activatePointer(event.clientX, event.clientY);
     }
 
@@ -690,17 +709,7 @@
 
     hero.addEventListener("touchend", resetScatter);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          contactSection.classList.add("focus");
-        } else {
-          contactSection.classList.remove("focus");
-        }
-      });
-    }, { threshold: 0.6 });
-
-    observer.observe(contactSection);
+    let bottomTriggered = false;
 
     function handleScroll() {
       const maxScroll = Math.max(200, window.innerHeight * 0.7);
@@ -711,14 +720,33 @@
       document.documentElement.style.setProperty("--hero-hue", `${(progress * 12).toFixed(2)}deg`);
 
       const pageMax = document.documentElement.scrollHeight - window.innerHeight;
-      const start = pageMax * 0.84;
-      const headerProgress = pageMax > 0 ? Math.min(1, Math.max(0, (window.scrollY - start) / (pageMax - start))) : 0;
+      const bottomDist = pageMax - window.scrollY;
+      const headerProgress = pageMax > 0
+        ? Math.min(1, Math.max(0, 1 - bottomDist / (window.innerHeight * 0.6)))
+        : 0;
 
       document.documentElement.style.setProperty("--header-bg-opacity", headerProgress.toFixed(3));
       document.documentElement.style.setProperty("--header-bg-scale", (1 + headerProgress * 0.02).toFixed(3));
       document.documentElement.style.setProperty("--header-bright", (headerProgress * 0.18).toFixed(3));
 
       header.classList.toggle("header-on", headerProgress > 0.02);
+
+      const atBottom = bottomDist <= 2;
+      if (atBottom) {
+        contactSection.classList.add("focus");
+        header.classList.add("compact");
+        if (!bottomTriggered) {
+          bottomTriggered = true;
+          briefingTitle.classList.remove("blink-once");
+          void briefingTitle.offsetWidth;
+          briefingTitle.classList.add("blink-once");
+          setTimeout(() => briefingTitle.classList.remove("blink-once"), 3500);
+        }
+      } else {
+        contactSection.classList.remove("focus");
+        header.classList.remove("compact");
+        bottomTriggered = false;
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
