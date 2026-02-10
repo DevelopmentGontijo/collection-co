@@ -177,6 +177,14 @@
       transition: none;
     }
 
+    nav#top-menu .menu-item.line-reverse > .menu-link::after {
+      left: auto;
+      right: 0;
+      transform: none;
+      transform-origin: right center;
+      animation: line-reverse-fade 1.4s ease forwards;
+    }
+
     nav#top-menu .dropdown a::after {
       display: block;
     }
@@ -256,6 +264,10 @@
       width: 0%;
       height: 1px;
       background-color: #111;
+    }
+
+    nav#top-menu .dropdown-inner a::after {
+      display: none;
     }
 
     nav#top-menu .dropdown-inner a.line-flash-item::after {
@@ -431,6 +443,12 @@
       0% { width: 0%; }
       50% { width: 70%; }
       100% { width: 0%; }
+    }
+
+    @keyframes line-reverse-fade {
+      0% { width: 0%; opacity: 1; }
+      70% { width: 80%; opacity: 1; }
+      100% { width: 80%; opacity: 0; }
     }
 
     @keyframes separator-scan {
@@ -699,6 +717,7 @@
     const MOBILE_AUTO_CLOSE_DELAY = 10000;
     const CASCADE_OUT_TOTAL = 900;
     const LINE_FLASH_DURATION = 1200;
+    const LINE_REVERSE_DURATION = 1400;
     const SUBMENU_LINE_SEQ_TOTAL = 3200;
     const SEPARATOR_CLOSE_DURATION = 450;
     const DESKTOP_CLOSE_TOTAL = 1900;
@@ -976,12 +995,15 @@
         desktopSeparator.classList.add("closing");
       }
       setTimeout(() => {
+        desktopMenuItem.classList.remove("line-open");
         desktopMenuItem.classList.remove("line-close");
-        desktopMenuItem.classList.add("line-open");
+        desktopMenuItem.classList.remove("line-flash");
+        desktopMenuItem.classList.remove("line-reverse");
+        void desktopMenuItem.offsetWidth;
+        desktopMenuItem.classList.add("line-reverse");
         setTimeout(() => {
-          desktopMenuItem.classList.remove("line-open");
-          desktopMenuItem.classList.add("line-close");
-        }, MENU_LINE_HOLD_DURATION);
+          desktopMenuItem.classList.remove("line-reverse");
+        }, LINE_REVERSE_DURATION);
       }, SEPARATOR_CLOSE_DURATION + MENU_LINE_OPEN_DELAY);
       desktopCloseTimer = setTimeout(() => {
         desktopMenuItem.classList.remove("open");
@@ -996,7 +1018,6 @@
       if (!desktopMenuItem) return;
       if (desktopMenuItem.classList.contains("open")) return;
       clearDesktopTimers();
-      triggerLineFlash();
       desktopOpenTimer = setTimeout(() => {
         openDesktopDropdown();
       }, LINE_OPEN_DURATION + LINE_HOLD_DURATION);
