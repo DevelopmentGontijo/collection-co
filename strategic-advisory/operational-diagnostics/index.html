@@ -16,7 +16,7 @@
       --hero-tint: 0;
       --hero-hue: 0deg;
       --header-bg-opacity: 0;
-      --header-bg-scale: 1;
+      --header-bg-scale: 1.02;
       --field-border: #b9d0de;
       --field-border-focus: #9fb9c9;
     }
@@ -53,11 +53,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.2rem 4vw;
-      background: rgba(255, 255, 255, calc(1 - var(--header-bg-opacity)));
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      transition: background 0.5s ease;
+      transition: background 0.6s ease;
     }
 
     .site-header::before {
@@ -67,8 +67,8 @@
       background: url("assets/hero/minimalis.jpg") center / cover no-repeat;
       opacity: var(--header-bg-opacity);
       transform: scale(var(--header-bg-scale));
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      filter: brightness(1) saturate(1) hue-rotate(var(--hero-hue));
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      filter: brightness(1.2) saturate(1.04);
       z-index: -1;
     }
 
@@ -78,10 +78,10 @@
 
     @keyframes tint-shift {
       0%, 100% {
-        filter: brightness(1) saturate(1.05) hue-rotate(0deg);
+        filter: brightness(calc(1.04 + var(--hero-tint))) saturate(1.06) hue-rotate(0deg);
       }
       50% {
-        filter: brightness(1.06) saturate(1.12) hue-rotate(14deg);
+        filter: brightness(calc(1.15 + var(--hero-tint))) saturate(1.16) hue-rotate(14deg);
       }
     }
 
@@ -111,8 +111,8 @@
 
     .hero {
       position: relative;
-      min-height: 80vh;
-      padding: 8rem 4vw 4.5rem;
+      min-height: 72vh;
+      padding: 7rem 4vw 4rem;
       display: flex;
       align-items: flex-end;
       overflow: hidden;
@@ -145,21 +145,13 @@
       color: #5f5f5f;
     }
 
-    .hero-slices {
+    .hero-magnet {
       position: relative;
       width: 100%;
       height: clamp(2.2rem, 5.4vw, 3.8rem);
-      --x: 0px;
-      --y: 0px;
-      --spread: 0px;
-      --slice-count: 9;
     }
 
-    .hero-slice {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
+    .hero-text {
       font-family: "Tenor Sans", sans-serif;
       font-size: clamp(2.2rem, 5.4vw, 3.8rem);
       letter-spacing: 0.06em;
@@ -167,21 +159,26 @@
       white-space: nowrap;
       color: #111;
       line-height: 1;
-      clip-path: inset(
-        0
-        calc((var(--slice-count) - var(--i) - 1) * (100% / var(--slice-count)))
-        0
-        calc(var(--i) * (100% / var(--slice-count)))
-      );
-      transform: translate(
-        calc(var(--x) * var(--m) + var(--spread) * var(--sx)),
-        calc(var(--y) * var(--m) + var(--spread) * var(--sy))
-      );
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.35em;
+      transform: translate(var(--mx, 0px), var(--my, 0px));
+      transition: transform 1.2s ease;
       will-change: transform;
     }
 
-    .hero-slice .word-main { font-size: 1em; display: inline-block; }
-    .hero-slice .word-sub  { font-size: 0.77em; display: inline-block; margin-left: 0.35em; }
+    .word-main { font-size: 1em; }
+    .word-sub { font-size: 0.77em; }
+
+    .glyph {
+      display: inline-block;
+      transition: transform 0.8s ease;
+      will-change: transform;
+    }
+
+    .hero-text.scattering .glyph {
+      transition-duration: 0.35s;
+    }
 
     section { padding: 4rem 4vw; }
 
@@ -199,7 +196,13 @@
       color: var(--muted);
       max-width: 100%;
       line-height: 1.6;
-      white-space: nowrap;
+    }
+
+    .lead-submenu {
+      font-family: "Tenor Sans", sans-serif;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      text-transform: uppercase;
     }
 
     .cards {
@@ -226,9 +229,10 @@
       display: block;
       color: #757575;
       font-size: 0.8rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: 0.6rem;
+      font-family: "Tenor Sans", sans-serif;
     }
 
     .card p {
@@ -240,84 +244,96 @@
       overflow: hidden;
       transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
       color: #4f4f4f;
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      font-size: 0.86rem;
+      letter-spacing: 0.06em;
     }
 
-    .card p + p { margin-top: 0.6rem; }
+    .card-extra {
+      margin-top: 0.9rem;
+      max-height: 0;
+      opacity: 0;
+      transform: translateX(-12px);
+      overflow: hidden;
+      transition: max-height 1.2s ease, opacity 1s ease, transform 1.2s ease;
+    }
+
+    .card-extra-title {
+      display: block;
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.7rem;
+      color: #111;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-extra ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.8rem;
+      display: grid;
+      gap: 0.45rem;
+      color: #3d3d3d;
+      font-size: 0.76rem;
+      font-family: "Tenor Sans", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .card-extra li {
+      padding-left: 0.6rem;
+      border-left: 2px solid #111;
+    }
 
     .card:hover p,
-    .card:focus-within p {
-      max-height: 220px;
+    .card:focus-within p,
+    .card:hover .card-extra,
+    .card:focus-within .card-extra {
+      max-height: 320px;
       opacity: 1;
       transform: translateX(0);
       transition-duration: 1.6s, 1.2s, 1.6s;
     }
 
-    .drops {
-      display: grid;
-      gap: 1.6rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .drop {
-      border: none;
-    }
-
-    .drop summary {
-      list-style: none;
-      cursor: pointer;
-      font-family: "Tenor Sans", sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 1rem;
-      text-align: center;
-      color: #1a1a1a;
-      padding: 0.4rem 0;
-    }
-
-    .drop summary::-webkit-details-marker { display: none; }
-
-    .drop-content {
-      max-height: 0;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: max-height 1.2s ease, opacity 1.2s ease, transform 1.2s ease;
-      overflow: hidden;
-      text-align: left;
-      padding-left: 0.2rem;
-    }
-
-    .drop[open] .drop-content {
-      max-height: 480px;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .drop-content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0.9rem 0 0;
-      display: grid;
-      gap: 0.6rem;
-      color: #3d3d3d;
-      font-size: 0.95rem;
-    }
-
-    .drop-content li {
-      padding-left: 0.6rem;
-      border-left: 2px solid #111;
-    }
-
     .contact {
-      padding-bottom: 2.4rem;
+      padding-top: 2.2rem;
+      padding-bottom: 3rem;
+      transition: min-height 1s ease, padding 1s ease;
+    }
+
+    .contact.focus {
+      min-height: calc(100vh - 80px);
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .contact-inner {
       display: grid;
       grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.2fr);
-      gap: 1.4rem;
-      margin-top: 0.8rem;
+      gap: 1rem;
+      margin-top: 0.25rem;
       align-items: start;
+    }
+
+    .briefing-title {
+      animation: none;
+    }
+
+    .briefing-title.blink-twice {
+      animation: briefing-double 5s ease;
+    }
+
+    @keyframes briefing-double {
+      0% { opacity: 0.2; filter: blur(6px); }
+      30% { opacity: 1; filter: blur(0); }
+      50% { opacity: 0.2; filter: blur(6px); }
+      80% { opacity: 1; filter: blur(0); }
+      100% { opacity: 1; filter: blur(0); }
     }
 
     .contact-copy p {
@@ -344,6 +360,7 @@
     }
 
     input, textarea, select {
+      width: 100%;
       border: 1px solid var(--field-border);
       border-radius: 12px;
       padding: 0.75rem 0.9rem;
@@ -375,7 +392,7 @@
     }
 
     footer {
-      padding: 1.6rem 4vw 2.2rem;
+      padding: 2rem 4vw 2.2rem;
     }
 
     .footer-note {
@@ -400,13 +417,21 @@
     }
 
     @media (max-width: 640px) {
-      .hero { padding-top: 6rem; min-height: 65vh; }
-      .hero-slice { letter-spacing: 0.05em; }
+      .hero { padding-top: 6rem; min-height: 60vh; }
+      .hero-text {
+        font-size: clamp(1.6rem, 7vw, 2.4rem);
+        letter-spacing: 0.04em;
+        white-space: normal;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+      .word-sub { font-size: 0.72em; margin-left: 0; }
       .cta { font-size: 0.65rem; padding: 0.5rem 1rem; }
     }
 
     @media (hover: none) {
-      .card p {
+      .card p,
+      .card-extra {
         max-height: none;
         opacity: 1;
         transform: none;
@@ -424,80 +449,103 @@
     <section class="hero">
       <div class="hero-content">
         <p class="hero-eyebrow">Operational Diagnostics</p>
-        <div class="hero-slices" aria-hidden="true"></div>
+        <div class="hero-magnet">
+          <div class="hero-text" aria-label="ETHERIS VERDADE ANTES DA DECISÃO">
+            <span class="word-main">ETHERIS</span>
+            <span class="word-sub">VERDADE ANTES DA DECISÃO</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <section>
       <div class="section-title">
         <h2>Diagnóstico Operacional</h2>
-        <p>Clareza estrutural e precisão de fluxo para acelerar decisões estratégicas com base em evidências operacionais.</p>
+        <p class="lead-submenu">IA ESTRATÉGICA PARA CRESCIMENTO EXIGE TRANSFORMAÇÃO ORGANIZACIONAL, GOVERNANÇA E LIDERANÇA PRÁTICA.</p>
       </div>
 
       <div class="cards">
         <article class="card">
           <h3>Diagnóstico Estrutural da Operação</h3>
-          <span class="pt-title">Arquitetura, fluxos e dependências</span>
-          <!-- EN: Comprehensive evaluation of organizational design, operational flows, and systemic dependencies to reveal structural inefficiencies. -->
-          <p>Avaliação do desenho organizacional e das dependências sistêmicas para revelar ineficiências estruturais.</p>
+          <span class="pt-title">ARQUITETURA, FLUXOS E DEPENDÊNCIAS</span>
+          <p>IA COMO MOTOR DE RECEITA EXIGE LIDERANÇA PRESENTE, CULTURA EM MUDANÇA E HUMANOS NO COMANDO.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>ALINHAMENTO EXECUTIVO E CULTURAL.</li>
+              <li>PRONTIDÃO PARA ESCALA RESPONSÁVEL.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>DIAGNÓSTICO DE GOVERNANÇA E MINDSET.</li>
+              <li>PLANO DE MUDANÇA ORGANIZACIONAL.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Análise de Processos e Fluxos Críticos</h3>
-          <span class="pt-title">Ponta a ponta, sem ruído</span>
-          <!-- EN: Mapping and scrutiny of end-to-end processes, identifying bottlenecks, redundancies, and points of operational friction. -->
-          <p>Mapeamento detalhado de processos para identificar gargalos, redundâncias e fricções operacionais.</p>
+          <span class="pt-title">PONTA A PONTA, SEM RUÍDO</span>
+          <p>TRANSFORMAÇÃO DE FLUXOS PARA GERAR VALOR REAL, NÃO APENAS AUTOMAÇÃO.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>GARGALOS QUE TRAVAM ESCALA.</li>
+              <li>PRIORIDADES DE REINVENÇÃO OPERACIONAL.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>MAPA DE PROCESSOS CRÍTICOS.</li>
+              <li>SEQUÊNCIA DE TRANSFORMAÇÃO.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Avaliação de Sistemas, Dados e Dependências</h3>
-          <span class="pt-title">Tecnologia como alavanca</span>
-          <!-- EN: Technical review of IT infrastructure, system integration, data pipelines, and critical human dependencies impacting performance. -->
-          <p>Revisão de infraestrutura, integrações e pipelines que sustentam ou limitam a performance.</p>
+          <span class="pt-title">TECNOLOGIA COMO ALAVANCA</span>
+          <p>CONFIANÇA, ÉTICA E DADOS DE QUALIDADE PARA IA RESPONSÁVEL E DECISÕES SÓLIDAS.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>REDUÇÃO DE WORKSLOP E RUÍDO.</li>
+              <li>CONFIANÇA EM DECISÕES CRÍTICAS.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>MATRIZ DE DADOS CRÍTICOS.</li>
+              <li>MODELO DE GOVERNANÇA E COMPLIANCE.</li>
+            </ul>
+          </div>
         </article>
 
         <article class="card">
           <h3>Identificação de Riscos e Gargalos Operacionais</h3>
-          <span class="pt-title">Exposição, impactos e estabilização</span>
-          <!-- EN: Assessment of operational vulnerabilities, risk exposure, and inefficiencies, providing actionable insights for stabilization. -->
-          <p>Diagnóstico de vulnerabilidades e riscos com foco em estabilização rápida e segura.</p>
+          <span class="pt-title">EXPOSIÇÃO, IMPACTOS E ESTABILIZAÇÃO</span>
+          <p>RESKILLING E NOVOS PAPÉIS PARA SUSTENTAR ADOÇÃO EM ESCALA.</p>
+
+          <div class="card-extra">
+            <span class="card-extra-title">Resultados</span>
+            <ul>
+              <li>MAPA DE EXPOSIÇÕES OPERACIONAIS.</li>
+              <li>PRIORIZAÇÃO DE TALENTOS E CAPACITAÇÃO.</li>
+            </ul>
+            <span class="card-extra-title">Entregáveis</span>
+            <ul>
+              <li>PLANO DE ESTABILIZAÇÃO IMEDIATO.</li>
+              <li>MÉTRICAS DE VALOR E GOVERNANÇA.</li>
+            </ul>
+          </div>
         </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-title">
-        <h2>Resultados e Entregáveis</h2>
-      </div>
-
-      <div class="drops">
-        <details class="drop">
-          <summary>Resultados</summary>
-          <div class="drop-content">
-            <ul>
-              <li>Clareza estrutural sobre onde a performance colapsa e por quê.</li>
-              <li>Mapa priorizado de gargalos com impacto sistêmico.</li>
-              <li>Plano de estabilização alinhado às prioridades da liderança.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="drop">
-          <summary>Entregáveis</summary>
-          <div class="drop-content">
-            <ul>
-              <li>Mapa executivo de gargalos e pontos críticos.</li>
-              <li>Diagnóstico de dependências, riscos e fragilidades.</li>
-              <li>Plano de estabilização de curto prazo e recomendações estratégicas.</li>
-            </ul>
-          </div>
-        </details>
       </div>
     </section>
 
     <section class="contact">
       <div class="section-title">
-        <h2>Briefing Estratégico</h2>
+        <h2 class="briefing-title">Briefing Estratégico</h2>
       </div>
 
       <div class="contact-inner">
@@ -505,7 +553,7 @@
           <p>Envie um briefing direto para alinharmos escopo, prioridade e profundidade do diagnóstico.</p>
         </div>
 
-        <form name="diagnostico-operacional" method="POST" data-netlify="true">
+        <form class="briefing-form" name="diagnostico-operacional" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="diagnostico-operacional" />
           <div class="field-group">
             <label for="nome">Nome</label>
@@ -543,83 +591,133 @@
 
   <script>
     const hero = document.querySelector(".hero");
-    const slices = document.querySelector(".hero-slices");
+    const heroText = document.querySelector(".hero-text");
     const header = document.querySelector(".site-header");
+    const briefingTitle = document.querySelector(".briefing-title");
+    const contactSection = document.querySelector(".contact");
 
-    // AJUSTE AQUI A QUANTIDADE DE CORTES
-    const SLICE_COUNT = 9;
-
-    slices.style.setProperty("--slice-count", SLICE_COUNT);
-
-    for (let i = 0; i < SLICE_COUNT; i++) {
-      const span = document.createElement("span");
-      span.className = "hero-slice";
-      span.style.setProperty("--i", i);
-
-      const mid = (SLICE_COUNT - 1) / 2;
-      const norm = mid === 0 ? 0 : (i - mid) / mid;
-
-      const m = 0.18 + (i / Math.max(1, SLICE_COUNT - 1)) * 0.62;
-      span.style.setProperty("--m", m.toFixed(3));
-      span.style.setProperty("--sx", norm.toFixed(3));
-      span.style.setProperty("--sy", (-norm * 0.3).toFixed(3));
-
-      span.innerHTML = '<span class="word-main">ETHERIS</span><span class="word-sub">VERDADE ANTES DA DECISÃO</span>';
-      slices.appendChild(span);
+    function wrapGlyphs(span) {
+      const text = span.textContent;
+      span.textContent = "";
+      [...text].forEach((ch) => {
+        const g = document.createElement("span");
+        g.className = "glyph";
+        g.innerHTML = ch === " " ? "&nbsp;" : ch;
+        span.appendChild(g);
+      });
     }
 
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
+    wrapGlyphs(heroText.querySelector(".word-main"));
+    wrapGlyphs(heroText.querySelector(".word-sub"));
 
-    function animateMagnet() {
-      currentX += (targetX - currentX) * 0.05;
-      currentY += (targetY - currentY) * 0.05;
-      if (slices) {
-        slices.style.setProperty("--x", `${currentX}px`);
-        slices.style.setProperty("--y", `${currentY}px`);
+    const glyphs = [...heroText.querySelectorAll(".glyph")];
+    const glyphData = glyphs.map(g => ({ el: g, x: 0, y: 0 }));
+
+    function cacheGlyphs() {
+      glyphData.forEach(d => {
+        const rect = d.el.getBoundingClientRect();
+        d.x = rect.left + rect.width / 2;
+        d.y = rect.top + rect.height / 2;
+      });
+    }
+
+    window.addEventListener("resize", cacheGlyphs);
+    requestAnimationFrame(cacheGlyphs);
+
+    let pointer = { x: 0, y: 0 };
+    let smooth = { x: 0, y: 0 };
+    let active = false;
+    let idleTimer = null;
+
+    function resetScatter() {
+      active = false;
+      heroText.classList.remove("scattering");
+      glyphData.forEach(d => {
+        d.el.style.transform = "translate(0px,0px) scale(1)";
+      });
+    }
+
+    function activatePointer(x, y) {
+      pointer.x = x;
+      pointer.y = y;
+      active = true;
+      heroText.classList.add("scattering");
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(resetScatter, 7000);
+    }
+
+    function animate() {
+      smooth.x += (pointer.x - smooth.x) * 0.12;
+      smooth.y += (pointer.y - smooth.y) * 0.12;
+
+      if (active) {
+        const radius = 180;
+        const maxMove = 38;
+
+        glyphData.forEach(d => {
+          const dx = d.x - smooth.x;
+          const dy = d.y - smooth.y;
+          const dist = Math.max(10, Math.hypot(dx, dy));
+          const force = Math.max(0, (radius - dist) / radius);
+          const move = force * maxMove;
+
+          const tx = (dx / dist) * move;
+          const ty = (dy / dist) * move;
+          const scale = 1 - force * 0.35;
+
+          d.el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+        });
       }
-      requestAnimationFrame(animateMagnet);
+
+      requestAnimationFrame(animate);
     }
 
-    function handleMove(event) {
-      const rect = hero.getBoundingClientRect();
-      const dx = event.clientX - rect.left - rect.width / 2;
-      const dy = event.clientY - rect.top - rect.height / 2;
-      targetX = dx * 0.14;
-      targetY = dy * 0.14;
-    }
+    animate();
 
-    function resetMagnet() {
-      targetX = 0;
-      targetY = 0;
-    }
+    hero.addEventListener("mousemove", (e) => activatePointer(e.clientX, e.clientY));
+    hero.addEventListener("mouseleave", resetScatter);
 
-    hero.addEventListener("mousemove", handleMove);
-    hero.addEventListener("mouseleave", resetMagnet);
+    hero.addEventListener("touchmove", (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      const t = e.touches[0];
+      activatePointer(t.clientX, t.clientY);
+    }, { passive: true });
 
-    animateMagnet();
+    hero.addEventListener("touchend", resetScatter);
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          contactSection.classList.add("focus");
+        } else {
+          contactSection.classList.remove("focus");
+        }
+      });
+    }, { threshold: 0.6 });
+
+    observer.observe(contactSection);
+
+    let bottomTriggered = false;
     function handleScroll() {
       const maxScroll = Math.max(200, window.innerHeight * 0.7);
-      const progress = Math.min(1, window.scrollY / maxScroll);
+      const progress = Math.min(1, Math.max(0, (window.scrollY - 40) / maxScroll));
 
       document.documentElement.style.setProperty("--hero-scale", (1 + progress * 0.1).toFixed(3));
       document.documentElement.style.setProperty("--hero-tint", (progress * 0.18).toFixed(3));
       document.documentElement.style.setProperty("--hero-hue", `${(progress * 12).toFixed(2)}deg`);
+      document.documentElement.style.setProperty("--header-bg-opacity", progress.toFixed(3));
+      document.documentElement.style.setProperty("--header-bg-scale", (1 + progress * 0.02).toFixed(3));
 
-      // Só ativa o fundo do cabeçalho perto do final
-      const pageMax = document.documentElement.scrollHeight - window.innerHeight;
-      const start = pageMax * 0.82;
-      const headerProgress = pageMax > 0 ? Math.min(1, Math.max(0, (window.scrollY - start) / (pageMax - start))) : 0;
+      header.classList.toggle("header-on", progress > 0.08);
 
-      document.documentElement.style.setProperty("--header-bg-opacity", headerProgress.toFixed(3));
-      document.documentElement.style.setProperty("--header-bg-scale", (1 + headerProgress * 0.02).toFixed(3));
-
-      header.classList.toggle("header-on", headerProgress > 0.02);
-
-      slices.style.setProperty("--spread", `${progress * 22}px`);
+      const bottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 2);
+      if (bottom && !bottomTriggered) {
+        bottomTriggered = true;
+        briefingTitle.classList.remove("blink-twice");
+        void briefingTitle.offsetWidth;
+        briefingTitle.classList.add("blink-twice");
+      }
+      if (!bottom) bottomTriggered = false;
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
