@@ -1,109 +1,93 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-  <title>[NOME DA EMPRESA] — Estruturas Metálicas e Móveis Sob Medida</title>
-
-  <meta
-    name="description"
-    content="Estruturas metálicas e móveis sob medida para residências, comércios e indústrias. Projeto, fabricação, acabamento, entrega e montagem."
-  />
-
-  <link rel="canonical" href="https://www.seudominio.com.br/" />
+  <title>Etheris™ — Estruturas Metálicas e Móveis Sob Medida</title>
+  <meta name="description" content="Etheris™ — Estruturas metálicas e móveis sob medida para residências, comércios e indústrias.">
+  <link rel="canonical" href="https://etheris.com.br" />
+  <link rel="icon" href="Etheris-F.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
 
   <style>
-    :root {
-      --menu-size: 0.72rem;
-      --submenu-size: 0.65rem;
-      --gold: #d9a441;
-      --white: #ffffff;
-      --dark: #101820;
-    }
-
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      width: 100%;
       height: 100%;
       overflow: hidden;
-      background: var(--dark);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      color: var(--white);
+      background-color: #f9f9f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #fff;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       text-align: center;
+      cursor: default;
     }
 
-    *::selection {
-      background: transparent;
-      color: inherit;
+    *::selection { background: transparent; color: inherit; }
+    *::-moz-selection { background: transparent; color: inherit; }
+
+    body, .container, nav#top-menu, .mobile-menu {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .background-video {
       position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
-      opacity: 0.58;
       z-index: 0;
       pointer-events: none;
     }
 
     .container {
       position: relative;
-      z-index: 2;
-      width: min(900px, 90vw);
+      z-index: 1;
       padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .logo {
-      width: min(280px, 70vw);
-      height: auto;
-      margin-bottom: 1.5rem;
-      animation: blur-in 1.8s ease-out forwards;
     }
 
     h1 {
-      margin: 0 auto 0.75rem;
-      max-width: 850px;
-      color: var(--white);
-      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-size: 1.8rem;
+      margin: 0 auto 0.5rem;
       font-weight: 300;
-      line-height: 1.2;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.78);
+      line-height: 2.2rem;
       animation: blur-in 1.8s ease-out forwards;
+      color: #fff;
+      transition: color 1.8s ease-out;
+      text-align: center;
+      max-width: 90vw;
     }
 
     .frase-entrada {
-      margin: 0;
-      color: var(--white);
-      font-family: "Tenor Sans", sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.78rem);
-      letter-spacing: 0.13em;
-      line-height: 1.7;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.78);
-      animation: blur-in 2.2s ease-out forwards;
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 9px;
+      color: #fff;
+      margin-bottom: 2rem;
+      animation: blur-in 1.8s ease-out forwards;
+      transition: color 1.8s ease-out;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 1rem;
+      animation: blur-in 2.5s ease-out forwards;
     }
 
     @keyframes blur-in {
-      from {
+      0% {
         opacity: 0;
         filter: blur(8px);
       }
 
-      to {
+      100% {
         opacity: 1;
         filter: blur(0);
       }
@@ -113,178 +97,525 @@
       animation: blur-in 1.8s ease-out;
     }
 
-    /* Menu desktop */
+    @media (max-width: 768px) {
+      .background-video {
+        object-position: center center;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    @media screen and (device-aspect-ratio: 9/19),
+           screen and (device-aspect-ratio: 9/18),
+           screen and (device-aspect-ratio: 2/3) {
+      .background-video {
+        object-position: center center;
+      }
+    }
+
     nav#top-menu {
-      position: fixed;
-      top: 0.75rem;
-      left: 0;
-      z-index: 20;
-      width: 100%;
       display: flex;
       justify-content: center;
-      font-family: "Tenor Sans", sans-serif;
+      align-items: center;
+      position: absolute;
+      top: 0.5rem;
+      left: 0;
+      width: 100%;
+      z-index: 12;
+      background: transparent;
+      font-family: 'Tenor Sans', sans-serif;
+      gap: 3rem;
     }
 
     nav#top-menu .menu-item {
       position: relative;
+      height: 100%;
       display: flex;
+      align-items: center;
       justify-content: center;
     }
 
+    :root {
+      --menu-size: 0.72rem;
+      --submenu-size: 0.65rem;
+      --submenu-right-offset: 3%;
+      --submenu-top-offset: 2.35rem;
+    }
+
     nav#top-menu .menu-link {
-      color: var(--white);
+      color: #111;
       font-size: var(--menu-size);
-      letter-spacing: 0.08em;
+      font-weight: 400;
       text-decoration: none;
+      transition: color 0.3s ease;
       text-transform: uppercase;
+      letter-spacing: 0.01em;
+      position: relative;
       cursor: pointer;
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
     }
 
     nav#top-menu .menu-link::after {
-      content: "";
+      content: '';
       position: absolute;
+      bottom: -4px;
       left: 50%;
-      bottom: -6px;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
       transform: translateX(-50%);
-      transition: width 0.5s ease;
+      width: 0%;
+      height: 1px;
+      background-color: #111;
+      transition: width 0.6s ease;
     }
 
-    nav#top-menu .menu-item:hover .menu-link::after,
-    nav#top-menu .menu-item.open .menu-link::after {
-      width: 85%;
+    nav#top-menu .menu-item.line-open > .menu-link::after {
+      width: 80%;
+    }
+
+    nav#top-menu .menu-item.line-close > .menu-link::after {
+      width: 0%;
+    }
+
+    nav#top-menu .menu-item.line-flash > .menu-link::after {
+      animation: line-flash 1.2s ease;
+      transition: none;
+    }
+
+    nav#top-menu .menu-item.line-reverse > .menu-link::after {
+      left: auto;
+      right: 0;
+      transform: none;
+      transform-origin: right center;
+      animation: line-reverse-fade 1.4s ease forwards;
+    }
+
+    nav#top-menu .dropdown a::after {
+      display: block;
     }
 
     nav#top-menu .dropdown {
-      position: absolute;
-      top: 1.8rem;
-      min-width: 260px;
-      padding: 0.7rem 0;
+      position: fixed;
+      top: var(--submenu-top-offset);
+      left: auto;
+      right: var(--submenu-right-offset);
+      transform: translateY(-10px);
+      width: max-content;
+      max-width: 90vw;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0.45rem 0 0.45rem;
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-8px);
+      max-height: 0;
+      overflow: hidden;
       pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+      transition: max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, visibility 0.35s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 11;
     }
 
-    nav#top-menu .menu-item.open .dropdown,
-    nav#top-menu .menu-item:hover .dropdown {
+    nav#top-menu .menu-item.open .dropdown {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+      max-height: 180px;
       pointer-events: auto;
+      transform: translateY(0);
     }
 
     nav#top-menu .dropdown-inner {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(16, 24, 32, 0.8);
-      backdrop-filter: blur(10px);
+      align-items: flex-end;
+      gap: 0.45rem;
+      margin-top: 0.4rem;
+      text-align: right;
+      transform: translateY(-10px);
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    nav#top-menu .menu-item.open .dropdown-inner {
+      transform: translateY(0);
     }
 
     nav#top-menu .dropdown-inner a {
-      color: var(--white);
+      color: #111;
       font-size: var(--submenu-size);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.01em;
       text-decoration: none;
+      opacity: 1;
+      filter: none;
+      transform: none;
+      position: relative;
+      display: inline-block;
       text-transform: uppercase;
+      font-family: 'Tenor Sans', sans-serif;
       transition: color 0.25s ease;
+      text-shadow: none;
+      cursor: pointer;
     }
 
     nav#top-menu .dropdown-inner a:hover {
-      color: var(--gold);
+      color: #666;
+      text-shadow: none;
     }
 
-    /* Botão mobile */
+    nav#top-menu .dropdown-inner a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 1px;
+      background-color: #111;
+      display: none;
+    }
+
+    nav#top-menu .dropdown-inner a.line-flash-item::after {
+      animation: line-flash-sub 0.8s ease;
+      transition: none;
+    }
+
+    #desktop-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 135px;
+      background: transparent;
+      backdrop-filter: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 10;
+    }
+
+    .desktop-blur-on #desktop-blur {
+      opacity: 1;
+    }
+
+    #desktop-separator {
+      position: fixed;
+      top: 1.9rem;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(17, 17, 17, 0.2), rgba(17, 17, 17, 0.6), rgba(17, 17, 17, 0.2));
+      background-size: 200% 100%;
+      opacity: 0;
+      pointer-events: none;
+      transform: scaleX(1);
+      transform-origin: center;
+      transition: opacity 0.3s ease;
+      z-index: 11;
+    }
+
+    .desktop-blur-on #desktop-separator {
+      opacity: 1;
+      animation: separator-scan 2s linear infinite;
+    }
+
+    .desktop-blur-on #desktop-separator.closing {
+      animation: separator-close 0.45s ease forwards;
+    }
+
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(1)::after {
+      animation: line-flash-sub-1 1.4s ease forwards;
+      animation-delay: 0s;
+    }
+
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(2)::after {
+      animation: line-flash-sub-2 1.4s ease forwards;
+      animation-delay: 0.8s;
+    }
+
+    nav#top-menu .dropdown.line-seq .dropdown-inner a:nth-child(3)::after {
+      animation: line-flash-sub-3 1.4s ease forwards;
+      animation-delay: 1.6s;
+    }
+
+    nav#top-menu .dropdown-inner a:nth-child(1).line-flash-item::after {
+      animation: line-flash-sub-1 1.4s ease;
+    }
+
+    nav#top-menu .dropdown-inner a:nth-child(2).line-flash-item::after {
+      animation: line-flash-sub-2 1.4s ease;
+    }
+
+    nav#top-menu .dropdown-inner a:nth-child(3).line-flash-item::after {
+      animation: line-flash-sub-3 1.4s ease;
+    }
+
     .menu-button {
       position: fixed;
-      left: 50%;
       bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 10001;
-      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      transform: translateX(-50%);
     }
 
     .menu-button div {
-      width: 22px;
-      height: 2px;
+      background-color: #fff;
       margin: 3px 0;
-      background: var(--white);
-      border-radius: 2px;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
-      transition: all 0.4s ease;
+      transition: all 0.8s ease;
+      border-radius: 1px;
     }
 
-    .menu-button div:nth-child(2) {
-      width: 14px;
-    }
+    .menu-button div:nth-child(1) { width: 18px; height: 2px; }
+    .menu-button div:nth-child(2) { width: 12px; height: 1.5px; }
 
     .menu-button.active div {
-      background: var(--gold);
+      background-color: #111;
     }
 
-    /* Menu mobile */
+    .menu-button.blink div {
+      animation: hamburger-blink 1.8s ease-out;
+    }
+
+    @keyframes hamburger-blink {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes cascade-in {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(-6px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes cascade-out {
+      0% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+
+      100% {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(-6px);
+      }
+    }
+
+    @keyframes line-flash {
+      0% { width: 0%; }
+      50% { width: 80%; }
+      100% { width: 0%; }
+    }
+
+    @keyframes line-flash-sub {
+      0% { width: 0%; }
+      50% { width: 80%; }
+      100% { width: 0%; }
+    }
+
+    @keyframes line-flash-sub-1 {
+      0% { width: 0%; }
+      50% { width: 75%; }
+      100% { width: 0%; }
+    }
+
+    @keyframes line-flash-sub-2 {
+      0% { width: 0%; }
+      50% { width: 85%; }
+      100% { width: 0%; }
+    }
+
+    @keyframes line-flash-sub-3 {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 0%; }
+    }
+
+    @keyframes line-reverse-fade {
+      0% { width: 0%; opacity: 1; }
+      70% { width: 80%; opacity: 1; }
+      100% { width: 80%; opacity: 0; }
+    }
+
+    @keyframes separator-scan {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes separator-close {
+      0% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+    @keyframes text-blink {
+      0% {
+        opacity: 1;
+        filter: blur(0);
+      }
+
+      50% {
+        opacity: 0.2;
+        filter: blur(6px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
     .mobile-menu {
       position: fixed;
-      inset: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(14px);
       z-index: 10000;
       display: none;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      background: rgba(16, 24, 32, 0.94);
-      backdrop-filter: blur(14px);
+      align-items: center;
+      padding-top: 3rem;
+      transition: all 0.6s ease-in-out;
     }
 
     .mobile-menu.open {
       display: flex;
     }
 
+    .mobile-menu a {
+      color: #111;
+      text-decoration: none;
+      font-size: var(--menu-size);
+      font-family: 'Tenor Sans', sans-serif;
+      margin: 0.7rem 0;
+      font-weight: 300;
+      position: relative;
+      transition: color 0.3s ease;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+    }
+
     .mobile-group {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.5rem;
     }
 
-    .mobile-menu a {
-      color: var(--white);
-      font-family: "Tenor Sans", sans-serif;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .mobile-main {
-      font-size: 0.85rem;
+    .mobile-main.text-blink {
+      animation: text-blink 2.2s ease;
     }
 
     .mobile-sublist {
-      display: none;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-8px);
+      transition: max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.6rem;
     }
 
     .mobile-group.open .mobile-sublist {
-      display: flex;
+      max-height: 240px;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .mobile-sub {
-      color: rgba(255, 255, 255, 0.8) !important;
-      font-size: 0.68rem;
+    .mobile-menu .mobile-sub {
+      font-size: var(--submenu-size);
+      letter-spacing: 0.01em;
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(-6px);
+      text-transform: uppercase;
+    }
+
+    .mobile-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 1px;
+      background-color: #111;
+      transition: width 0.6s ease;
+    }
+
+    .mobile-menu a.line-flash-item::after {
+      animation: line-flash 0.8s ease;
+      transition: none;
+    }
+
+    .mobile-sublist.cascade-open .mobile-sub {
+      opacity: 0.9;
+      filter: blur(0);
+      transform: translateY(0);
+      animation: cascade-in 0.7s ease forwards;
+    }
+
+    .mobile-sublist.cascade-close .mobile-sub {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(-6px);
+      animation: cascade-out 0.55s ease forwards;
+    }
+
+    .mobile-sublist.cascade-open .mobile-sub:nth-child(1) { animation-delay: 0.05s; }
+    .mobile-sublist.cascade-open .mobile-sub:nth-child(2) { animation-delay: 0.18s; }
+    .mobile-sublist.cascade-open .mobile-sub:nth-child(3) { animation-delay: 0.31s; }
+
+    .mobile-sublist.cascade-close .mobile-sub:nth-child(3) { animation-delay: 0.05s; }
+    .mobile-sublist.cascade-close .mobile-sub:nth-child(2) { animation-delay: 0.18s; }
+    .mobile-sublist.cascade-close .mobile-sub:nth-child(1) { animation-delay: 0.31s; }
+
+    .mobile-group.line-flash > .mobile-main::after {
+      animation: line-flash 1.2s ease;
+      transition: none;
+    }
+
+    .mobile-menu a:not(.mobile-main):hover::after,
+    .mobile-menu a.line-active::after {
+      width: 80%;
+    }
+
+    @media (min-width: 769px) {
+      .menu-button {
+        display: none;
+      }
+
+      nav#top-menu .menu-link {
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: var(--menu-size);
+        letter-spacing: 0.01em;
+      }
+
+      h1 {
+        font-weight: 250;
+      }
     }
 
     @media (max-width: 768px) {
@@ -292,22 +623,22 @@
         display: none;
       }
 
-      .menu-button {
-        display: flex;
-      }
-
       h1 {
-        font-size: 1.8rem;
+        font-size: 1.62rem;
+        line-height: 1.98rem;
       }
 
       .frase-entrada {
-        font-size: 0.58rem;
+        font-size: 8.1px;
       }
     }
   </style>
 </head>
 
 <body>
+  <div id="desktop-blur" aria-hidden="true"></div>
+  <div id="desktop-separator" aria-hidden="true"></div>
+
   <nav id="top-menu">
     <div class="menu-item">
       <a class="menu-link" href="/strategic-advisory/operational-diagnostics/">
@@ -332,7 +663,7 @@
     </div>
   </nav>
 
-  <button class="menu-button" onclick="toggleMenu(event)" id="hamburgerButton" aria-label="Abrir menu">
+  <button class="menu-button" onclick="toggleMenu(event)" id="hamburgerButton">
     <div></div>
     <div></div>
     <div></div>
@@ -367,15 +698,22 @@
     playsinline
     preload="auto"
     class="background-video"
-    id="bgVideo">
+    id="bgVideo"
+    webkit-playsinline="true"
+    x5-playsinline="true"
+    x5-video-player-type="h5"
+    x5-video-player-fullscreen="true"
+    x5-video-orientation="portraint">
     <source src="video6.mp4" type="video/mp4" />
+    Seu navegador não suporta vídeo em HTML5.
   </video>
 
   <div class="container">
     <img
+      src="https://www.etheris.com.br/logo.svg"
+      alt="Logo Oficial Marca Etheris"
       class="logo"
-      alt="Estruturas Metálicas"
-      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 180'%3E%3Cpath d='M28 144V34h26l40 62 40-62h26v110h-28V81l-28 43H74L46 81v63z' fill='%23ffffff'/%3E%3Cpath d='M182 34h22l39 54 39-54h22v110h-28V83l-25 35h-16l-25-35v61h-28z' fill='%23d9a441'/%3E%3Cpath d='M334 34h8v110h-8z' fill='%23ffffff' opacity='.62'/%3E%3Ctext x='372' y='78' fill='%23ffffff' font-family='Arial, Helvetica, sans-serif' font-size='31' font-weight='700' letter-spacing='3'%3EESTRUTURAS%3C/text%3E%3Ctext x='372' y='118' fill='%23d9a441' font-family='Arial, Helvetica, sans-serif' font-size='25' letter-spacing='6'%3EMET%C3%81LICAS%3C/text%3E%3C/svg%3E"
+      onerror="this.style.display='none'"
     />
 
     <h1 id="titulo">
@@ -393,74 +731,557 @@
     const frase = document.getElementById("frase");
     const mobileMenu = document.getElementById("mobileMenu");
     const hamburgerButton = document.getElementById("hamburgerButton");
-    const mobileGroup = document.querySelector(".mobile-group");
-    const mobileMain = document.querySelector(".mobile-main");
+
+    let hamburgerBlinkInterval = null;
+    let desktopOpenTimer = null;
+    let desktopAutoCloseTimer = null;
+    let desktopCloseTimer = null;
+    let mobileAutoCloseTimer = null;
+    let mobileLineLock = false;
+    let mobileClosing = false;
+    let mobileTitleBlinkTimer = null;
+
+    const HAMBURGER_BLINK_STEP_DELAY = 1500;
+    const LINE_OPEN_DURATION = 600;
+    const LINE_HOLD_DURATION = 0;
+    const DESKTOP_AUTO_CLOSE_DELAY = 10000;
+    const MOBILE_AUTO_CLOSE_DELAY = 10000;
+    const CASCADE_OUT_TOTAL = 900;
+    const LINE_FLASH_DURATION = 1200;
+    const LINE_REVERSE_DURATION = 1400;
+    const SUBMENU_LINE_SEQ_TOTAL = 3200;
+    const SEPARATOR_CLOSE_DURATION = 450;
+    const DESKTOP_CLOSE_TOTAL = 1900;
+    const MENU_LINE_OPEN_DELAY = 0;
 
     function forceVideoPlay() {
-      if (!video) return;
-
       video.muted = true;
       video.playsInline = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("autoplay", "");
 
       const playPromise = video.play();
 
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          /* O fundo escuro continua visível se o vídeo não existir. */
+        playPromise.catch(error => {
+          console.log("Erro no autoplay, tentando novamente:", error);
+
+          setTimeout(() => {
+            video.play().catch(e => console.log("Segundo erro:", e));
+          }, 100);
         });
       }
     }
 
+    video.addEventListener("loadeddata", forceVideoPlay);
+    video.addEventListener("canplay", forceVideoPlay);
+    video.addEventListener("loadedmetadata", forceVideoPlay);
     window.addEventListener("load", forceVideoPlay);
+
+    window.addEventListener("pageshow", () => {
+      forceVideoPlay();
+    });
+
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
         forceVideoPlay();
       }
     });
 
+    forceVideoPlay();
+
+    document.addEventListener("touchstart", function() {
+      if (video.paused) {
+        forceVideoPlay();
+      }
+    }, { once: true });
+
+    function setColor(tColor, fColor) {
+      titulo.style.color = tColor;
+      frase.style.color = fColor;
+    }
+
     function applyBlur() {
       titulo.classList.remove("blur-effect");
       frase.classList.remove("blur-effect");
 
       void titulo.offsetWidth;
+      void frase.offsetWidth;
 
       titulo.classList.add("blur-effect");
       frase.classList.add("blur-effect");
     }
 
-    function toggleMenu(event) {
-      event.stopPropagation();
+    function applyHamburgerBlink() {
+      hamburgerButton.classList.remove("blink");
+      void hamburgerButton.offsetWidth;
+      hamburgerButton.classList.add("blink");
+    }
 
-      const isOpening = !mobileMenu.classList.contains("open");
-
-      mobileMenu.classList.toggle("open");
-      hamburgerButton.classList.toggle("active", isOpening);
-
-      if (!isOpening) {
-        mobileGroup.classList.remove("open");
+    function clearHamburgerBlinkTimer() {
+      if (hamburgerBlinkInterval) {
+        clearTimeout(hamburgerBlinkInterval);
+        hamburgerBlinkInterval = null;
       }
     }
 
-    if (mobileMain) {
-      mobileMain.addEventListener("click", (event) => {
-        if (window.matchMedia("(max-width: 768px)").matches) {
-          event.preventDefault();
-          event.stopPropagation();
+    function startInitialHamburgerBlink() {
+      clearHamburgerBlinkTimer();
+      hamburgerButton.style.transition = "all 0.8s ease";
+      hamburgerButton.classList.remove("active");
+      applyHamburgerBlink();
 
-          mobileGroup.classList.toggle("open");
+      hamburgerBlinkInterval = setTimeout(() => {
+        applyHamburgerBlink();
+        hamburgerBlinkInterval = null;
+      }, HAMBURGER_BLINK_STEP_DELAY);
+    }
+
+    function startHamburgerBlink() {
+      clearHamburgerBlinkTimer();
+      hamburgerButton.style.transition = "all 0.8s ease";
+      hamburgerButton.classList.add("active");
+      applyHamburgerBlink();
+
+      hamburgerBlinkInterval = setTimeout(() => {
+        applyHamburgerBlink();
+        hamburgerBlinkInterval = null;
+      }, HAMBURGER_BLINK_STEP_DELAY);
+    }
+
+    function stopHamburgerBlink() {
+      clearHamburgerBlinkTimer();
+      hamburgerButton.style.transition = "all 0.8s ease";
+      hamburgerButton.classList.remove("active");
+      applyHamburgerBlink();
+    }
+
+    function resetAfterLoop() {
+      setColor("#fff", "#fff");
+      applyBlur();
+      startCycle();
+    }
+
+    function startCycle() {
+      setColor("#fff", "#fff");
+      applyBlur();
+
+      setTimeout(() => {
+        let isWhite = true;
+        let count = 0;
+        const maxCycles = 6;
+
+        const interval = setInterval(() => {
+          if (count >= maxCycles) {
+            clearInterval(interval);
+            setColor("#fff", "#fff");
+            applyBlur();
+            return;
+          }
+
+          setColor(
+            isWhite ? "#fff" : "#fff",
+            isWhite ? "#fff" : "#fff"
+          );
+
+          applyBlur();
+          isWhite = !isWhite;
+          count++;
+        }, 2000);
+      }, 3000);
+    }
+
+    startCycle();
+
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      startInitialHamburgerBlink();
+    }
+
+    let lastPhase = "";
+
+    video.addEventListener("timeupdate", () => {
+      const remaining = video.duration - video.currentTime;
+
+      if (remaining <= 2 && remaining > 1 && lastPhase !== "preto") {
+        lastPhase = "preto";
+        setColor("#fff", "#fff");
+        applyBlur();
+      }
+
+      if (remaining <= 1 && lastPhase !== "branco") {
+        lastPhase = "branco";
+        setColor("#fff", "#fff");
+        applyBlur();
+      }
+
+      if (video.currentTime < 0.1 && lastPhase) {
+        lastPhase = "";
+        resetAfterLoop();
+      }
+    });
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+
+      const isOpening = !mobileMenu.classList.contains("open");
+      mobileMenu.classList.toggle("open");
+
+      if (isOpening) {
+        mobileClosing = false;
+        startHamburgerBlink();
+        scheduleMobileTitleBlink(HAMBURGER_BLINK_STEP_DELAY);
+      } else {
+        stopHamburgerBlink();
+
+        if (mobileAutoCloseTimer) {
+          clearTimeout(mobileAutoCloseTimer);
+          mobileAutoCloseTimer = null;
+        }
+
+        if (mobileGroup && mobileGroup.classList.contains("open")) {
+          closeMobileSublist();
+        }
+      }
+    }
+
+    const desktopMenuItem = document.querySelector("#top-menu .menu-item");
+    const desktopMenuLink = document.querySelector("#top-menu .menu-item > a");
+    const desktopDropdown = document.querySelector("#top-menu .dropdown");
+    const desktopSeparator = document.querySelector("#desktop-separator");
+    const mobileGroup = document.querySelector(".mobile-group");
+    const mobileMain = document.querySelector(".mobile-main");
+    const mobileSublist = document.querySelector(".mobile-sublist");
+
+    if (desktopMenuItem) {
+      desktopMenuItem.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (desktopDropdown) {
+      desktopDropdown.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (mobileMenu) {
+      mobileMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    if (hamburgerButton) {
+      hamburgerButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    document.addEventListener("click", (e) => {
+      if (!desktopMenuItem || !desktopMenuItem.classList.contains("open")) {
+        return;
+      }
+
+      if (!window.matchMedia("(min-width: 769px)").matches) {
+        return;
+      }
+
+      const clickedInside =
+        desktopMenuItem.contains(e.target) ||
+        (desktopDropdown && desktopDropdown.contains(e.target));
+
+      if (!clickedInside) {
+        closeDesktopDropdown(true);
+      }
+    });
+
+    function clearDesktopTimers() {
+      if (desktopOpenTimer) {
+        clearTimeout(desktopOpenTimer);
+        desktopOpenTimer = null;
+      }
+
+      if (desktopAutoCloseTimer) {
+        clearTimeout(desktopAutoCloseTimer);
+        desktopAutoCloseTimer = null;
+      }
+
+      if (desktopCloseTimer) {
+        clearTimeout(desktopCloseTimer);
+        desktopCloseTimer = null;
+      }
+    }
+
+    function triggerLineFlash() {
+      if (!desktopMenuItem) return;
+
+      desktopMenuItem.classList.remove("line-close");
+      desktopMenuItem.classList.remove("line-flash");
+      void desktopMenuItem.offsetWidth;
+      desktopMenuItem.classList.add("line-flash");
+
+      setTimeout(() => {
+        desktopMenuItem.classList.remove("line-flash");
+      }, LINE_FLASH_DURATION);
+    }
+
+    function openDesktopDropdown() {
+      if (!desktopMenuItem || !desktopDropdown) return;
+
+      desktopMenuItem.classList.add("open");
+      desktopMenuItem.classList.remove("line-close");
+      desktopMenuItem.classList.remove("line-open");
+      document.body.classList.add("desktop-blur-on");
+
+      if (desktopSeparator) {
+        desktopSeparator.classList.remove("closing");
+      }
+
+      desktopDropdown.classList.remove("line-seq");
+      void desktopDropdown.offsetWidth;
+      desktopDropdown.classList.add("line-seq");
+
+      setTimeout(() => {
+        desktopDropdown.classList.remove("line-seq");
+      }, SUBMENU_LINE_SEQ_TOTAL);
+
+      if (desktopAutoCloseTimer) {
+        clearTimeout(desktopAutoCloseTimer);
+      }
+
+      desktopAutoCloseTimer = setTimeout(() => {
+        closeDesktopDropdown(true);
+      }, DESKTOP_AUTO_CLOSE_DELAY);
+    }
+
+    function closeDesktopDropdown() {
+      if (!desktopMenuItem || !desktopDropdown) return;
+      if (!desktopMenuItem.classList.contains("open")) return;
+
+      if (desktopAutoCloseTimer) {
+        clearTimeout(desktopAutoCloseTimer);
+        desktopAutoCloseTimer = null;
+      }
+
+      desktopDropdown.classList.remove("line-seq");
+
+      if (desktopSeparator) {
+        desktopSeparator.classList.add("closing");
+      }
+
+      setTimeout(() => {
+        desktopMenuItem.classList.remove("line-open");
+        desktopMenuItem.classList.remove("line-close");
+        desktopMenuItem.classList.remove("line-flash");
+        desktopMenuItem.classList.remove("line-reverse");
+
+        void desktopMenuItem.offsetWidth;
+        desktopMenuItem.classList.add("line-reverse");
+
+        setTimeout(() => {
+          desktopMenuItem.classList.remove("line-reverse");
+        }, LINE_REVERSE_DURATION);
+      }, SEPARATOR_CLOSE_DURATION + MENU_LINE_OPEN_DELAY);
+
+      desktopCloseTimer = setTimeout(() => {
+        desktopMenuItem.classList.remove("open");
+        document.body.classList.remove("desktop-blur-on");
+
+        if (desktopSeparator) {
+          desktopSeparator.classList.remove("closing");
+        }
+      }, DESKTOP_CLOSE_TOTAL);
+    }
+
+    function startDesktopHoverSequence() {
+      if (!desktopMenuItem) return;
+      if (desktopMenuItem.classList.contains("open")) return;
+
+      clearDesktopTimers();
+
+      desktopOpenTimer = setTimeout(() => {
+        openDesktopDropdown();
+      }, LINE_OPEN_DURATION + LINE_HOLD_DURATION);
+    }
+
+    function cancelDesktopHoverSequence() {
+      if (!desktopMenuItem) return;
+      if (desktopMenuItem.classList.contains("open")) return;
+
+      if (desktopOpenTimer) {
+        clearTimeout(desktopOpenTimer);
+        desktopOpenTimer = null;
+      }
+
+      desktopMenuItem.classList.remove("line-flash");
+    }
+
+    if (desktopMenuItem && desktopMenuLink && desktopDropdown) {
+      desktopMenuItem.addEventListener("mouseenter", () => {
+        if (window.matchMedia("(min-width: 769px)").matches) {
+          if (!desktopMenuItem.classList.contains("open")) {
+            startDesktopHoverSequence();
+          }
+        }
+      });
+
+      desktopMenuItem.addEventListener("mouseleave", () => {
+        if (window.matchMedia("(min-width: 769px)").matches) {
+          if (!desktopMenuItem.classList.contains("open")) {
+            cancelDesktopHoverSequence();
+          }
+        }
+      });
+
+      desktopMenuLink.addEventListener("click", (e) => {
+        if (window.matchMedia("(min-width: 769px)").matches) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (desktopMenuItem.classList.contains("open")) {
+            closeDesktopDropdown(true);
+          } else {
+            startDesktopHoverSequence();
+          }
         }
       });
     }
 
-    document.addEventListener("click", (event) => {
-      if (!mobileMenu.contains(event.target) && !hamburgerButton.contains(event.target)) {
-        mobileMenu.classList.remove("open");
-        mobileGroup.classList.remove("open");
-        hamburgerButton.classList.remove("active");
+    function triggerMobileLineFlash() {
+      if (!mobileGroup) return;
+      if (mobileLineLock) return;
+
+      mobileLineLock = true;
+      mobileGroup.classList.remove("line-flash");
+      void mobileGroup.offsetWidth;
+      mobileGroup.classList.add("line-flash");
+
+      setTimeout(() => {
+        mobileGroup.classList.remove("line-flash");
+        mobileLineLock = false;
+      }, LINE_FLASH_DURATION);
+    }
+
+    function scheduleMobileTitleBlink(delay = 0) {
+      if (!mobileMain) return;
+
+      if (mobileTitleBlinkTimer) {
+        clearTimeout(mobileTitleBlinkTimer);
+        mobileTitleBlinkTimer = null;
       }
+
+      mobileTitleBlinkTimer = setTimeout(() => {
+        mobileMain.classList.remove("text-blink");
+        void mobileMain.offsetWidth;
+        mobileMain.classList.add("text-blink");
+
+        setTimeout(() => {
+          mobileMain.classList.remove("text-blink");
+        }, 2200);
+      }, Math.max(0, delay));
+    }
+
+    function openMobileSublist() {
+      if (!mobileGroup || !mobileSublist) return;
+
+      mobileClosing = false;
+      mobileGroup.classList.add("open");
+      triggerMobileLineFlash();
+
+      mobileSublist.classList.remove("cascade-close");
+      mobileSublist.classList.add("cascade-open");
+
+      if (mobileAutoCloseTimer) {
+        clearTimeout(mobileAutoCloseTimer);
+      }
+
+      mobileAutoCloseTimer = setTimeout(() => {
+        closeMobileSublist();
+      }, MOBILE_AUTO_CLOSE_DELAY);
+    }
+
+    function closeMobileSublist() {
+      if (!mobileGroup || !mobileSublist) return;
+      if (mobileClosing) return;
+
+      mobileClosing = true;
+
+      if (mobileAutoCloseTimer) {
+        clearTimeout(mobileAutoCloseTimer);
+        mobileAutoCloseTimer = null;
+      }
+
+      mobileSublist.classList.remove("cascade-open");
+      mobileSublist.classList.add("cascade-close");
+
+      setTimeout(() => {
+        mobileGroup.classList.remove("open");
+        mobileSublist.classList.remove("cascade-close");
+        triggerMobileLineFlash();
+        mobileClosing = false;
+      }, CASCADE_OUT_TOTAL);
+    }
+
+    if (mobileMain && mobileGroup) {
+      mobileMain.addEventListener("click", (e) => {
+        if (window.matchMedia("(max-width: 768px)").matches) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (mobileGroup.classList.contains("open")) {
+            closeMobileSublist();
+          } else {
+            openMobileSublist();
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll("#top-menu .dropdown a").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (desktopAutoCloseTimer) {
+          clearTimeout(desktopAutoCloseTimer);
+          desktopAutoCloseTimer = null;
+        }
+
+        link.classList.remove("line-flash-item");
+        void link.offsetWidth;
+        link.classList.add("line-flash-item");
+
+        setTimeout(() => {
+          window.location.href = link.href;
+        }, 600);
+      });
     });
 
-    setTimeout(applyBlur, 500);
+    document.querySelectorAll(".mobile-menu a").forEach(link => {
+      link.addEventListener("click", function(e) {
+        if (this.classList.contains("mobile-main")) {
+          return;
+        }
+
+        if (mobileAutoCloseTimer) {
+          clearTimeout(mobileAutoCloseTimer);
+          mobileAutoCloseTimer = null;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.classList.remove("line-flash-item");
+        void this.offsetWidth;
+        this.classList.add("line-flash-item");
+
+        setTimeout(() => {
+          this.classList.remove("line-flash-item");
+          window.location.href = this.href;
+        }, 600);
+      });
+    });
   </script>
 </body>
 </html>
+```
